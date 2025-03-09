@@ -17,7 +17,7 @@ import {
 import { WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum, base, avalanche } from 'wagmi/chains';
 import { http } from 'viem';
-import { createConfig } from 'wagmi/config';
+import { createConfig } from 'wagmi';
 
 // Create a custom RainbowKit theme
 const customTheme = darkTheme({
