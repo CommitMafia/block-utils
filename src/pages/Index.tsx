@@ -9,6 +9,7 @@ import { useToken } from '@/hooks/useToken';
 import { useAbi } from '@/hooks/useAbi';
 import { Toaster } from '@/components/ui/sonner';
 import { Terminal, Lock } from 'lucide-react';
+import { useWallet } from '@/context/WalletContext';
 
 const Index = () => {
   const [contractAddress, setContractAddress] = useState<string | null>(null);
@@ -20,6 +21,7 @@ const Index = () => {
     isLoading: abiLoading, 
     fetchAbi 
   } = useAbi();
+  const { isConnected } = useWallet();
 
   // Determine overall loading state
   const isLoading = tokenLoading || abiLoading;
@@ -65,7 +67,7 @@ const Index = () => {
               isLoading={isLoading} 
             />
             
-            {!contractAddress && !isLoading && (
+            {!contractAddress && !isLoading && !isConnected && (
               <p className="text-center text-sm text-cyber-neon/60 font-mono mt-4">
                 {">>"} Connect your wallet for full functionality {">>"} 
               </p>
