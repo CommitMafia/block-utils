@@ -1,3 +1,4 @@
+
 /**
  * Utility functions for Ethereum unit conversions
  */
@@ -6,8 +7,17 @@
 export const formatValue = (value: number, fromFactor: number, toFactor: number): string => {
   if (value === 0) return '0';
   
+  // Calculate the power difference for conversion
+  const diffFactor = fromFactor - toFactor;
+  
+  // For exact precision with specific unit pairs
+  if (fromFactor === 0 && toFactor === 9) {
+    // 1 wei = 0.000000001 gwei (exact)
+    return (value * 0.000000001).toString();
+  }
+  
   // Convert from source unit to target unit directly
-  const conversion = value * Math.pow(10, fromFactor - toFactor);
+  const conversion = value * Math.pow(10, diffFactor);
   
   // For very large or very small numbers
   if (Math.abs(conversion) < 1e-6 || Math.abs(conversion) > 1e16) {
@@ -49,6 +59,13 @@ export const convertEthUnit = (
   if (amount === '' || isNaN(Number(amount))) return '';
   
   const amountNum = typeof amount === 'string' ? parseFloat(amount) : amount;
+  
+  // For exact precision with specific unit pairs
+  if (fromUnit === 0 && toUnit === 9) {
+    // 1 wei = 0.000000001 gwei (exact)
+    return (amountNum * 0.000000001).toString();
+  }
+  
   const diffFactor = fromUnit - toUnit;
   
   if (diffFactor === 0) return amountNum.toString();
