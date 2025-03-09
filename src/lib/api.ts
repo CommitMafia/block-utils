@@ -99,49 +99,67 @@ function parseAbi(abiJson: string): ABIFunction[] {
   }
 }
 
-// Fetch token metadata using web3 calls
-async function fetchTokenMetadata(contractAddress: string, chain: Chain): Promise<any> {
+// Fetch token information from Etherscan
+async function fetchTokenInfo(contractAddress: string, chain: Chain): Promise<any> {
   try {
-    // This would typically use ethers.js or web3.js to make RPC calls
-    // For this example, we'll simulate the response
-    const abiERC20 = [
-      { "constant": true, "inputs": [], "name": "name", "outputs": [{ "name": "", "type": "string" }], "type": "function" },
-      { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "name": "", "type": "string" }], "type": "function" },
-      { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint8" }], "type": "function" },
-      { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "name": "", "type": "uint256" }], "type": "function" }
-    ];
+    // Fetch token metadata via Etherscan for ERC20 tokens
+    const url = `${chain.apiUrl}?module=token&action=tokeninfo&contractaddress=${contractAddress}&apikey=${chain.apiKey}`;
+    const response = await fetch(url);
+    const data = await response.json();
     
-    // For demonstration, return mock data
-    // In a real implementation, you would use ethers.js to call these methods
-    return {
-      name: "Sample Token",
-      symbol: "STKN",
-      decimals: 18,
-      totalSupply: "1000000000000000000000000000" // 1 billion tokens
-    };
+    if (data.status === '1' && data.result && data.result.length > 0) {
+      return data.result[0];
+    }
+    
+    throw new Error(data.result || 'Failed to fetch token info');
   } catch (error) {
-    console.error('Error fetching token metadata:', error);
+    console.error('Error fetching token info:', error);
     throw error;
   }
 }
 
-// Fetch token price data from a market API
-async function fetchTokenPrice(contractAddress: string, chain: Chain): Promise<any> {
+// Fetch token holders count from Etherscan
+async function fetchTokenHolders(contractAddress: string, chain: Chain): Promise<number | null> {
   try {
-    // This would typically call a price API like CoinGecko
-    // For this example, we'll simulate the response
-    return {
-      price: 1.23,
-      marketCap: 123000000,
-      volume24h: 5600000
-    };
+    const url = `${chain.apiUrl}?module=token&action=tokenholderlist&contractaddress=${contractAddress}&page=1&offset=1&apikey=${chain.apiKey}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    if (data.status === '1') {
+      return parseInt(data.result.length > 0 ? data.result[0].tokenHolderCount : '0');
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching token holders:', error);
+    return null;
+  }
+}
+
+// Fetch token price data from Coingecko
+async function fetchTokenPrice(contractAddress: string, chain: Chain): Promise<any> {
+  // For Ethereum tokens we can try Coingecko
+  try {
+    let coingeckoId = chain.id === 1 ? 'ethereum' : 
+                      chain.id === 56 ? 'binance-smart-chain' : 
+                      chain.id === 137 ? 'polygon-pos' : 
+                      chain.id === 42161 ? 'arbitrum-one' : 
+                      chain.id === 10 ? 'optimistic-ethereum' : 'ethereum';
+                      
+    const url = `https://api.coingecko.com/api/v3/coins/${coingeckoId}/contract/${contractAddress}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    if (data && data.market_data) {
+      return {
+        price: data.market_data.current_price.usd,
+        marketCap: data.market_data.market_cap.usd,
+        volume24h: data.market_data.total_volume.usd
+      };
+    }
+    return null;
   } catch (error) {
     console.error('Error fetching token price:', error);
-    return {
-      price: null,
-      marketCap: null,
-      volume24h: null
-    };
+    return null;
   }
 }
 
@@ -156,42 +174,60 @@ class TokenAPI {
     }
     
     try {
-      // Fetch token metadata and price in parallel
-      const [metadata, priceData] = await Promise.all([
-        fetchTokenMetadata(contractAddress, chain),
-        fetchTokenPrice(contractAddress, chain)
-      ]);
+      // Try to fetch real token data
+      const tokenData = await fetchTokenInfo(contractAddress, chain);
+      const priceData = await fetchTokenPrice(contractAddress, chain);
+      const holdersCount = await fetchTokenHolders(contractAddress, chain);
       
-      // Combine the data
+      // Sometimes we might have partial data, so set fallbacks
       return {
-        name: metadata.name,
-        symbol: metadata.symbol,
-        totalSupply: metadata.totalSupply,
-        decimals: metadata.decimals,
-        price: priceData.price?.toString() || null,
-        volume24h: priceData.volume24h?.toString() || null,
-        marketCap: priceData.marketCap?.toString() || null,
-        holders: 1500, // Mock data
-        liquidity: "500000" // Mock data
+        name: tokenData?.name || "Unknown Token",
+        symbol: tokenData?.symbol || "???",
+        totalSupply: tokenData?.totalSupply || "0",
+        decimals: parseInt(tokenData?.decimals || "18"),
+        price: priceData?.price?.toString() || null,
+        volume24h: priceData?.volume24h?.toString() || null,
+        marketCap: priceData?.marketCap?.toString() || null,
+        holders: holdersCount || null,
+        liquidity: null // Liquidity data is harder to get generically
       };
     } catch (error) {
       console.error('Error in getTokenInfo:', error);
-      // Return fallback data on error
-      return {
-        name: "Unknown Token",
-        symbol: "???",
-        totalSupply: "0",
-        decimals: 18,
-        price: null,
-        volume24h: null,
-        marketCap: null,
-        holders: null,
-        liquidity: null
-      };
+      
+      // If Etherscan fails, try to get basic ERC20 data using blockchain calls
+      try {
+        // In a real implementation, you would use ethers.js to call these methods
+        // For now, return fallback data
+        return {
+          name: "Unknown Token",
+          symbol: "???",
+          totalSupply: "0",
+          decimals: 18,
+          price: null,
+          volume24h: null,
+          marketCap: null,
+          holders: null,
+          liquidity: null
+        };
+      } catch (err) {
+        console.error('Secondary error in getTokenInfo:', err);
+        // Return basic fallback data on all errors
+        return {
+          name: "Unknown Token",
+          symbol: "???",
+          totalSupply: "0",
+          decimals: 18,
+          price: null,
+          volume24h: null,
+          marketCap: null,
+          holders: null,
+          liquidity: null
+        };
+      }
     }
   }
 
-  // Fetch token ABI using blockchain explorer API
+  // Fetch token ABI using blockchain explorer API - this part already works correctly
   async getTokenABI(contractAddress: string, chainId: number): Promise<ABIFunction[]> {
     // Get the chain details
     const chain = getChainById(chainId);

@@ -52,8 +52,8 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ tokenInfo }) => {
     <Card className="cyber-card border-cyber-neon/50">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-bold flex justify-between items-baseline cyber-title">
-          <span>{tokenInfo.name}</span>
-          <span className="text-sm text-muted-foreground font-mono">{tokenInfo.symbol}</span>
+          <span>{tokenInfo.name || 'Unknown Token'}</span>
+          <span className="text-sm text-muted-foreground font-mono">{tokenInfo.symbol || '???'}</span>
         </CardTitle>
       </CardHeader>
       
