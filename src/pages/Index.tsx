@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import ContractInput from '@/components/ContractInput';
 import TokenInfo from '@/components/TokenInfo';
 import FunctionList from '@/components/FunctionList';
@@ -8,9 +9,10 @@ import ConnectWallet from '@/components/ConnectWallet';
 import { useToken } from '@/hooks/useToken';
 import { useAbi } from '@/hooks/useAbi';
 import { Toaster } from '@/components/ui/sonner';
-import { Terminal, Lock, FileCode, Hash, Coins, Package2 } from 'lucide-react';
+import { Terminal, Lock, FileCode, Hash, Coins, Package2, ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/context/WalletContext';
 import FunctionalityBox from '@/components/FunctionalityBox';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Functionality options
 const functionalityOptions = [
@@ -18,32 +20,37 @@ const functionalityOptions = [
     id: 'token-utilities',
     title: 'Token Utilities',
     description: 'Analyze token contracts and interact with functions',
-    icon: Package2
+    icon: Package2,
+    path: '/token-utilities'
   },
   {
     id: 'contract-execution',
     title: 'Contract Execution',
     description: 'Execute contract functions directly',
-    icon: FileCode
+    icon: FileCode,
+    path: '/contract-execution'
   },
   {
     id: 'hex-converter',
     title: 'Hex Converter',
     description: 'Convert between hexadecimal and decimal values',
-    icon: Hash
+    icon: Hash,
+    path: '/hex-converter'
   },
   {
     id: 'eth-converter',
     title: 'ETH Converter',
     description: 'Convert between ETH, WEI, GWEI and other denominations',
-    icon: Coins
+    icon: Coins,
+    path: '/eth-converter'
   }
 ];
 
 const Index = () => {
   const [contractAddress, setContractAddress] = useState<string | null>(null);
   const [selectedChainId, setSelectedChainId] = useState<number | null>(null);
-  const [activeFeature, setActiveFeature] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
   const { tokenInfo, isLoading: tokenLoading, fetchTokenInfo } = useToken();
   const { 
     readFunctions,
@@ -55,6 +62,12 @@ const Index = () => {
 
   // Determine overall loading state
   const isLoading = tokenLoading || abiLoading;
+
+  // Get current path from location
+  const currentPath = location.pathname;
+  
+  // Determine which feature is active based on the path
+  const activeFeature = currentPath === '/' ? null : currentPath.substring(1);
 
   // Handle contract submission
   const handleContractSubmit = async (address: string, chainId: number) => {
@@ -68,15 +81,31 @@ const Index = () => {
     ]);
   };
 
-  // Set which feature to view
-  const handleFeatureSelect = (featureId: string) => {
-    setActiveFeature(featureId);
+  // Navigate to feature page
+  const handleFeatureSelect = (path: string) => {
+    navigate(path);
+  };
+
+  // Return to dashboard
+  const handleBackToDashboard = () => {
+    navigate('/');
   };
 
   // Render token utilities feature (original app functionality)
   const renderTokenUtilities = () => {
     return (
       <>
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={handleBackToDashboard} 
+            className="border-cyber-neon/50 text-cyber-neon hover:bg-cyber-neon/10"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
+          </Button>
+        </div>
+        
         <Card className="cyber-card overflow-hidden border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)] mb-8">
           <div className="border-b border-cyber-neon/20 p-4 flex items-center">
             <Lock className="h-4 w-4 text-cyber-neon mr-2" />
@@ -121,19 +150,26 @@ const Index = () => {
     if (!feature) return null;
     
     return (
-      <Card className="cyber-card border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)]">
-        <CardContent className="p-8 text-center">
-          <feature.icon className="h-12 w-12 text-cyber-neon mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-cyber-neon mb-2">{feature.title}</h2>
-          <p className="text-cyber-neon/70 mb-4">Coming soon! This feature is under development.</p>
-          <button 
-            onClick={() => setActiveFeature(null)} 
-            className="border-2 border-cyber-neon bg-black text-cyber-neon font-mono shadow-[0_0_15px_rgba(15,255,80,0.7)] hover:shadow-[0_0_25px_rgba(15,255,80,0.9)] transition-all px-4 py-2 rounded"
+      <>
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={handleBackToDashboard} 
+            className="border-cyber-neon/50 text-cyber-neon hover:bg-cyber-neon/10"
           >
-            Return to Dashboard
-          </button>
-        </CardContent>
-      </Card>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
+          </Button>
+        </div>
+        
+        <Card className="cyber-card border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)]">
+          <CardContent className="p-8 text-center">
+            <feature.icon className="h-12 w-12 text-cyber-neon mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-cyber-neon mb-2">{feature.title}</h2>
+            <p className="text-cyber-neon/70 mb-4">Coming soon! This feature is under development.</p>
+          </CardContent>
+        </Card>
+      </>
     );
   };
 
@@ -159,7 +195,7 @@ const Index = () => {
                 title={option.title}
                 description={option.description}
                 icon={<option.icon className="h-8 w-8" />}
-                onClick={() => handleFeatureSelect(option.id)}
+                onClick={() => handleFeatureSelect(option.path)}
               />
             ))}
           </div>
