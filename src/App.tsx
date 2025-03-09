@@ -55,8 +55,8 @@ document.head.appendChild(styleElement);
 // Define the chains and WalletConnect projectId
 const projectId = '16f35f6911d7a724931eb523d507f64d'; // Project ID for WalletConnect
 
-// Define supported chains
-const chains = [mainnet, polygon, optimism, arbitrum, avalanche, base];
+// Define supported chains for wagmi
+const wagmiChains = [mainnet, polygon, optimism, arbitrum, avalanche, base];
 
 // Configure wallets - updated to match new API
 const { wallets } = getDefaultWallets({
@@ -76,7 +76,7 @@ const queryClient = new QueryClient({
 
 // Set up the wagmi config with WalletConnect
 const config = createConfig({
-  chains,
+  chains: wagmiChains,
   transports: {
     [mainnet.id]: http(),
     [polygon.id]: http(),
@@ -90,7 +90,7 @@ const config = createConfig({
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <WagmiConfig config={config}>
-      <RainbowKitProvider theme={customTheme} chains={chains} appInfo={{ appName: 'BlockUtils' }}>
+      <RainbowKitProvider theme={customTheme} appInfo={{ appName: 'BlockUtils' }}>
         <TooltipProvider>
           <div className="relative min-h-screen">
             <Toaster />
