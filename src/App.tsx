@@ -49,9 +49,19 @@ styleElement.textContent = cssStringFromTheme(customTheme) + customCSS;
 document.head.appendChild(styleElement);
 
 // Define the chains and WalletConnect projectId
-const projectId = '16f35f6911d7a724931eb523d507f64d'; // Updated WalletConnect project ID
+const projectId = '16f35f6911d7a724931eb523d507f64d'; // Project ID for WalletConnect
 
-// Set up the wagmi config
+// Create Query Client instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+// Set up the wagmi config with WalletConnect
 const config = createConfig({
   chains: [mainnet, polygon, optimism, arbitrum, avalanche, base],
   transports: {
@@ -64,20 +74,10 @@ const config = createConfig({
   },
 });
 
-// Create Query Client instance
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
-
 const App = () => (
-  <WagmiConfig config={config}>
-    <RainbowKitProvider theme={customTheme}>
-      <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={queryClient}>
+    <WagmiConfig config={config}>
+      <RainbowKitProvider theme={customTheme}>
         <TooltipProvider>
           <div className="relative min-h-screen">
             <Toaster />
@@ -92,9 +92,9 @@ const App = () => (
             </BrowserRouter>
           </div>
         </TooltipProvider>
-      </QueryClientProvider>
-    </RainbowKitProvider>
-  </WagmiConfig>
+      </RainbowKitProvider>
+    </WagmiConfig>
+  </QueryClientProvider>
 );
 
 export default App;
