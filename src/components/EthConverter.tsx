@@ -55,7 +55,7 @@ const EthConverter: React.FC = () => {
       
       // Update the USD price based on the new ETH price
       const etherValue = values[18] || '0';
-      if (etherValue) {
+      if (etherValue && !isNaN(parseFloat(etherValue))) {
         const price = parseFloat(etherValue) * data.USD;
         setTotalPrice(price.toFixed(2));
       }
@@ -74,13 +74,13 @@ const EthConverter: React.FC = () => {
   // Update USD price when ether value changes
   useEffect(() => {
     const etherValue = values[18] || '0';
-    if (ethPrice && etherValue) {
+    if (ethPrice && etherValue && !isNaN(parseFloat(etherValue))) {
       const price = parseFloat(etherValue) * ethPrice;
       setTotalPrice(price.toFixed(2));
     } else {
       setTotalPrice('0.00');
     }
-  }, [values, ethPrice]);
+  }, [values[18], ethPrice]);
 
   // Handle input change for any unit
   const handleInputChange = (factor: number, value: string) => {
@@ -88,22 +88,21 @@ const EthConverter: React.FC = () => {
     if (value === '' || /^[0-9.]+$/.test(value)) {
       setActiveUnit(factor);
       
-      const newValues: { [key: number]: string } = {};
-      
+      // If input is cleared, clear all fields
       if (value === '') {
-        // If input is cleared, clear all fields
         setValues({});
         return;
       }
       
       // Store the current input value
+      const newValues: { [key: number]: string } = {};
       newValues[factor] = value;
       
-      // If the value is valid, update all other inputs based on this value
+      // Only proceed with calculations if we have a valid number
       if (!isNaN(parseFloat(value))) {
         const numValue = parseFloat(value);
         
-        // Calculate conversions for all units
+        // Calculate conversions for all other units
         ETH_UNITS.forEach(unit => {
           if (unit.factor !== factor) {
             const convertedValue = convertEthUnit(numValue, factor, unit.factor);
@@ -112,6 +111,7 @@ const EthConverter: React.FC = () => {
         });
       }
       
+      // Update all values at once to prevent partial updates
       setValues(newValues);
     }
   };
