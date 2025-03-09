@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -59,8 +60,6 @@
     pointer-events: none;
     z-index: -1;
   }
-  
-  /* Removed the body::after section that created the scanning line */
 }
 
 /* Cyberpunk-specific styles */
@@ -125,4 +124,14 @@
   100% {
     transform: translateY(100vh);
   }
+}
+
+/* Add fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
 }

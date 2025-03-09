@@ -39,7 +39,7 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen pb-8 relative overflow-x-hidden">
+    <div className="flex flex-col items-center min-h-screen relative overflow-x-hidden">
       <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full">
         <div className="w-10"></div>
         <h1 className="text-3xl font-mono text-cyber-neon text-center">
@@ -50,18 +50,18 @@ const Index = () => {
         </div>
       </header>
       
-      <div className="text-center my-6">
+      <div className="text-center my-8">
         <p className="text-cyber-neon font-mono text-sm">{">>"} Decrypt · Analyze · Exploit</p>
       </div>
       
-      <main className="container mx-auto px-4 space-y-6 max-w-lg flex-1 flex flex-col justify-center">
-        <Card className="cyber-card overflow-hidden border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)]">
+      <main className="container mx-auto px-4 py-6 flex-1 flex flex-col justify-center max-w-lg">
+        <Card className="cyber-card overflow-hidden border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)] mb-8">
           <div className="border-b border-cyber-neon/20 p-4 flex items-center">
             <Lock className="h-4 w-4 text-cyber-neon mr-2" />
             <span className="text-cyber-neon font-mono text-sm">SECURE_CONNECTION</span>
           </div>
           
-          <CardContent className="p-4 space-y-4">
+          <CardContent className="p-6">
             <ContractInput 
               onSubmit={handleContractSubmit} 
               isLoading={isLoading} 
@@ -76,7 +76,7 @@ const Index = () => {
         </Card>
         
         {tokenInfo && (
-          <div className="space-y-6 animate-fade-in">
+          <div className="space-y-8 animate-fade-in">
             <TokenInfo tokenInfo={tokenInfo} />
             
             {contractAddress && selectedChainId && (
@@ -91,7 +91,7 @@ const Index = () => {
         )}
       </main>
       
-      <footer className="absolute bottom-2 w-full text-center">
+      <footer className="w-full text-center py-6 mt-auto">
         <p className="text-cyber-neon/60 font-mono text-xs">System v1.33.7 // Secured Connection // 2025</p>
       </footer>
       <Toaster />
