@@ -3,8 +3,8 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowLeftRight, Coins } from 'lucide-react';
-import { formatValue } from '@/lib/ethUtils';
+import { Coins } from 'lucide-react';
+import { formatValue, convertEthUnit } from '@/lib/ethUtils';
 
 // Define ETH units with their factors (power of 10)
 const ETH_UNITS = [
@@ -56,7 +56,7 @@ const EthConverter: React.FC = () => {
     }
   };
 
-  // Update all values when one changes
+  // Update USD price when ether value changes
   useEffect(() => {
     const etherValue = values[18] || '0';
     if (ethPrice && etherValue) {
@@ -68,26 +68,21 @@ const EthConverter: React.FC = () => {
   // Handle input change for any unit
   const handleInputChange = (factor: number, value: string) => {
     if (value === '' || /^[0-9.]+$/.test(value)) {
-      // Update the changed input
-      setValues(prev => ({
-        ...prev,
-        [factor]: value
-      }));
-
+      const newValues: { [key: number]: string } = { ...values };
+      newValues[factor] = value;
+      
       // If the value is valid, update all other inputs based on this value
       if (value !== '' && !isNaN(parseFloat(value))) {
-        const newValues: { [key: number]: string } = {};
+        const numValue = parseFloat(value);
         
         ETH_UNITS.forEach(unit => {
           if (unit.factor !== factor) {
-            newValues[unit.factor] = formatValue(parseFloat(value), factor, unit.factor);
-          } else {
-            newValues[factor] = value;
+            newValues[unit.factor] = formatValue(numValue, factor, unit.factor);
           }
         });
-        
-        setValues(newValues);
       }
+      
+      setValues(newValues);
     }
   };
 
