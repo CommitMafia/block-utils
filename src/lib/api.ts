@@ -10,7 +10,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://mainnet.infura.io/v3/',
     blockExplorerUrl: 'https://etherscan.io',
     apiUrl: 'https://api.etherscan.io/api',
-    apiKey: 'YourEtherscanAPIKey' // This is a placeholder - ideally should be using environment variables
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Updated with your provided key
   },
   {
     id: 56,
@@ -19,7 +19,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://bsc-dataseed.binance.org/',
     blockExplorerUrl: 'https://bscscan.com',
     apiUrl: 'https://api.bscscan.com/api',
-    apiKey: 'YourBscscanAPIKey'
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Using the same key for BSC
   },
   {
     id: 137,
@@ -28,7 +28,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://polygon-rpc.com/',
     blockExplorerUrl: 'https://polygonscan.com',
     apiUrl: 'https://api.polygonscan.com/api',
-    apiKey: 'YourPolygonscanAPIKey'
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Using the same key for Polygon
   },
   {
     id: 42161,
@@ -37,7 +37,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://arb1.arbitrum.io/rpc',
     blockExplorerUrl: 'https://arbiscan.io',
     apiUrl: 'https://api.arbiscan.io/api',
-    apiKey: 'YourArbiscanAPIKey'
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Using the same key for Arbitrum
   },
   {
     id: 10,
@@ -46,7 +46,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://mainnet.optimism.io',
     blockExplorerUrl: 'https://optimistic.etherscan.io',
     apiUrl: 'https://api-optimistic.etherscan.io/api',
-    apiKey: 'YourOptimisticEtherscanAPIKey'
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Using the same key for Optimism
   },
   {
     id: 43114,
@@ -55,7 +55,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://api.avax.network/ext/bc/C/rpc',
     blockExplorerUrl: 'https://snowtrace.io',
     apiUrl: 'https://api.snowtrace.io/api',
-    apiKey: 'YourSnowtracehereAPIKey'
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Using the same key for Avalanche
   }
 ];
 
