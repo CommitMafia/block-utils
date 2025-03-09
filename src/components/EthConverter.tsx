@@ -27,18 +27,8 @@ const EthConverter: React.FC = () => {
   const [ethPrice, setEthPrice] = useState<number | null>(null);
   const [totalPrice, setTotalPrice] = useState<string>('0.00');
 
-  // Initialize with default values (1 Ether)
+  // Initialize with empty values
   useEffect(() => {
-    const initialValues: { [key: number]: string } = {};
-    ETH_UNITS.forEach(unit => {
-      if (unit.factor === 18) { // Ether
-        initialValues[unit.factor] = '1';
-      } else {
-        initialValues[unit.factor] = formatValue(1, 18, unit.factor);
-      }
-    });
-    setValues(initialValues);
-    
     // Fetch ETH price
     fetchEthPrice();
   }, []);
@@ -62,6 +52,8 @@ const EthConverter: React.FC = () => {
     if (ethPrice && etherValue) {
       const price = parseFloat(etherValue) * ethPrice;
       setTotalPrice(price.toFixed(2));
+    } else {
+      setTotalPrice('0.00');
     }
   }, [values, ethPrice]);
 
@@ -78,6 +70,13 @@ const EthConverter: React.FC = () => {
         ETH_UNITS.forEach(unit => {
           if (unit.factor !== factor) {
             newValues[unit.factor] = formatValue(numValue, factor, unit.factor);
+          }
+        });
+      } else if (value === '') {
+        // Clear all other inputs if current input is cleared
+        ETH_UNITS.forEach(unit => {
+          if (unit.factor !== factor) {
+            newValues[unit.factor] = '';
           }
         });
       }
