@@ -104,8 +104,8 @@ const Index = () => {
       <>
         <Card className="cyber-card overflow-hidden border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)] mb-8">
           <div className="border-b border-cyber-neon/20 p-4 flex items-center">
-            <Lock className="h-4 w-4 text-cyber-neon mr-2" />
-            <span className="text-cyber-neon font-mono text-sm">SECURE_CONNECTION</span>
+            <Package2 className="h-4 w-4 text-cyber-neon mr-2" />
+            <span className="text-cyber-neon font-mono text-sm">TOKEN_UTILITIES</span>
           </div>
           
           <CardContent className="p-6">
