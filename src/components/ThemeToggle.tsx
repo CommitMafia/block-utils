@@ -5,7 +5,7 @@ import { Moon, Sun } from 'lucide-react';
 
 // Toggle between light and dark themes
 const ThemeToggle = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark'); // Default to dark for cyberpunk theme
   
   // Initialize theme
   useEffect(() => {
@@ -13,9 +13,17 @@ const ThemeToggle = () => {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
     // Set initial theme
-    if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+    if (storedTheme === 'light') {
+      setTheme('light');
+      document.documentElement.classList.remove('dark');
+    } else if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
       setTheme('dark');
       document.documentElement.classList.add('dark');
+    } else {
+      // Default to dark theme for cyberpunk style
+      setTheme('dark');
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     }
   }, []);
   
@@ -37,9 +45,9 @@ const ThemeToggle = () => {
       variant="ghost" 
       size="icon" 
       onClick={toggleTheme}
-      className="w-9 h-9 rounded-full"
+      className="w-9 h-9 rounded-full cyber-glow"
     >
-      {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+      {theme === 'light' ? <Moon size={18} className="text-cyber-neon" /> : <Sun size={18} className="text-cyber-neon" />}
       <span className="sr-only">Toggle theme</span>
     </Button>
   );

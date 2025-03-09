@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useWallet } from '@/context/WalletContext';
 import { getChainById } from '@/lib/api';
+import { Wallet, LogOut } from 'lucide-react';
 
 // Wallet connection component
 const ConnectWallet: React.FC = () => {
@@ -20,23 +21,23 @@ const ConnectWallet: React.FC = () => {
     <div className="flex flex-col items-center space-y-2">
       {isConnected && address ? (
         <div className="flex flex-col items-center space-y-2">
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground font-mono">
             Connected to {chainName}
           </div>
           <Button
             onClick={disconnect}
             variant="outline"
-            className="cyber-border"
+            className="cyber-border font-mono flex items-center gap-2"
           >
-            {formatAddress(address)} (Disconnect)
+            {formatAddress(address)} <LogOut className="h-4 w-4 ml-1" />
           </Button>
         </div>
       ) : (
         <Button
           onClick={connect}
-          className="cyber-button"
+          className="cyber-button flex items-center gap-2"
         >
-          Connect Wallet
+          <Wallet className="h-4 w-4" /> Connect Wallet
         </Button>
       )}
     </div>

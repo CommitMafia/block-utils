@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import ChainSelector from './ChainSelector';
 import { useToast } from '@/hooks/use-toast';
+import { Cpu } from 'lucide-react';
 
 interface ContractInputProps {
   onSubmit: (contractAddress: string, chainId: number) => void;
@@ -47,15 +48,18 @@ const ContractInput: React.FC<ContractInputProps> = ({ onSubmit, isLoading }) =>
   return (
     <form onSubmit={handleSubmit} className="space-y-4 w-full">
       <div className="space-y-2">
-        <Input
-          type="text"
-          placeholder="Enter Contract Address (0x...)"
-          value={contractAddress}
-          onChange={(e) => setContractAddress(e.target.value)}
-          className="w-full cyber-input"
-          disabled={isLoading}
-          spellCheck={false}
-        />
+        <div className="relative">
+          <Input
+            type="text"
+            placeholder="Enter Contract Address (0x...)"
+            value={contractAddress}
+            onChange={(e) => setContractAddress(e.target.value)}
+            className="w-full cyber-input font-mono pl-10"
+            disabled={isLoading}
+            spellCheck={false}
+          />
+          <Cpu className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-neon/70" />
+        </div>
       </div>
       
       <div className="space-y-2">

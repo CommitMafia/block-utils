@@ -55,10 +55,11 @@ export default {
 				},
 				// Cyberpunk theme colors
 				cyber: {
-					'neon': '#00f0ff',
-					'blue': '#0031ad',
-					'purple': '#6e00ff',
-					'pink': '#ff00ea',
+					'neon': '#0fff50',     // Bright neon green
+					'blue': '#0031ad',     // Deep blue
+					'purple': '#6e00ff',   // Purple
+					'pink': '#ff00ea',     // Pink
+					'dark': '#121212',     // Dark background
 				},
 			},
 			borderRadius: {
@@ -76,13 +77,22 @@ export default {
 					to: { height: "0" },
 				},
 				"pulse-glow": {
-					"0%, 100%": { boxShadow: "0 0 8px 0 hsla(192, 100%, 50%, 0.5)" },
-					"50%": { boxShadow: "0 0 16px 4px hsla(192, 100%, 50%, 0.5)" },
+					"0%, 100%": { boxShadow: "0 0 8px 0 rgba(15, 255, 80, 0.7)" },
+					"50%": { boxShadow: "0 0 20px 6px rgba(15, 255, 80, 0.7)" },
 				},
 				"gradient-flow": {
 					"0%": { backgroundPosition: "0% 50%" },
 					"50%": { backgroundPosition: "100% 50%" },
 					"100%": { backgroundPosition: "0% 50%" },
+				},
+				"scanline": {
+					"0%": { transform: "translateY(0)" },
+					"100%": { transform: "translateY(100vh)" },
+				},
+				"flicker": {
+					"0%": { opacity: "0.8" },
+					"50%": { opacity: "1" },
+					"100%": { opacity: "0.8" },
 				},
 			},
 			animation: {
@@ -90,10 +100,17 @@ export default {
 				"accordion-up": "accordion-up 0.2s ease-out",
 				"pulse-glow": "pulse-glow 2s infinite",
 				"gradient-flow": "gradient-flow 5s ease infinite",
+				"scanline": "scanline 8s linear infinite",
+				"flicker": "flicker 0.5s ease-in-out infinite",
 			},
 			backgroundImage: {
-				'cyber-gradient': 'linear-gradient(135deg, #0031ad 0%, #00f0ff 100%)',
-				'cyber-dark-gradient': 'linear-gradient(135deg, #001236 0%, #003646 100%)',
+				'cyber-gradient': 'linear-gradient(135deg, #0031ad 0%, #0fff50 100%)',
+				'cyber-dark-gradient': 'linear-gradient(135deg, #121212 0%, #0c2b2b 100%)',
+				'cyber-grid': 'linear-gradient(rgba(15, 255, 80, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 255, 80, 0.1) 1px, transparent 1px)',
+			},
+			boxShadow: {
+				'neon': '0 0 5px #0fff50, 0 0 10px #0fff50, 0 0 15px #0fff50',
+				'neon-sm': '0 0 2px #0fff50, 0 0 4px #0fff50',
 			},
 		},
 	},

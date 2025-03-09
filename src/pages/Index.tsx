@@ -10,6 +10,7 @@ import { useToken } from '@/hooks/useToken';
 import { useAbi } from '@/hooks/useAbi';
 import { WalletProvider } from '@/context/WalletContext';
 import { Toaster } from '@/components/ui/sonner';
+import { Terminal, Zap } from 'lucide-react';
 
 const Index = () => {
   const [contractAddress, setContractAddress] = useState<string | null>(null);
@@ -39,17 +40,20 @@ const Index = () => {
 
   return (
     <WalletProvider>
-      <div className="min-h-screen pb-8">
+      <div className="min-h-screen pb-8 relative overflow-x-hidden">
         <header className="flex justify-between items-center py-4 px-4">
-          <div className="w-10"></div> {/* Spacer for centering */}
-          <h1 className="text-2xl font-bold bg-cyber-gradient text-transparent bg-clip-text animate-gradient-flow">
+          <div className="w-10 flex items-center">
+            <Terminal className="h-5 w-5 text-cyber-neon" />
+          </div>
+          <h1 className="text-2xl font-bold cyber-title flex items-center gap-2">
+            <Zap className="h-5 w-5 text-cyber-neon" />
             Token Utils
           </h1>
           <ThemeToggle />
         </header>
         
         <main className="container mx-auto px-4 space-y-6 max-w-md">
-          <Card className="cyber-card overflow-hidden">
+          <Card className="cyber-card overflow-hidden border-cyber-neon/50">
             <CardContent className="p-4">
               <ContractInput 
                 onSubmit={handleContractSubmit} 

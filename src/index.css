@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 84% 4.9%;
     
-    --primary: 212 100% 34%;
+    --primary: 140 100% 50%;
     --primary-foreground: 210 40% 98%;
     
     --secondary: 210 40% 96.1%;
@@ -23,7 +23,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215 16.3% 46.9%;
     
-    --accent: 192 100% 50%;
+    --accent: 140 100% 50%;
     --accent-foreground: 222 47.4% 11.2%;
     
     --destructive: 0 84.2% 60.2%;
@@ -31,22 +31,22 @@
     
     --border: 214 32% 91.4%;
     --input: 214 32% 91.4%;
-    --ring: 222 84% 4.9%;
+    --ring: 140 100% 50%;
     
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222 47% 11%;
+    --background: 222 47% 8%;
     --foreground: 210 40% 98%;
     
-    --card: 222 47% 11%;
+    --card: 222 47% 6%;
     --card-foreground: 210 40% 98%;
     
-    --popover: 222 47% 11%;
+    --popover: 222 47% 4%;
     --popover-foreground: 210 40% 98%;
     
-    --primary: 212 100% 34%;
+    --primary: 140 100% 50%;
     --primary-foreground: 210 40% 98%;
     
     --secondary: 217 33% 17.5%;
@@ -55,15 +55,15 @@
     --muted: 217 33% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
     
-    --accent: 192 100% 50%;
+    --accent: 140 100% 50%;
     --accent-foreground: 210 40% 98%;
     
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     
-    --border: 217 33% 25%;
-    --input: 217 33% 25%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 140 100% 15%;
+    --input: 217 33% 15%;
+    --ring: 140 100% 50%;
   }
 }
 
@@ -75,13 +75,43 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    background-size: 50px 50px;
+    background-image: var(--grid-bg);
+  }
+  
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(15, 255, 80, 0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(15, 255, 80, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(15, 255, 80, 0.5);
+    animation: scanline 6s linear infinite;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 100;
   }
 }
 
 /* Cyberpunk-specific styles */
 @layer components {
   .cyber-border {
-    @apply border border-accent/50 shadow-[0_0_5px_rgba(0,240,255,0.5)];
+    @apply border border-cyber-neon/50 shadow-[0_0_5px_rgba(15,255,80,0.5)];
   }
   
   .cyber-card {
@@ -89,12 +119,12 @@
   }
   
   .cyber-input {
-    @apply bg-background/50 border-accent/30 focus:border-accent focus:ring-1 focus:ring-accent cyber-border;
+    @apply bg-background/50 border-cyber-neon/30 focus:border-cyber-neon focus:ring-1 focus:ring-cyber-neon cyber-border;
   }
   
   .cyber-button {
     @apply bg-cyber-gradient text-white font-medium px-4 py-2 rounded transition-all 
-    hover:shadow-[0_0_15px_rgba(0,240,255,0.7)] active:scale-95;
+    hover:shadow-[0_0_15px_rgba(15,255,80,0.7)] active:scale-95;
   }
   
   .cyber-glow {
@@ -103,6 +133,29 @@
   
   .cyber-gradient {
     @apply bg-cyber-gradient bg-size-200 animate-gradient-flow;
+  }
+  
+  .cyber-text {
+    @apply text-cyber-neon font-medium;
+  }
+  
+  .cyber-title {
+    @apply font-bold bg-cyber-gradient text-transparent bg-clip-text animate-gradient-flow;
+  }
+  
+  .terminal-text {
+    @apply font-mono text-cyber-neon;
+  }
+  
+  .cyber-panel {
+    @apply border border-cyber-neon/30 rounded-md p-4 bg-background/80 backdrop-blur-sm;
+  }
+  
+  .cyber-glitch {
+    @apply relative after:content-[attr(data-text)] after:text-cyber-neon after:absolute 
+      after:left-[2px] after:top-0 before:content-[attr(data-text)] before:text-cyber-neon 
+      before:absolute before:left-[-2px] before:top-0 hover:after:left-[3px] 
+      hover:before:left-[-3px] transition-all;
   }
 }
 
