@@ -95,17 +95,6 @@ const Index = () => {
   const renderTokenUtilities = () => {
     return (
       <>
-        <div className="mb-6">
-          <Button 
-            variant="outline" 
-            onClick={handleBackToDashboard} 
-            className="border-cyber-neon/50 text-cyber-neon hover:bg-cyber-neon/10"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
-        
         <Card className="cyber-card overflow-hidden border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)] mb-8">
           <div className="border-b border-cyber-neon/20 p-4 flex items-center">
             <Lock className="h-4 w-4 text-cyber-neon mr-2" />
@@ -150,26 +139,13 @@ const Index = () => {
     if (!feature) return null;
     
     return (
-      <>
-        <div className="mb-6">
-          <Button 
-            variant="outline" 
-            onClick={handleBackToDashboard} 
-            className="border-cyber-neon/50 text-cyber-neon hover:bg-cyber-neon/10"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
-        
-        <Card className="cyber-card border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)]">
-          <CardContent className="p-8 text-center">
-            <feature.icon className="h-12 w-12 text-cyber-neon mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-cyber-neon mb-2">{feature.title}</h2>
-            <p className="text-cyber-neon/70 mb-4">Coming soon! This feature is under development.</p>
-          </CardContent>
-        </Card>
-      </>
+      <Card className="cyber-card border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)]">
+        <CardContent className="p-8 text-center">
+          <feature.icon className="h-12 w-12 text-cyber-neon mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-cyber-neon mb-2">{feature.title}</h2>
+          <p className="text-cyber-neon/70 mb-4">Coming soon! This feature is under development.</p>
+        </CardContent>
+      </Card>
     );
   };
 
@@ -187,6 +163,19 @@ const Index = () => {
       </header>
       
       <main className="container mx-auto px-4 py-8 flex-1 flex flex-col justify-center">
+        {activeFeature !== null && (
+          <div className="w-full max-w-4xl mx-auto mb-6">
+            <Button 
+              variant="outline" 
+              onClick={handleBackToDashboard} 
+              className="border-cyber-neon/50 text-cyber-neon hover:bg-cyber-neon/10"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          </div>
+        )}
+        
         {activeFeature === null ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {functionalityOptions.map((option) => (
