@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,7 +9,7 @@ import ConnectWallet from '@/components/ConnectWallet';
 import { useToken } from '@/hooks/useToken';
 import { useAbi } from '@/hooks/useAbi';
 import { Toaster } from '@/components/ui/sonner';
-import { Terminal, Lock, FileCode, Hash, Coins, Package2, ArrowLeft } from 'lucide-react';
+import { Terminal, Lock, FileCode, Hash, Coins, Package2, ArrowLeft, Clock } from 'lucide-react';
 import { useWallet } from '@/context/WalletContext';
 import FunctionalityBox from '@/components/FunctionalityBox';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -42,6 +43,13 @@ const functionalityOptions = [
     description: 'Convert between ETH, WEI, GWEI and other denominations',
     icon: Coins,
     path: '/eth-converter'
+  },
+  {
+    id: 'epoch-converter',
+    title: 'Epoch Converter',
+    description: 'Convert between Unix timestamps and human-readable dates',
+    icon: Clock,
+    path: '/epoch-converter'
   }
 ];
 

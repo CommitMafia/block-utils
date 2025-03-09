@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import EthConverterPage from "./pages/EthConverter";
 import HexConverterPage from "./pages/HexConverter";
+import EpochConverterPage from "./pages/EpochConverter";
 import NotFound from "./pages/NotFound";
 
 import { WalletProvider } from "@/context/WalletContext";
@@ -91,6 +93,7 @@ const App = () => (
                   <Route path="/contract-execution" element={<Index />} />
                   <Route path="/hex-converter" element={<HexConverterPage />} />
                   <Route path="/eth-converter" element={<EthConverterPage />} />
+                  <Route path="/epoch-converter" element={<EpochConverterPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </WalletProvider>
