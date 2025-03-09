@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -154,7 +153,10 @@ const Index = () => {
     <div className="flex flex-col items-center min-h-screen relative overflow-x-hidden">
       <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full">
         <div className="w-10"></div>
-        <h1 className="text-3xl font-mono text-cyber-neon text-center">
+        <h1 
+          className="text-3xl font-mono text-cyber-neon text-center cursor-pointer hover:text-cyber-neon/80 transition-colors" 
+          onClick={() => navigate('/')}
+        >
           {">_"} Web3_Utilities<span className="animate-pulse">⎸</span>
         </h1>
         <div className="min-w-[120px] flex justify-end">
