@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -61,19 +60,7 @@
     z-index: -1;
   }
   
-  body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: rgba(15, 255, 80, 0.5);
-    animation: scanline 6s linear infinite;
-    opacity: 0.3;
-    pointer-events: none;
-    z-index: 100;
-  }
+  /* Removed the body::after section that created the scanning line */
 }
 
 /* Cyberpunk-specific styles */

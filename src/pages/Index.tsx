@@ -37,8 +37,8 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen pb-8 relative overflow-x-hidden">
-      <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10">
+    <div className="flex flex-col items-center justify-start min-h-screen pb-8 relative overflow-x-hidden">
+      <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full">
         <div className="w-10"></div>
         <h1 className="text-3xl font-mono text-cyber-neon text-center">
           {">_"} Token_Utils<span className="animate-pulse">⎸</span>
