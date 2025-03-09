@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,8 +13,8 @@ type ConversionType = 'hex' | 'decimal';
 const HexConverter: React.FC = () => {
   const [inputType, setInputType] = useState<ConversionType>('hex');
   const [outputType, setOutputType] = useState<ConversionType>('decimal');
-  const [inputValue, setInputValue] = useState<string>('0');
-  const [outputValue, setOutputValue] = useState<string>('0');
+  const [inputValue, setInputValue] = useState<string>('');
+  const [outputValue, setOutputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const validateInput = (value: string, type: ConversionType): boolean => {
