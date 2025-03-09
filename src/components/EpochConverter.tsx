@@ -199,12 +199,21 @@ const EpochConverter: React.FC = () => {
       </div>
       
       <CardContent className="p-6">
-        <div className="bg-black/40 border border-cyber-neon/20 rounded-md p-3 mb-6 text-center">
+        <div className="bg-black/40 border border-cyber-neon/20 rounded-md p-3 mb-6">
           <div className="flex items-center justify-center mb-1">
             <Clock className="h-4 w-4 text-cyber-neon mr-2" />
             <span className="text-cyber-neon font-mono text-sm">CURRENT_TIME</span>
           </div>
-          <p className="text-cyber-neon/90 font-mono text-lg">{currentDateTime}</p>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <p className="text-cyber-neon/90 font-mono text-xs mb-1">Date</p>
+              <p className="text-cyber-neon/90 font-mono text-lg">{format(new Date(), 'yyyy-MM-dd')}</p>
+            </div>
+            <div>
+              <p className="text-cyber-neon/90 font-mono text-xs mb-1">Time</p>
+              <p className="text-cyber-neon/90 font-mono text-lg">{format(new Date(), 'HH:mm:ss')}</p>
+            </div>
+          </div>
         </div>
         
         <div className="mb-6">
