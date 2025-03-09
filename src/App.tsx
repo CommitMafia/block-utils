@@ -15,7 +15,8 @@ import '@rainbow-me/rainbowkit/styles.css';
 import {
   RainbowKitProvider,
   darkTheme,
-  cssStringFromTheme
+  cssStringFromTheme,
+  getDefaultWallets
 } from '@rainbow-me/rainbowkit';
 import { WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum, base, avalanche } from 'wagmi/chains';
@@ -54,6 +55,13 @@ document.head.appendChild(styleElement);
 // Define the chains and WalletConnect projectId
 const projectId = '16f35f6911d7a724931eb523d507f64d'; // Project ID for WalletConnect
 
+// Configure wallets
+const { wallets } = getDefaultWallets({
+  appName: 'BlockUtils',
+  projectId: projectId,
+  chains: [mainnet, polygon, optimism, arbitrum, avalanche, base]
+});
+
 // Create Query Client instance
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -80,7 +88,7 @@ const config = createConfig({
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <WagmiConfig config={config}>
-      <RainbowKitProvider theme={customTheme}>
+      <RainbowKitProvider theme={customTheme} appInfo={{ appName: 'BlockUtils' }}>
         <TooltipProvider>
           <div className="relative min-h-screen">
             <Toaster />
