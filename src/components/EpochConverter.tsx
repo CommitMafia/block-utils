@@ -22,6 +22,7 @@ const EpochConverter: React.FC = () => {
   const [localDateTime, setLocalDateTime] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [currentEpoch, setCurrentEpoch] = useState<number>(0);
+  const [currentDateTime, setCurrentDateTime] = useState<string>('');
 
   // Get local timezone name on mount
   useEffect(() => {
@@ -33,14 +34,16 @@ const EpochConverter: React.FC = () => {
     }
   }, []);
 
-  // Update current epoch timestamp every second
+  // Update current epoch timestamp and datetime every second
   useEffect(() => {
-    const updateCurrentEpoch = () => {
-      setCurrentEpoch(Math.floor(Date.now() / 1000));
+    const updateCurrentTime = () => {
+      const now = new Date();
+      setCurrentEpoch(Math.floor(now.getTime() / 1000));
+      setCurrentDateTime(format(now, 'yyyy-MM-dd HH:mm:ss'));
     };
     
-    updateCurrentEpoch();
-    const intervalId = setInterval(updateCurrentEpoch, 1000);
+    updateCurrentTime();
+    const intervalId = setInterval(updateCurrentTime, 1000);
     
     return () => clearInterval(intervalId);
   }, []);
@@ -213,6 +216,14 @@ const EpochConverter: React.FC = () => {
       </div>
       
       <CardContent className="p-6">
+        <div className="bg-black/40 border border-cyber-neon/20 rounded-md p-3 mb-6 text-center">
+          <div className="flex items-center justify-center mb-1">
+            <Clock className="h-4 w-4 text-cyber-neon mr-2" />
+            <span className="text-cyber-neon font-mono text-sm">CURRENT_TIME</span>
+          </div>
+          <p className="text-cyber-neon/90 font-mono text-lg">{currentDateTime}</p>
+        </div>
+        
         <div className="mb-6">
           <Label htmlFor="conversion-mode" className="text-cyber-neon font-mono mb-2 block">Conversion Mode</Label>
           <div className="flex items-center space-x-2">
@@ -396,4 +407,3 @@ const EpochConverter: React.FC = () => {
 };
 
 export default EpochConverter;
-
