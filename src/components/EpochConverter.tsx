@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -24,7 +23,6 @@ const EpochConverter: React.FC = () => {
   const [currentEpoch, setCurrentEpoch] = useState<number>(0);
   const [currentDateTime, setCurrentDateTime] = useState<string>('');
 
-  // Get local timezone name on mount
   useEffect(() => {
     try {
       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -34,7 +32,6 @@ const EpochConverter: React.FC = () => {
     }
   }, []);
 
-  // Update current epoch timestamp and datetime every second
   useEffect(() => {
     const updateCurrentTime = () => {
       const now = new Date();
@@ -48,7 +45,6 @@ const EpochConverter: React.FC = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Reset all inputs
   const handleReset = () => {
     setEpochValue('');
     setDateValue('');
@@ -59,14 +55,12 @@ const EpochConverter: React.FC = () => {
     toast.success('Values reset');
   };
 
-  // Swap conversion mode
   const handleSwapMode = () => {
     setMode(prev => prev === 'epoch-to-date' ? 'date-to-epoch' : 'epoch-to-date');
     handleReset();
     toast.success('Conversion mode swapped');
   };
 
-  // Use current time
   const handleUseCurrentTime = () => {
     if (mode === 'epoch-to-date') {
       setEpochValue(currentEpoch.toString());
@@ -80,7 +74,6 @@ const EpochConverter: React.FC = () => {
     toast.success('Current time applied');
   };
 
-  // Convert epoch to date
   const convertEpochToDate = (value: string) => {
     if (!value) {
       setDateValue('');
@@ -105,15 +98,12 @@ const EpochConverter: React.FC = () => {
         throw new Error('Invalid date result');
       }
       
-      // Set the date and time values for the inputs
       setDateValue(format(date, 'yyyy-MM-dd'));
       setTimeValue(format(date, 'HH:mm:ss'));
       
-      // Format GMT time
       const gmtFormattedDate = formatInTimeZone(date, 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
       setGmtDateTime(gmtFormattedDate);
       
-      // Format local time
       const localFormattedDate = formatInTimeZone(date, Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
       setLocalDateTime(localFormattedDate);
     } catch (error) {
@@ -125,7 +115,6 @@ const EpochConverter: React.FC = () => {
     }
   };
 
-  // Convert date to epoch
   const convertDateToEpoch = (date: string, time: string) => {
     if (!date) {
       setEpochValue('');
@@ -148,11 +137,9 @@ const EpochConverter: React.FC = () => {
       const epochTimestamp = Math.floor(dateObj.getTime() / 1000);
       setEpochValue(epochTimestamp.toString());
       
-      // Format GMT time
       const gmtFormattedDate = formatInTimeZone(dateObj, 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
       setGmtDateTime(gmtFormattedDate);
       
-      // Format local time
       const localFormattedDate = formatInTimeZone(dateObj, Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
       setLocalDateTime(localFormattedDate);
     } catch (error) {
@@ -163,12 +150,10 @@ const EpochConverter: React.FC = () => {
     }
   };
 
-  // Check if date is valid
   const isValidDate = (date: Date) => {
     return !isNaN(date.getTime());
   };
 
-  // Handle epoch input change
   const handleEpochChange = (value: string) => {
     setEpochValue(value);
     
@@ -177,7 +162,6 @@ const EpochConverter: React.FC = () => {
     }
   };
 
-  // Handle date input change
   const handleDateChange = (value: string) => {
     setDateValue(value);
     
@@ -186,7 +170,6 @@ const EpochConverter: React.FC = () => {
     }
   };
 
-  // Handle time input change
   const handleTimeChange = (value: string) => {
     setTimeValue(value);
     
@@ -269,34 +252,6 @@ const EpochConverter: React.FC = () => {
                 {errorMessage && (
                   <p className="text-red-500 text-xs mt-1">{errorMessage}</p>
                 )}
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="date-output" className="text-cyber-neon font-mono mb-2 block">
-                    Date
-                  </Label>
-                  <Input
-                    id="date-output"
-                    className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono"
-                    value={dateValue}
-                    readOnly
-                    placeholder="Date output"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="time-output" className="text-cyber-neon font-mono mb-2 block">
-                    Time
-                  </Label>
-                  <Input
-                    id="time-output"
-                    className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono"
-                    value={timeValue}
-                    readOnly
-                    placeholder="Time output"
-                  />
-                </div>
               </div>
               
               {/* Timezone displays */}
