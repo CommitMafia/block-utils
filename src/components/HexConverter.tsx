@@ -22,7 +22,9 @@ const HexConverter: React.FC = () => {
     if (value.trim() === '') return true;
     
     if (type === 'hex') {
-      return /^[0-9A-Fa-f]+$/.test(value);
+      // Remove '0x' prefix if present for validation
+      const hexValue = value.toLowerCase().startsWith('0x') ? value.slice(2) : value;
+      return /^[0-9A-Fa-f]+$/.test(hexValue);
     } else {
       return /^[0-9]+$/.test(value);
     }
@@ -40,7 +42,9 @@ const HexConverter: React.FC = () => {
       
       if (inputType === 'hex' && outputType === 'decimal') {
         // Hex to Decimal
-        const decimalValue = parseInt(inputValue, 16);
+        // Handle '0x' prefix
+        const hexValue = inputValue.toLowerCase().startsWith('0x') ? inputValue : `0x${inputValue}`;
+        const decimalValue = parseInt(hexValue, 16);
         setOutputValue(decimalValue.toString());
       } else if (inputType === 'decimal' && outputType === 'hex') {
         // Decimal to Hex
@@ -73,7 +77,9 @@ const HexConverter: React.FC = () => {
         try {
           if (inputType === 'hex' && outputType === 'decimal') {
             // Hex to Decimal
-            const decimalValue = parseInt(value, 16);
+            // Handle '0x' prefix
+            const hexValue = value.toLowerCase().startsWith('0x') ? value : `0x${value}`;
+            const decimalValue = parseInt(hexValue, 16);
             setOutputValue(decimalValue.toString());
           } else if (inputType === 'decimal' && outputType === 'hex') {
             // Decimal to Hex
