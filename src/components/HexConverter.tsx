@@ -67,6 +67,28 @@ const HexConverter: React.FC = () => {
       setErrorMessage(`Invalid ${inputType} input`);
     } else {
       setErrorMessage('');
+      
+      // Auto-convert on valid input
+      if (value.trim() !== '') {
+        try {
+          if (inputType === 'hex' && outputType === 'decimal') {
+            // Hex to Decimal
+            const decimalValue = parseInt(value, 16);
+            setOutputValue(decimalValue.toString());
+          } else if (inputType === 'decimal' && outputType === 'hex') {
+            // Decimal to Hex
+            const hexValue = parseInt(value, 10).toString(16).toUpperCase();
+            setOutputValue(hexValue);
+          } else {
+            // Same type, just copy
+            setOutputValue(value);
+          }
+        } catch (error) {
+          setOutputValue('Error');
+        }
+      } else {
+        setOutputValue('');
+      }
     }
   };
 
@@ -92,6 +114,13 @@ const HexConverter: React.FC = () => {
     
     toast.success('Input and output types swapped');
   };
+
+  // Update when type changes
+  useEffect(() => {
+    if (inputValue && !errorMessage) {
+      handleInputChange(inputValue);
+    }
+  }, [inputType, outputType]);
 
   // Update label based on selected input type
   const getInputLabel = () => {
@@ -151,18 +180,13 @@ const HexConverter: React.FC = () => {
             <Label htmlFor="input-value" className="text-cyber-neon font-mono mb-2 block">
               {getInputLabel()}
             </Label>
-            <div className="flex">
-              <Input
-                id="input-value"
-                className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono flex-grow"
-                value={inputValue}
-                onChange={(e) => handleInputChange(e.target.value)}
-                placeholder={inputType === 'hex' ? '1A' : '26'}
-              />
-              <div className="ml-2 min-w-16 border border-cyber-neon/30 rounded-md flex items-center justify-center text-cyber-neon font-mono bg-black/50">
-                {inputType === 'hex' ? '16' : '10'}
-              </div>
-            </div>
+            <Input
+              id="input-value"
+              className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono w-full"
+              value={inputValue}
+              onChange={(e) => handleInputChange(e.target.value)}
+              placeholder={inputType === 'hex' ? '1A' : '26'}
+            />
             {errorMessage && (
               <p className="text-red-500 text-xs mt-1">{errorMessage}</p>
             )}
@@ -201,18 +225,13 @@ const HexConverter: React.FC = () => {
             <Label htmlFor="output-value" className="text-cyber-neon font-mono mb-2 block">
               {getOutputLabel()}
             </Label>
-            <div className="flex">
-              <Input
-                id="output-value"
-                className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono flex-grow"
-                value={outputValue}
-                readOnly
-                placeholder={outputType === 'hex' ? '1A' : '26'}
-              />
-              <div className="ml-2 min-w-16 border border-cyber-neon/30 rounded-md flex items-center justify-center text-cyber-neon font-mono bg-black/50">
-                {outputType === 'hex' ? '16' : '10'}
-              </div>
-            </div>
+            <Input
+              id="output-value"
+              className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono w-full"
+              value={outputValue}
+              readOnly
+              placeholder={outputType === 'hex' ? '1A' : '26'}
+            />
           </div>
         </div>
       </CardContent>
