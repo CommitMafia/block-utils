@@ -49,7 +49,7 @@ styleElement.textContent = cssStringFromTheme(customTheme) + customCSS;
 document.head.appendChild(styleElement);
 
 // Define the chains and WalletConnect projectId
-const projectId = 'YOUR_PROJECT_ID'; // In production, replace with your WalletConnect project ID
+const projectId = '16f35f6911d7a724931eb523d507f64d'; // Updated WalletConnect project ID
 
 // Set up the wagmi config
 const config = createConfig({
@@ -76,7 +76,7 @@ const queryClient = new QueryClient({
 
 const App = () => (
   <WagmiConfig config={config}>
-    <RainbowKitProvider theme={customTheme}>
+    <RainbowKitProvider theme={customTheme} projectId={projectId}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <div className="relative min-h-screen">
