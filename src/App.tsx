@@ -86,6 +86,10 @@ const App = () => (
               <WalletProvider>
                 <Routes>
                   <Route path="/" element={<Index />} />
+                  <Route path="/token-utilities" element={<Index />} />
+                  <Route path="/contract-execution" element={<Index />} />
+                  <Route path="/hex-converter" element={<Index />} />
+                  <Route path="/eth-converter" element={<Index />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </WalletProvider>
