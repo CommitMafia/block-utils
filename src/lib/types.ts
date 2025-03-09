@@ -6,6 +6,8 @@ export interface Chain {
   symbol: string;
   rpcUrl: string;
   blockExplorerUrl: string;
+  apiUrl?: string;
+  apiKey?: string;
 }
 
 // Token information structure

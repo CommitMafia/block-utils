@@ -3,7 +3,7 @@ import React from 'react';
 import { TokenInfo as TokenInfoType } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Coins, DollarSign, BarChart4, Users, Droplets } from 'lucide-react';
+import { Coins, DollarSign, BarChart4, Users, Droplets, Hash, Calculator } from 'lucide-react';
 
 interface TokenInfoProps {
   tokenInfo: TokenInfoType;
@@ -36,6 +36,18 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ tokenInfo }) => {
     }
   };
 
+  // Format token supply with decimals consideration
+  const formatTokenSupply = (supply: string, decimals: number): string => {
+    if (!supply) return 'N/A';
+    
+    try {
+      const totalTokens = parseFloat(supply) / Math.pow(10, decimals);
+      return totalTokens.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    } catch (e) {
+      return supply;
+    }
+  };
+
   return (
     <Card className="cyber-card border-cyber-neon/50">
       <CardHeader className="pb-2">
@@ -51,7 +63,9 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ tokenInfo }) => {
             <p className="text-sm font-medium text-muted-foreground flex items-center gap-1">
               <Coins className="h-3 w-3 text-cyber-neon" /> Total Supply
             </p>
-            <p className="text-lg font-mono cyber-text">{formatNumber(tokenInfo.totalSupply)}</p>
+            <p className="text-lg font-mono cyber-text">
+              {formatTokenSupply(tokenInfo.totalSupply, tokenInfo.decimals)}
+            </p>
           </div>
           
           <div className="space-y-1">
@@ -59,6 +73,24 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ tokenInfo }) => {
               <DollarSign className="h-3 w-3 text-cyber-neon" /> Price
             </p>
             <p className="text-lg font-mono cyber-text">{formatCurrency(tokenInfo.price)}</p>
+          </div>
+        </div>
+        
+        <Separator className="my-2 bg-cyber-neon/20" />
+        
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-muted-foreground flex items-center gap-1">
+              <Calculator className="h-3 w-3 text-cyber-neon" /> Decimals
+            </p>
+            <p className="text-lg font-mono cyber-text">{tokenInfo.decimals}</p>
+          </div>
+          
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-muted-foreground flex items-center gap-1">
+              <Hash className="h-3 w-3 text-cyber-neon" /> Raw Supply
+            </p>
+            <p className="text-lg font-mono cyber-text">{formatNumber(tokenInfo.totalSupply)}</p>
           </div>
         </div>
         
