@@ -18,7 +18,7 @@ const EthConverterPage: React.FC = () => {
           className="text-3xl font-mono text-cyber-neon text-center cursor-pointer hover:text-cyber-neon/80 transition-colors" 
           onClick={() => navigate('/')}
         >
-          {">_"} Web3_Utilities<span className="animate-pulse">⎸</span>
+          {">_"} BlockUtils<span className="animate-pulse">⎸</span>
         </h1>
         <div className="min-w-[120px] flex justify-end">
           <ConnectWallet />
