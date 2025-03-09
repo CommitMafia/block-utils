@@ -29,6 +29,7 @@ const EthConverter: React.FC = () => {
   const [ethPrice, setEthPrice] = useState<number | null>(null);
   const [totalPrice, setTotalPrice] = useState<string>('0.00');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [activeUnit, setActiveUnit] = useState<number | null>(null);
 
   // Initialize with empty values
   useEffect(() => {
@@ -40,6 +41,7 @@ const EthConverter: React.FC = () => {
   const handleReset = () => {
     setValues({});
     setTotalPrice('0.00');
+    setActiveUnit(null);
     toast.success('All values have been reset');
   };
 
@@ -82,24 +84,30 @@ const EthConverter: React.FC = () => {
 
   // Handle input change for any unit
   const handleInputChange = (factor: number, value: string) => {
+    // Only accept valid numbers or empty strings
     if (value === '' || /^[0-9.]+$/.test(value)) {
-      const newValues: { [key: number]: string } = { ...values };
+      setActiveUnit(factor);
+      
+      const newValues: { [key: number]: string } = {};
+      
+      if (value === '') {
+        // If input is cleared, clear all fields
+        setValues({});
+        return;
+      }
+      
+      // Store the current input value
       newValues[factor] = value;
       
       // If the value is valid, update all other inputs based on this value
-      if (value !== '' && !isNaN(parseFloat(value))) {
+      if (!isNaN(parseFloat(value))) {
         const numValue = parseFloat(value);
         
+        // Calculate conversions for all units
         ETH_UNITS.forEach(unit => {
           if (unit.factor !== factor) {
-            newValues[unit.factor] = formatValue(numValue, factor, unit.factor);
-          }
-        });
-      } else if (value === '') {
-        // Clear all other inputs if current input is cleared
-        ETH_UNITS.forEach(unit => {
-          if (unit.factor !== factor) {
-            newValues[unit.factor] = '';
+            const convertedValue = convertEthUnit(numValue, factor, unit.factor);
+            newValues[unit.factor] = convertedValue;
           }
         });
       }
@@ -140,7 +148,10 @@ const EthConverter: React.FC = () => {
       <CardContent className="p-6">
         <div className="space-y-6">
           {ETH_UNITS.map((unit) => (
-            <div key={unit.factor} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center cyber-panel p-4 rounded-md">
+            <div 
+              key={unit.factor} 
+              className={`grid grid-cols-1 md:grid-cols-3 gap-4 items-center cyber-panel p-4 rounded-md ${activeUnit === unit.factor ? 'border border-cyber-neon' : ''}`}
+            >
               <div>
                 <Label htmlFor={`unit-${unit.factor}`} className="text-cyber-neon font-mono">
                   {unit.name}
@@ -155,6 +166,7 @@ const EthConverter: React.FC = () => {
                   onChange={(e: ChangeEvent<HTMLInputElement>) => 
                     handleInputChange(unit.factor, e.target.value)
                   }
+                  onFocus={() => setActiveUnit(unit.factor)}
                   placeholder="0"
                 />
                 {unit.factor === 18 && values[18] && ethPrice && (

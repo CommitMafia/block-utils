@@ -37,24 +37,37 @@ const formatWithZeros = (num: number): string => {
   
   // Handle small numbers that would normally use scientific notation
   if (Math.abs(num) < 1) {
-    // Convert small number to string with fixed decimals
-    str = num.toFixed(20);
+    // Start with a high precision
+    const strWithDecimals = num.toFixed(30);
     
     // Find the first non-zero digit after decimal
-    const firstNonZeroIndex = str.substring(2).search(/[1-9]/);
-    
-    if (firstNonZeroIndex >= 0) {
-      // Keep a few more digits after the first non-zero digit
-      const significantDigits = firstNonZeroIndex + 8;
-      str = num.toFixed(significantDigits);
+    const parts = strWithDecimals.split('.');
+    if (parts.length > 1) {
+      const decimalPart = parts[1];
+      let firstNonZeroIndex = -1;
+      
+      for (let i = 0; i < decimalPart.length; i++) {
+        if (decimalPart[i] !== '0') {
+          firstNonZeroIndex = i;
+          break;
+        }
+      }
+      
+      if (firstNonZeroIndex >= 0) {
+        // Keep a few more digits after the first non-zero digit for precision
+        const significantDigits = firstNonZeroIndex + 8;
+        str = num.toFixed(Math.min(significantDigits, 30));
+      } else {
+        str = '0';  // All zeros after decimal point
+      }
     }
   } else {
     // Handle large numbers
     str = num.toLocaleString('fullwide', { useGrouping: false, maximumFractionDigits: 20 });
   }
   
-  // Remove trailing zeros after decimal point
-  return str.replace(/\.?0+$/, '');
+  // Remove trailing zeros after decimal point but keep at least one digit
+  return str.replace(/\.0+$|(\.\d*[1-9])0+$/, '$1');
 };
 
 // Format with appropriate precision based on number size
@@ -65,16 +78,22 @@ const formatWithPrecision = (num: number): string => {
   const absNum = Math.abs(num);
   let precision = 6;
   
-  if (absNum < 0.1) precision = 10;
+  if (absNum < 0.000001) precision = 18;
+  else if (absNum < 0.00001) precision = 15;
+  else if (absNum < 0.0001) precision = 12;
+  else if (absNum < 0.001) precision = 10;
+  else if (absNum < 0.01) precision = 8;
+  else if (absNum < 0.1) precision = 8;
   else if (absNum < 1) precision = 8;
   else if (absNum < 10) precision = 6;
   else if (absNum < 100) precision = 4;
-  else precision = 2;
+  else if (absNum < 1000) precision = 2;
+  else precision = 0;
   
   const result = num.toFixed(precision);
   
-  // Remove trailing zeros after decimal point
-  return result.replace(/\.?0+$/, '');
+  // Remove trailing zeros after decimal point, but leave at least one digit
+  return result.replace(/\.0+$|(\.\d*[1-9])0+$/, '$1');
 };
 
 // Utility function to convert between any two Ethereum units
@@ -86,23 +105,34 @@ export const convertEthUnit = (
   if (amount === '' || isNaN(Number(amount))) return '';
   
   const amountNum = typeof amount === 'string' ? parseFloat(amount) : amount;
+  if (amountNum === 0) return '0';
   
-  // Special case for wei to gwei conversion to avoid floating point precision issues
+  // Handle wei to gwei conversion specifically (common problem case)
   if (fromUnit === 0 && toUnit === 9) {
-    const result = amountNum * 0.000000001;
-    return result.toFixed(9).replace(/\.?0+$/, '') || '0';
+    return (amountNum * 0.000000001).toFixed(9).replace(/\.?0+$/, '');
   }
   
-  // Special case for gwei to wei conversion
+  // Handle gwei to wei conversion specifically
   if (fromUnit === 9 && toUnit === 0) {
-    const result = amountNum * 1000000000;
-    return result.toString();
+    return (amountNum * 1000000000).toString();
+  }
+  
+  // Handle other special cases with fixed conversion ratios
+  if (fromUnit === 0 && toUnit === 18) {
+    // Wei to Ether: 1 wei = 0.000000000000000001 ether
+    return (amountNum * 0.000000000000000001).toFixed(18).replace(/\.?0+$/, '');
+  }
+  
+  if (fromUnit === 18 && toUnit === 0) {
+    // Ether to Wei: 1 ether = 1,000,000,000,000,000,000 wei
+    return (amountNum * 1000000000000000000).toString();
   }
   
   const diffFactor = fromUnit - toUnit;
   
   if (diffFactor === 0) return amountNum.toString();
   
+  // Use basic Math.pow for the conversion
   const result = amountNum * Math.pow(10, diffFactor);
   
   // For very small or very large results, use the special formatter
