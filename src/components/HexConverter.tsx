@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -17,12 +16,10 @@ const HexConverter: React.FC = () => {
   const [outputValue, setOutputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  // Validate input based on the selected type
   const validateInput = (value: string, type: ConversionType): boolean => {
     if (value.trim() === '') return true;
     
     if (type === 'hex') {
-      // Remove '0x' prefix if present for validation
       const hexValue = value.toLowerCase().startsWith('0x') ? value.slice(2) : value;
       return /^[0-9A-Fa-f]+$/.test(hexValue);
     } else {
@@ -30,7 +27,6 @@ const HexConverter: React.FC = () => {
     }
   };
 
-  // Convert values based on input and output types
   const convertValue = () => {
     if (inputValue.trim() === '') {
       setOutputValue('');
@@ -41,17 +37,13 @@ const HexConverter: React.FC = () => {
       setErrorMessage('');
       
       if (inputType === 'hex' && outputType === 'decimal') {
-        // Hex to Decimal
-        // Handle '0x' prefix
         const hexValue = inputValue.toLowerCase().startsWith('0x') ? inputValue : `0x${inputValue}`;
         const decimalValue = parseInt(hexValue, 16);
         setOutputValue(decimalValue.toString());
       } else if (inputType === 'decimal' && outputType === 'hex') {
-        // Decimal to Hex
         const hexValue = parseInt(inputValue, 10).toString(16).toUpperCase();
         setOutputValue(hexValue);
       } else {
-        // Same type, just copy
         setOutputValue(inputValue);
       }
       
@@ -63,7 +55,6 @@ const HexConverter: React.FC = () => {
     }
   };
 
-  // Handle input change
   const handleInputChange = (value: string) => {
     setInputValue(value);
     
@@ -72,21 +63,16 @@ const HexConverter: React.FC = () => {
     } else {
       setErrorMessage('');
       
-      // Auto-convert on valid input
       if (value.trim() !== '') {
         try {
           if (inputType === 'hex' && outputType === 'decimal') {
-            // Hex to Decimal
-            // Handle '0x' prefix
             const hexValue = value.toLowerCase().startsWith('0x') ? value : `0x${value}`;
             const decimalValue = parseInt(hexValue, 16);
             setOutputValue(decimalValue.toString());
           } else if (inputType === 'decimal' && outputType === 'hex') {
-            // Decimal to Hex
             const hexValue = parseInt(value, 10).toString(16).toUpperCase();
             setOutputValue(hexValue);
           } else {
-            // Same type, just copy
             setOutputValue(value);
           }
         } catch (error) {
@@ -98,7 +84,6 @@ const HexConverter: React.FC = () => {
     }
   };
 
-  // Reset all values
   const handleReset = () => {
     setInputValue('');
     setOutputValue('');
@@ -106,13 +91,11 @@ const HexConverter: React.FC = () => {
     toast.success('Values reset');
   };
 
-  // Swap input and output types
   const handleSwap = () => {
     const tempType = inputType;
     setInputType(outputType);
     setOutputType(tempType);
     
-    // Also swap the values if there's already a conversion
     if (inputValue && outputValue) {
       setInputValue(outputValue);
       setOutputValue(inputValue);
@@ -121,19 +104,16 @@ const HexConverter: React.FC = () => {
     toast.success('Input and output types swapped');
   };
 
-  // Update when type changes
   useEffect(() => {
     if (inputValue && !errorMessage) {
       handleInputChange(inputValue);
     }
   }, [inputType, outputType]);
 
-  // Update label based on selected input type
   const getInputLabel = () => {
     return `Enter ${inputType === 'hex' ? 'hex' : 'decimal'} number`;
   };
 
-  // Update label based on selected output type
   const getOutputLabel = () => {
     return `${outputType === 'hex' ? 'Hex' : 'Decimal'} number`;
   };
