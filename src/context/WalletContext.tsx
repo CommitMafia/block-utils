@@ -1,6 +1,7 @@
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
 import { WalletState } from '@/lib/types';
+import { useAccount, useDisconnect, useNetwork } from 'wagmi';
 
 // Create context with default values
 const WalletContext = createContext<WalletState>({
@@ -13,72 +14,28 @@ const WalletContext = createContext<WalletState>({
 
 // Provider component for wallet connection
 export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isConnected, setIsConnected] = useState(false);
-  const [address, setAddress] = useState<string | null>(null);
-  const [chainId, setChainId] = useState<number | null>(null);
+  const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
+  const { disconnect: wagmiDisconnect } = useDisconnect();
 
-  // Function to connect wallet
+  // We'll use RainbowKit's connect button directly, but still need this function for our interface
   const connect = async () => {
-    // In a real implementation, this would use a library like ethers.js or web3.js
-    // For now, we'll simulate a connection
-    try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const chainIdHex = await window.ethereum.request({ method: 'eth_chainId' });
-        
-        setAddress(accounts[0]);
-        setChainId(parseInt(chainIdHex, 16));
-        setIsConnected(true);
-        
-        console.log('Wallet connected:', accounts[0]);
-      } else {
-        console.error('No Ethereum provider found');
-        alert('Please install MetaMask or another Ethereum wallet');
-      }
-    } catch (error) {
-      console.error('Failed to connect wallet:', error);
-    }
+    // This is now handled by RainbowKit's UI
+    console.log('Connect requested via context');
   };
 
   // Function to disconnect wallet
   const disconnect = () => {
-    setIsConnected(false);
-    setAddress(null);
-    setChainId(null);
+    wagmiDisconnect();
     console.log('Wallet disconnected');
   };
-
-  // Listen for account and chain changes
-  useEffect(() => {
-    if (window.ethereum) {
-      const handleAccountsChanged = (accounts: string[]) => {
-        if (accounts.length === 0) {
-          disconnect();
-        } else if (isConnected) {
-          setAddress(accounts[0]);
-        }
-      };
-
-      const handleChainChanged = (chainIdHex: string) => {
-        setChainId(parseInt(chainIdHex, 16));
-      };
-
-      window.ethereum.on('accountsChanged', handleAccountsChanged);
-      window.ethereum.on('chainChanged', handleChainChanged);
-
-      return () => {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-        window.ethereum.removeListener('chainChanged', handleChainChanged);
-      };
-    }
-  }, [isConnected]);
 
   return (
     <WalletContext.Provider
       value={{
         isConnected,
-        address,
-        chainId,
+        address: address || null,
+        chainId: chain?.id || null,
         connect,
         disconnect,
       }}
@@ -90,14 +47,3 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
 // Custom hook to use wallet context
 export const useWallet = () => useContext(WalletContext);
-
-// Add type definition for window.ethereum
-declare global {
-  interface Window {
-    ethereum?: {
-      request: (args: { method: string; params?: any[] }) => Promise<any>;
-      on: (event: string, listener: (...args: any[]) => void) => void;
-      removeListener: (event: string, listener: (...args: any[]) => void) => void;
-    };
-  }
-}

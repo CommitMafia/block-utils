@@ -7,6 +7,58 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
+import { WalletProvider } from "@/context/WalletContext";
+import '@rainbow-me/rainbowkit/styles.css';
+import {
+  RainbowKitProvider,
+  darkTheme,
+  cssStringFromTheme
+} from '@rainbow-me/rainbowkit';
+import { WagmiConfig, createConfig } from 'wagmi';
+import { mainnet, polygon, optimism, arbitrum, base, avalanche } from 'wagmi/chains';
+import { createPublicClient, http } from 'viem';
+
+// Create a custom RainbowKit theme
+const customTheme = darkTheme({
+  accentColor: '#0ff550',
+  accentColorForeground: 'black',
+  borderRadius: 'small',
+  fontStack: 'system',
+});
+
+// Add custom CSS
+const customCSS = `
+  :root {
+    --rk-colors-accentColor: #0ff550;
+    --rk-colors-accentColorForeground: #000000;
+    --rk-colors-modalBackground: #000000;
+    --rk-colors-modalBorder: #0ff55033;
+    --rk-fonts-body: 'Courier New', monospace;
+  }
+  
+  .rk-modal {
+    border: 1px solid #0ff55080 !important;
+    box-shadow: 0 0 20px rgba(15, 255, 80, 0.2) !important;
+  }
+`;
+
+// Add style element with custom CSS
+const styleElement = document.createElement('style');
+styleElement.textContent = cssStringFromTheme(customTheme) + customCSS;
+document.head.appendChild(styleElement);
+
+// Define the chains
+const chains = [mainnet, polygon, optimism, arbitrum, avalanche, base];
+
+// Set up the wagmi config
+const config = createConfig({
+  autoConnect: true,
+  publicClient: createPublicClient({
+    chain: mainnet,
+    transport: http()
+  }),
+});
+
 // Create Query Client instance
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,20 +70,26 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <div className="relative min-h-screen">
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <WagmiConfig config={config}>
+    <RainbowKitProvider chains={chains} theme={customTheme}>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <div className="relative min-h-screen">
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <WalletProvider>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </WalletProvider>
+            </BrowserRouter>
+          </div>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </RainbowKitProvider>
+  </WagmiConfig>
 );
 
 export default App;

@@ -7,7 +7,6 @@ import FunctionList from '@/components/FunctionList';
 import ConnectWallet from '@/components/ConnectWallet';
 import { useToken } from '@/hooks/useToken';
 import { useAbi } from '@/hooks/useAbi';
-import { WalletProvider } from '@/context/WalletContext';
 import { Toaster } from '@/components/ui/sonner';
 import { Terminal, Lock } from 'lucide-react';
 
@@ -38,63 +37,61 @@ const Index = () => {
   };
 
   return (
-    <WalletProvider>
-      <div className="min-h-screen pb-8 relative overflow-x-hidden">
-        <header className="flex justify-between items-center py-4 px-4">
-          <div className="w-10"></div>
-          <h1 className="text-4xl font-mono text-cyber-neon text-center my-12">
-            >_ Token_Utils<span className="animate-pulse">⎸</span>
-          </h1>
-          <ConnectWallet />
-        </header>
-        
-        <div className="text-center mb-6">
-          <p className="text-cyber-neon font-mono text-sm">>> Decrypt · Analyze · Exploit</p>
-        </div>
-        
-        <main className="container mx-auto px-4 space-y-6 max-w-lg">
-          <Card className="cyber-card overflow-hidden border-cyber-neon/50">
-            <div className="border-b border-cyber-neon/20 p-4 flex items-center">
-              <Lock className="h-4 w-4 text-cyber-neon mr-2" />
-              <span className="text-cyber-neon font-mono text-sm">SECURE_CONNECTION</span>
-            </div>
-            
-            <CardContent className="p-4 space-y-4">
-              <ContractInput 
-                onSubmit={handleContractSubmit} 
-                isLoading={isLoading} 
-              />
-              
-              {!contractAddress && !isLoading && (
-                <p className="text-center text-sm text-cyber-neon/60 font-mono mt-4">
-                  >> Connect your wallet for full functionality &lt;&lt;
-                </p>
-              )}
-            </CardContent>
-          </Card>
-          
-          {tokenInfo && (
-            <div className="space-y-6 animate-fade-in">
-              <TokenInfo tokenInfo={tokenInfo} />
-              
-              {contractAddress && selectedChainId && (
-                <FunctionList 
-                  readFunctions={readFunctions}
-                  writeFunctions={writeFunctions}
-                  contractAddress={contractAddress}
-                  chainId={selectedChainId}
-                />
-              )}
-            </div>
-          )}
-        </main>
-        
-        <footer className="absolute bottom-2 w-full text-center">
-          <p className="text-cyber-neon/60 font-mono text-xs">System v1.33.7 // Secured Connection // 2025</p>
-        </footer>
+    <div className="min-h-screen pb-8 relative overflow-x-hidden">
+      <header className="flex justify-between items-center py-4 px-4">
+        <div className="w-10"></div>
+        <h1 className="text-4xl font-mono text-cyber-neon text-center my-12">
+          {">_"} Token_Utils<span className="animate-pulse">⎸</span>
+        </h1>
+        <ConnectWallet />
+      </header>
+      
+      <div className="text-center mb-6">
+        <p className="text-cyber-neon font-mono text-sm">{">>"} Decrypt · Analyze · Exploit</p>
       </div>
+      
+      <main className="container mx-auto px-4 space-y-6 max-w-lg">
+        <Card className="cyber-card overflow-hidden border-cyber-neon/50">
+          <div className="border-b border-cyber-neon/20 p-4 flex items-center">
+            <Lock className="h-4 w-4 text-cyber-neon mr-2" />
+            <span className="text-cyber-neon font-mono text-sm">SECURE_CONNECTION</span>
+          </div>
+          
+          <CardContent className="p-4 space-y-4">
+            <ContractInput 
+              onSubmit={handleContractSubmit} 
+              isLoading={isLoading} 
+            />
+            
+            {!contractAddress && !isLoading && (
+              <p className="text-center text-sm text-cyber-neon/60 font-mono mt-4">
+                {">>"} Connect your wallet for full functionality {">>"} 
+              </p>
+            )}
+          </CardContent>
+        </Card>
+        
+        {tokenInfo && (
+          <div className="space-y-6 animate-fade-in">
+            <TokenInfo tokenInfo={tokenInfo} />
+            
+            {contractAddress && selectedChainId && (
+              <FunctionList 
+                readFunctions={readFunctions}
+                writeFunctions={writeFunctions}
+                contractAddress={contractAddress}
+                chainId={selectedChainId}
+              />
+            )}
+          </div>
+        )}
+      </main>
+      
+      <footer className="absolute bottom-2 w-full text-center">
+        <p className="text-cyber-neon/60 font-mono text-xs">System v1.33.7 // Secured Connection // 2025</p>
+      </footer>
       <Toaster />
-    </WalletProvider>
+    </div>
   );
 };
 
