@@ -3,10 +3,17 @@ import React from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useWallet } from '@/context/WalletContext';
 import { Wallet, LogOut } from 'lucide-react';
+import { useChainId } from 'wagmi';
+import { getChainById } from '@/lib/api';
 
 // Custom styled RainbowKit connect button
 const ConnectWallet: React.FC = () => {
   const { isConnected } = useWallet();
+  const chainId = useChainId();
+  
+  // Get the chain name based on chainId
+  const activeChain = getChainById(chainId);
+  const chainName = activeChain?.name || 'Unknown Chain';
   
   return (
     <ConnectButton.Custom>
