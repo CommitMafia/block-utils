@@ -1,4 +1,3 @@
-
 /**
  * Utility functions for Ethereum unit conversions
  */
@@ -13,24 +12,35 @@ export const formatValue = (value: number, fromFactor: number, toFactor: number)
   // Then convert from wei to target unit
   const convertedValue = valueInWei / Math.pow(10, toFactor);
   
-  // Format the value based on size
-  if (convertedValue < 0.000001 && convertedValue > 0) {
-    return convertedValue.toExponential(6);
-  }
-  
-  // For very large numbers, use scientific notation
-  if (convertedValue > 1e16) {
-    return convertedValue.toExponential(6);
-  }
-  
-  // For values with many decimal places
-  if (toFactor > fromFactor && toFactor - fromFactor > 6) {
-    return convertedValue.toString();
+  // For very large or very small numbers
+  if (Math.abs(convertedValue) < 1e-6 || Math.abs(convertedValue) > 1e16) {
+    // Instead of scientific notation, format with actual zeros
+    return formatWithZeros(convertedValue);
   }
   
   // For normal values, display with appropriate precision
-  const precision = Math.max(0, 6 - Math.floor(Math.log10(convertedValue)));
+  const precision = Math.max(0, 6 - Math.floor(Math.log10(Math.abs(convertedValue))));
   return convertedValue.toFixed(precision).replace(/\.?0+$/, '');
+};
+
+// Format a number with actual zeros instead of scientific notation
+const formatWithZeros = (num: number): string => {
+  if (num === 0) return '0';
+  
+  // Handle small numbers that would normally use scientific notation
+  if (Math.abs(num) < 1) {
+    const str = num.toFixed(40); // Use plenty of decimal places
+    // Remove trailing zeros but keep necessary zeros after decimal point
+    return str.replace(/\.?0+$/, '');
+  }
+  
+  // Handle large numbers
+  if (num > 1e16) {
+    // Convert to string with full representation
+    return num.toLocaleString('fullwide', { useGrouping: false });
+  }
+  
+  return num.toString();
 };
 
 // Utility function to convert between any two Ethereum units
@@ -47,5 +57,5 @@ export const convertEthUnit = (
   if (diffFactor === 0) return amountNum.toString();
   
   const result = amountNum * Math.pow(10, diffFactor);
-  return result.toString();
+  return formatWithZeros(result);
 };
