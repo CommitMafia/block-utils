@@ -76,7 +76,7 @@ const queryClient = new QueryClient({
 
 const App = () => (
   <WagmiConfig config={config}>
-    <RainbowKitProvider theme={customTheme} projectId={projectId}>
+    <RainbowKitProvider theme={customTheme}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <div className="relative min-h-screen">
