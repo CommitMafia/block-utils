@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -69,8 +68,8 @@ const EpochConverter: React.FC = () => {
     } else {
       const now = new Date();
       setDateValue(format(now, 'yyyy-MM-dd'));
-      setTimeValue(format(now, 'HH:mm:ss'));
-      convertDateToEpoch(format(now, 'yyyy-MM-dd'), format(now, 'HH:mm:ss'));
+      setTimeValue(format(now, 'hh:mm:ss a'));
+      convertDateToEpoch(format(now, 'yyyy-MM-dd'), format(now, 'hh:mm:ss a'));
     }
     toast.success('Current time applied');
   };
@@ -100,7 +99,7 @@ const EpochConverter: React.FC = () => {
       }
       
       setDateValue(format(date, 'yyyy-MM-dd'));
-      setTimeValue(format(date, 'HH:mm:ss'));
+      setTimeValue(format(date, 'hh:mm:ss a'));
       
       const gmtFormattedDate = formatInTimeZone(date, 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
       setGmtDateTime(gmtFormattedDate);
@@ -211,8 +210,8 @@ const EpochConverter: React.FC = () => {
               <p className="text-cyber-neon/90 font-mono text-base">{format(new Date(), 'yyyy-MM-dd')}</p>
             </div>
             <div>
-              <p className="text-cyber-neon/90 font-mono text-xs mb-1">Time (24h)</p>
-              <p className="text-cyber-neon/90 font-mono text-base">{format(new Date(), 'HH:mm:ss')}</p>
+              <p className="text-cyber-neon/90 font-mono text-xs mb-1">Time</p>
+              <p className="text-cyber-neon/90 font-mono text-base pr-6">{format(new Date(), 'hh:mm:ss a')}</p>
             </div>
           </div>
         </div>
@@ -264,7 +263,6 @@ const EpochConverter: React.FC = () => {
                 )}
               </div>
               
-              {/* Timezone displays */}
               {epochValue && !errorMessage && (
                 <div className="mt-6 space-y-4">
                   <div className="p-4 border border-cyber-neon/20 rounded-md bg-black/50">
@@ -332,7 +330,6 @@ const EpochConverter: React.FC = () => {
                 )}
               </div>
               
-              {/* Timezone displays */}
               {dateValue && !errorMessage && (
                 <div className="mt-6 space-y-4">
                   <div className="p-4 border border-cyber-neon/20 rounded-md bg-black/50">
