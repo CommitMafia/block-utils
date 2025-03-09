@@ -14,9 +14,10 @@ import {
   darkTheme,
   cssStringFromTheme
 } from '@rainbow-me/rainbowkit';
-import { WagmiConfig, createConfig } from 'wagmi';
+import { WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum, base, avalanche } from 'wagmi/chains';
-import { createPublicClient, http } from 'viem';
+import { http } from 'viem';
+import { createConfig, getDefaultConfig } from '@rainbow-me/rainbowkit';
 
 // Create a custom RainbowKit theme
 const customTheme = darkTheme({
@@ -48,15 +49,21 @@ styleElement.textContent = cssStringFromTheme(customTheme) + customCSS;
 document.head.appendChild(styleElement);
 
 // Define the chains
-const chains = [mainnet, polygon, optimism, arbitrum, avalanche, base];
+const projectId = 'YOUR_PROJECT_ID'; // In production, replace with your WalletConnect project ID
 
-// Set up the wagmi config
+// Set up the wagmi config with RainbowKit
 const config = createConfig({
-  autoConnect: true,
-  publicClient: createPublicClient({
-    chain: mainnet,
-    transport: http()
-  }),
+  projectId,
+  appName: 'RainbowKit Web3 App',
+  chains: [mainnet, polygon, optimism, arbitrum, avalanche, base],
+  transports: {
+    [mainnet.id]: http(),
+    [polygon.id]: http(),
+    [optimism.id]: http(),
+    [arbitrum.id]: http(),
+    [avalanche.id]: http(),
+    [base.id]: http(),
+  },
 });
 
 // Create Query Client instance
@@ -71,7 +78,7 @@ const queryClient = new QueryClient({
 
 const App = () => (
   <WagmiConfig config={config}>
-    <RainbowKitProvider chains={chains} theme={customTheme}>
+    <RainbowKitProvider theme={customTheme}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <div className="relative min-h-screen">

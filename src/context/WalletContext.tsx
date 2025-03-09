@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, ReactNode } from 'react';
 import { WalletState } from '@/lib/types';
-import { useAccount, useDisconnect, useNetwork } from 'wagmi';
+import { useAccount, useDisconnect, useChainId } from 'wagmi';
 
 // Create context with default values
 const WalletContext = createContext<WalletState>({
@@ -15,7 +15,7 @@ const WalletContext = createContext<WalletState>({
 // Provider component for wallet connection
 export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { address, isConnected } = useAccount();
-  const { chain } = useNetwork();
+  const chainId = useChainId();
   const { disconnect: wagmiDisconnect } = useDisconnect();
 
   // We'll use RainbowKit's connect button directly, but still need this function for our interface
@@ -35,7 +35,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       value={{
         isConnected,
         address: address || null,
-        chainId: chain?.id || null,
+        chainId: chainId || null,
         connect,
         disconnect,
       }}
