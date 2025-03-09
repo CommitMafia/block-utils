@@ -6,21 +6,18 @@
 export const formatValue = (value: number, fromFactor: number, toFactor: number): string => {
   if (value === 0) return '0';
   
-  // Convert to wei (smallest unit) first
-  const valueInWei = value * Math.pow(10, fromFactor);
-  
-  // Then convert from wei to target unit
-  const convertedValue = valueInWei / Math.pow(10, toFactor);
+  // Convert from source unit to target unit directly
+  const conversion = value * Math.pow(10, fromFactor - toFactor);
   
   // For very large or very small numbers
-  if (Math.abs(convertedValue) < 1e-6 || Math.abs(convertedValue) > 1e16) {
+  if (Math.abs(conversion) < 1e-6 || Math.abs(conversion) > 1e16) {
     // Instead of scientific notation, format with actual zeros
-    return formatWithZeros(convertedValue);
+    return formatWithZeros(conversion);
   }
   
   // For normal values, display with appropriate precision
-  const precision = Math.max(0, 6 - Math.floor(Math.log10(Math.abs(convertedValue))));
-  return convertedValue.toFixed(precision).replace(/\.?0+$/, '');
+  const precision = Math.max(0, 6 - Math.floor(Math.log10(Math.abs(conversion))));
+  return conversion.toFixed(precision).replace(/\.?0+$/, '');
 };
 
 // Format a number with actual zeros instead of scientific notation
