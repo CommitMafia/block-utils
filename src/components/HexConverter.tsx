@@ -43,7 +43,7 @@ const HexConverter: React.FC = () => {
         setOutputValue(decimalValue.toString());
       } else if (inputType === 'decimal' && outputType === 'hex') {
         const hexValue = parseInt(inputValue, 10).toString(16).toUpperCase();
-        setOutputValue(hexValue);
+        setOutputValue(`0x${hexValue}`);
       } else {
         setOutputValue(inputValue);
       }
@@ -72,7 +72,7 @@ const HexConverter: React.FC = () => {
             setOutputValue(decimalValue.toString());
           } else if (inputType === 'decimal' && outputType === 'hex') {
             const hexValue = parseInt(value, 10).toString(16).toUpperCase();
-            setOutputValue(hexValue);
+            setOutputValue(`0x${hexValue}`);
           } else {
             setOutputValue(value);
           }
