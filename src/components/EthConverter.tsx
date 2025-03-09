@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Coins, RefreshCw } from 'lucide-react';
-import { formatValue } from '@/lib/ethUtils';
+import { formatValue, convertEthUnit } from '@/lib/ethUtils';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
@@ -28,6 +28,7 @@ const EthConverter: React.FC = () => {
   const [values, setValues] = useState<{ [key: number]: string }>({});
   const [ethPrice, setEthPrice] = useState<number | null>(null);
   const [totalPrice, setTotalPrice] = useState<string>('0.00');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Initialize with empty values
   useEffect(() => {
@@ -44,16 +45,27 @@ const EthConverter: React.FC = () => {
 
   // Fetch current ETH price
   const fetchEthPrice = async () => {
+    setIsLoading(true);
     try {
-      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+      const response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD');
       const data = await response.json();
-      setEthPrice(data.ethereum.usd);
+      setEthPrice(data.USD);
+      
+      // Update the USD price based on the new ETH price
+      const etherValue = values[18] || '0';
+      if (etherValue) {
+        const price = parseFloat(etherValue) * data.USD;
+        setTotalPrice(price.toFixed(2));
+      }
+      
       toast.success('ETH price updated successfully');
     } catch (error) {
       console.error('Error fetching ETH price:', error);
       // Fallback price if API fails
       setEthPrice(2140.66);
       toast.error('Failed to fetch ETH price, using fallback value');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -108,10 +120,11 @@ const EthConverter: React.FC = () => {
             variant="outline" 
             size="sm"
             onClick={fetchEthPrice} 
+            disabled={isLoading}
             className="border-cyber-neon/50 text-cyber-neon hover:bg-cyber-neon/10 h-8 px-2"
           >
-            <RefreshCw className="h-3 w-3 mr-1" />
-            Update Price
+            <RefreshCw className={`h-3 w-3 mr-1 ${isLoading ? 'animate-spin' : ''}`} />
+            {isLoading ? 'Updating...' : 'Update Price'}
           </Button>
           <Button 
             variant="outline" 
@@ -144,6 +157,11 @@ const EthConverter: React.FC = () => {
                   }
                   placeholder="0"
                 />
+                {unit.factor === 18 && values[18] && ethPrice && (
+                  <p className="text-cyber-neon/80 text-xs mt-1 font-mono">
+                    ≈ ${(parseFloat(values[18]) * ethPrice).toFixed(2)} USD
+                  </p>
+                )}
               </div>
             </div>
           ))}
@@ -155,7 +173,7 @@ const EthConverter: React.FC = () => {
                   USD Value
                 </Label>
                 <p className="text-cyber-neon/60 text-xs font-mono">
-                  ({ethPrice ? ethPrice.toFixed(2) : '0.00'} $ Per Ether)
+                  ({ethPrice ? `$${ethPrice.toFixed(2)}` : '$0.00'} Per Ether)
                 </p>
               </div>
               <div className="md:col-span-2">
