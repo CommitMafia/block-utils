@@ -12,8 +12,8 @@ type ConversionType = 'hex' | 'decimal';
 const HexConverter: React.FC = () => {
   const [inputType, setInputType] = useState<ConversionType>('hex');
   const [outputType, setOutputType] = useState<ConversionType>('decimal');
-  const [inputValue, setInputValue] = useState<string>('');
-  const [outputValue, setOutputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('0');
+  const [outputValue, setOutputValue] = useState<string>('0');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const validateInput = (value: string, type: ConversionType): boolean => {
@@ -171,7 +171,7 @@ const HexConverter: React.FC = () => {
               className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono w-full"
               value={inputValue}
               onChange={(e) => handleInputChange(e.target.value)}
-              placeholder={inputType === 'hex' ? '1A' : '26'}
+              placeholder={inputType === 'hex' ? '0' : '0'}
             />
             {errorMessage && (
               <p className="text-red-500 text-xs mt-1">{errorMessage}</p>
@@ -216,7 +216,7 @@ const HexConverter: React.FC = () => {
               className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono w-full"
               value={outputValue}
               readOnly
-              placeholder={outputType === 'hex' ? '1A' : '26'}
+              placeholder={outputType === 'hex' ? '0' : '0'}
             />
           </div>
         </div>
