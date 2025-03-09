@@ -5,9 +5,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Clock, RefreshCw, X, ArrowRightLeft } from 'lucide-react';
+import { Clock, RefreshCw, X, ArrowRightLeft, Globe } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 
 type EpochConverterMode = 'epoch-to-date' | 'date-to-epoch';
 
@@ -16,8 +17,21 @@ const EpochConverter: React.FC = () => {
   const [epochValue, setEpochValue] = useState<string>('');
   const [dateValue, setDateValue] = useState<string>('');
   const [timeValue, setTimeValue] = useState<string>('');
+  const [localTimezoneName, setLocalTimezoneName] = useState<string>('');
+  const [gmtDateTime, setGmtDateTime] = useState<string>('');
+  const [localDateTime, setLocalDateTime] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [currentEpoch, setCurrentEpoch] = useState<number>(0);
+
+  // Get local timezone name on mount
+  useEffect(() => {
+    try {
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      setLocalTimezoneName(timezone || 'Local');
+    } catch (error) {
+      setLocalTimezoneName('Local');
+    }
+  }, []);
 
   // Update current epoch timestamp every second
   useEffect(() => {
@@ -36,6 +50,8 @@ const EpochConverter: React.FC = () => {
     setEpochValue('');
     setDateValue('');
     setTimeValue('');
+    setGmtDateTime('');
+    setLocalDateTime('');
     setErrorMessage('');
     toast.success('Values reset');
   };
@@ -66,6 +82,8 @@ const EpochConverter: React.FC = () => {
     if (!value) {
       setDateValue('');
       setTimeValue('');
+      setGmtDateTime('');
+      setLocalDateTime('');
       setErrorMessage('');
       return;
     }
@@ -84,12 +102,23 @@ const EpochConverter: React.FC = () => {
         throw new Error('Invalid date result');
       }
       
+      // Set the date and time values for the inputs
       setDateValue(format(date, 'yyyy-MM-dd'));
       setTimeValue(format(date, 'HH:mm:ss'));
+      
+      // Format GMT time
+      const gmtFormattedDate = formatInTimeZone(date, 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
+      setGmtDateTime(gmtFormattedDate);
+      
+      // Format local time
+      const localFormattedDate = formatInTimeZone(date, Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
+      setLocalDateTime(localFormattedDate);
     } catch (error) {
       setErrorMessage('Invalid epoch timestamp');
       setDateValue('');
       setTimeValue('');
+      setGmtDateTime('');
+      setLocalDateTime('');
     }
   };
 
@@ -97,6 +126,8 @@ const EpochConverter: React.FC = () => {
   const convertDateToEpoch = (date: string, time: string) => {
     if (!date) {
       setEpochValue('');
+      setGmtDateTime('');
+      setLocalDateTime('');
       setErrorMessage('');
       return;
     }
@@ -113,9 +144,19 @@ const EpochConverter: React.FC = () => {
       
       const epochTimestamp = Math.floor(dateObj.getTime() / 1000);
       setEpochValue(epochTimestamp.toString());
+      
+      // Format GMT time
+      const gmtFormattedDate = formatInTimeZone(dateObj, 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
+      setGmtDateTime(gmtFormattedDate);
+      
+      // Format local time
+      const localFormattedDate = formatInTimeZone(dateObj, Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
+      setLocalDateTime(localFormattedDate);
     } catch (error) {
       setErrorMessage('Invalid date or time');
       setEpochValue('');
+      setGmtDateTime('');
+      setLocalDateTime('');
     }
   };
 
@@ -246,6 +287,27 @@ const EpochConverter: React.FC = () => {
                   />
                 </div>
               </div>
+              
+              {/* Timezone displays */}
+              {epochValue && !errorMessage && (
+                <div className="mt-4 space-y-3">
+                  <div className="p-3 border border-cyber-neon/20 rounded-md bg-black/50">
+                    <div className="flex items-center mb-2">
+                      <Globe className="h-4 w-4 text-cyber-neon mr-2" />
+                      <Label className="text-cyber-neon font-mono text-sm">GMT / UTC Time</Label>
+                    </div>
+                    <p className="text-cyber-neon/90 font-mono text-sm pl-6">{gmtDateTime}</p>
+                  </div>
+                  
+                  <div className="p-3 border border-cyber-neon/20 rounded-md bg-black/50">
+                    <div className="flex items-center mb-2">
+                      <Clock className="h-4 w-4 text-cyber-neon mr-2" />
+                      <Label className="text-cyber-neon font-mono text-sm">{localTimezoneName} Time</Label>
+                    </div>
+                    <p className="text-cyber-neon/90 font-mono text-sm pl-6">{localDateTime}</p>
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <>
@@ -293,6 +355,27 @@ const EpochConverter: React.FC = () => {
                   <p className="text-red-500 text-xs mt-1">{errorMessage}</p>
                 )}
               </div>
+              
+              {/* Timezone displays */}
+              {dateValue && !errorMessage && (
+                <div className="mt-4 space-y-3">
+                  <div className="p-3 border border-cyber-neon/20 rounded-md bg-black/50">
+                    <div className="flex items-center mb-2">
+                      <Globe className="h-4 w-4 text-cyber-neon mr-2" />
+                      <Label className="text-cyber-neon font-mono text-sm">GMT / UTC Time</Label>
+                    </div>
+                    <p className="text-cyber-neon/90 font-mono text-sm pl-6">{gmtDateTime}</p>
+                  </div>
+                  
+                  <div className="p-3 border border-cyber-neon/20 rounded-md bg-black/50">
+                    <div className="flex items-center mb-2">
+                      <Clock className="h-4 w-4 text-cyber-neon mr-2" />
+                      <Label className="text-cyber-neon font-mono text-sm">{localTimezoneName} Time</Label>
+                    </div>
+                    <p className="text-cyber-neon/90 font-mono text-sm pl-6">{localDateTime}</p>
+                  </div>
+                </div>
+              )}
             </>
           )}
           
@@ -313,3 +396,4 @@ const EpochConverter: React.FC = () => {
 };
 
 export default EpochConverter;
+
