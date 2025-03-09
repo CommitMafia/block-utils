@@ -294,7 +294,7 @@ const EpochConverter: React.FC = () => {
                   </Label>
                   <Input
                     id="date-input"
-                    className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono"
+                    className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert"
                     type="date"
                     value={dateValue}
                     onChange={(e) => handleDateChange(e.target.value)}
@@ -307,7 +307,7 @@ const EpochConverter: React.FC = () => {
                   </Label>
                   <Input
                     id="time-input"
-                    className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono"
+                    className="border-cyber-neon/30 bg-black/50 text-cyber-neon font-mono [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert"
                     type="time"
                     value={timeValue}
                     onChange={(e) => handleTimeChange(e.target.value)}
