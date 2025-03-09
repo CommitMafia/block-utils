@@ -38,9 +38,9 @@ const ConnectWallet: React.FC = () => {
                 return (
                   <button
                     onClick={openConnectModal}
-                    className="border border-cyber-neon bg-transparent text-cyber-neon font-mono shadow-[0_0_10px_rgba(15,255,80,0.7)] hover:shadow-[0_0_20px_rgba(15,255,80,0.9)] transition-all flex items-center px-4 py-2 rounded"
+                    className="border-2 border-cyber-neon bg-black text-cyber-neon font-mono shadow-[0_0_15px_rgba(15,255,80,0.7)] hover:shadow-[0_0_25px_rgba(15,255,80,0.9)] transition-all flex items-center px-4 py-2 rounded"
                   >
-                    <Wallet className="h-4 w-4 mr-1" /> ACCESS_WALLET
+                    <Wallet className="h-4 w-4 mr-2" /> ACCESS_WALLET
                   </button>
                 );
               }
@@ -49,14 +49,14 @@ const ConnectWallet: React.FC = () => {
                 <div className="flex flex-col items-center space-y-2">
                   <button
                     onClick={openChainModal}
-                    className="border border-cyber-neon/70 bg-transparent text-cyber-neon font-mono text-xs px-3 py-1 rounded"
+                    className="border-2 border-cyber-neon/70 bg-black text-cyber-neon font-mono text-xs px-3 py-1 rounded"
                   >
                     {chain.name}
                   </button>
                   
                   <button
                     onClick={openAccountModal}
-                    className="border border-cyber-neon/70 bg-transparent text-cyber-neon font-mono text-xs px-3 py-1 rounded flex items-center"
+                    className="border-2 border-cyber-neon/70 bg-black text-cyber-neon font-mono text-xs px-3 py-1 rounded flex items-center"
                   >
                     {account.displayName} <LogOut className="h-3 w-3 ml-1" />
                   </button>
