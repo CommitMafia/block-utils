@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -200,18 +201,18 @@ const EpochConverter: React.FC = () => {
       
       <CardContent className="p-6">
         <div className="bg-black/40 border border-cyber-neon/20 rounded-md p-3 mb-6">
-          <div className="flex items-center justify-center mb-1">
+          <div className="flex items-center justify-center mb-2">
             <Clock className="h-4 w-4 text-cyber-neon mr-2" />
             <span className="text-cyber-neon font-mono text-sm">CURRENT_TIME</span>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-cyber-neon/90 font-mono text-xs mb-1">Date</p>
-              <p className="text-cyber-neon/90 font-mono text-lg">{format(new Date(), 'yyyy-MM-dd')}</p>
+              <p className="text-cyber-neon/90 font-mono text-base">{format(new Date(), 'yyyy-MM-dd')}</p>
             </div>
             <div>
-              <p className="text-cyber-neon/90 font-mono text-xs mb-1">Time</p>
-              <p className="text-cyber-neon/90 font-mono text-lg">{format(new Date(), 'HH:mm:ss')}</p>
+              <p className="text-cyber-neon/90 font-mono text-xs mb-1">Time (24h)</p>
+              <p className="text-cyber-neon/90 font-mono text-base">{format(new Date(), 'HH:mm:ss')}</p>
             </div>
           </div>
         </div>
@@ -265,21 +266,21 @@ const EpochConverter: React.FC = () => {
               
               {/* Timezone displays */}
               {epochValue && !errorMessage && (
-                <div className="mt-4 space-y-3">
-                  <div className="p-3 border border-cyber-neon/20 rounded-md bg-black/50">
+                <div className="mt-6 space-y-4">
+                  <div className="p-4 border border-cyber-neon/20 rounded-md bg-black/50">
                     <div className="flex items-center mb-2">
                       <Globe className="h-4 w-4 text-cyber-neon mr-2" />
                       <Label className="text-cyber-neon font-mono text-sm">GMT / UTC Time</Label>
                     </div>
-                    <p className="text-cyber-neon/90 font-mono text-sm pl-6">{gmtDateTime}</p>
+                    <p className="text-cyber-neon/90 font-mono text-sm pl-6 break-words">{gmtDateTime}</p>
                   </div>
                   
-                  <div className="p-3 border border-cyber-neon/20 rounded-md bg-black/50">
+                  <div className="p-4 border border-cyber-neon/20 rounded-md bg-black/50">
                     <div className="flex items-center mb-2">
                       <Clock className="h-4 w-4 text-cyber-neon mr-2" />
                       <Label className="text-cyber-neon font-mono text-sm">{localTimezoneName} Time</Label>
                     </div>
-                    <p className="text-cyber-neon/90 font-mono text-sm pl-6">{localDateTime}</p>
+                    <p className="text-cyber-neon/90 font-mono text-sm pl-6 break-words">{localDateTime}</p>
                   </div>
                 </div>
               )}
@@ -333,21 +334,21 @@ const EpochConverter: React.FC = () => {
               
               {/* Timezone displays */}
               {dateValue && !errorMessage && (
-                <div className="mt-4 space-y-3">
-                  <div className="p-3 border border-cyber-neon/20 rounded-md bg-black/50">
+                <div className="mt-6 space-y-4">
+                  <div className="p-4 border border-cyber-neon/20 rounded-md bg-black/50">
                     <div className="flex items-center mb-2">
                       <Globe className="h-4 w-4 text-cyber-neon mr-2" />
                       <Label className="text-cyber-neon font-mono text-sm">GMT / UTC Time</Label>
                     </div>
-                    <p className="text-cyber-neon/90 font-mono text-sm pl-6">{gmtDateTime}</p>
+                    <p className="text-cyber-neon/90 font-mono text-sm pl-6 break-words">{gmtDateTime}</p>
                   </div>
                   
-                  <div className="p-3 border border-cyber-neon/20 rounded-md bg-black/50">
+                  <div className="p-4 border border-cyber-neon/20 rounded-md bg-black/50">
                     <div className="flex items-center mb-2">
                       <Clock className="h-4 w-4 text-cyber-neon mr-2" />
                       <Label className="text-cyber-neon font-mono text-sm">{localTimezoneName} Time</Label>
                     </div>
-                    <p className="text-cyber-neon/90 font-mono text-sm pl-6">{localDateTime}</p>
+                    <p className="text-cyber-neon/90 font-mono text-sm pl-6 break-words">{localDateTime}</p>
                   </div>
                 </div>
               )}

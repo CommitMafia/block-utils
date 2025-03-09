@@ -10,7 +10,7 @@ const EpochConverterPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center min-h-screen relative overflow-x-hidden">
+    <div className="flex flex-col items-center min-h-screen relative">
       <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full">
         <div className="w-10"></div>
         <h1 
@@ -24,8 +24,8 @@ const EpochConverterPage: React.FC = () => {
         </div>
       </header>
       
-      <div className="container mx-auto px-4 pt-4 pb-0">
-        <div className="w-full mb-6">
+      <div className="container mx-auto px-4 pt-6 pb-0 w-full">
+        <div className="mb-6">
           <Button 
             variant="outline" 
             onClick={() => navigate('/')} 
@@ -37,8 +37,8 @@ const EpochConverterPage: React.FC = () => {
         </div>
       </div>
 
-      <main className="container mx-auto px-4 py-4 flex-1 flex flex-col justify-center">
-        <div className="max-w-lg mx-auto w-full">
+      <main className="container mx-auto px-4 py-4 flex-1 w-full">
+        <div className="max-w-xl mx-auto w-full">
           <EpochConverter />
         </div>
       </main>
