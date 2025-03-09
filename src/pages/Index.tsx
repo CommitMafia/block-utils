@@ -43,16 +43,14 @@ const Index = () => {
       <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full">
         <div className="w-10"></div>
         <h1 className="text-3xl font-mono text-cyber-neon text-center">
-          {">_"} Token_Utils<span className="animate-pulse">⎸</span>
+          {">_"} Web3_Utilities<span className="animate-pulse">⎸</span>
         </h1>
         <div className="min-w-[120px] flex justify-end">
           <ConnectWallet />
         </div>
       </header>
       
-      <div className="text-center my-8">
-        <p className="text-cyber-neon font-mono text-sm">{">>"} Decrypt · Analyze · Exploit</p>
-      </div>
+      {/* Removed the tagline div here */}
       
       <main className="container mx-auto px-4 py-6 flex-1 flex flex-col justify-center max-w-lg">
         <Card className="cyber-card overflow-hidden border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)] mb-8">
