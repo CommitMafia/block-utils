@@ -17,7 +17,7 @@ import {
 import { WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum, base, avalanche } from 'wagmi/chains';
 import { http } from 'viem';
-import { createConfig, getDefaultConfig } from '@rainbow-me/rainbowkit';
+import { createConfig } from 'wagmi/config';
 
 // Create a custom RainbowKit theme
 const customTheme = darkTheme({
@@ -48,13 +48,11 @@ const styleElement = document.createElement('style');
 styleElement.textContent = cssStringFromTheme(customTheme) + customCSS;
 document.head.appendChild(styleElement);
 
-// Define the chains
+// Define the chains and WalletConnect projectId
 const projectId = 'YOUR_PROJECT_ID'; // In production, replace with your WalletConnect project ID
 
-// Set up the wagmi config with RainbowKit
+// Set up the wagmi config
 const config = createConfig({
-  projectId,
-  appName: 'RainbowKit Web3 App',
   chains: [mainnet, polygon, optimism, arbitrum, avalanche, base],
   transports: {
     [mainnet.id]: http(),
