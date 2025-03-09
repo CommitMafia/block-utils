@@ -20,24 +20,19 @@ const ConnectWallet: React.FC = () => {
   return (
     <div className="flex flex-col items-center space-y-2">
       {isConnected && address ? (
-        <div className="flex flex-col items-center space-y-2">
-          <div className="text-sm text-muted-foreground font-mono">
-            Connected to {chainName}
-          </div>
-          <Button
-            onClick={disconnect}
-            variant="outline"
-            className="cyber-border font-mono flex items-center gap-2"
-          >
-            {formatAddress(address)} <LogOut className="h-4 w-4 ml-1" />
-          </Button>
-        </div>
+        <Button
+          onClick={disconnect}
+          variant="outline"
+          className="cyber-border font-mono flex items-center gap-2 cyber-glow"
+        >
+          {formatAddress(address)} <LogOut className="h-4 w-4 ml-1" />
+        </Button>
       ) : (
         <Button
           onClick={connect}
-          className="cyber-button flex items-center gap-2"
+          className="cyber-button flex items-center gap-2 cyber-glow"
         >
-          <Wallet className="h-4 w-4" /> Connect Wallet
+          <Wallet className="h-4 w-4" /> Connect
         </Button>
       )}
     </div>

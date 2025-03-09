@@ -5,7 +5,6 @@ import ContractInput from '@/components/ContractInput';
 import TokenInfo from '@/components/TokenInfo';
 import FunctionList from '@/components/FunctionList';
 import ConnectWallet from '@/components/ConnectWallet';
-import ThemeToggle from '@/components/ThemeToggle';
 import { useToken } from '@/hooks/useToken';
 import { useAbi } from '@/hooks/useAbi';
 import { WalletProvider } from '@/context/WalletContext';
@@ -49,7 +48,7 @@ const Index = () => {
             <Zap className="h-5 w-5 text-cyber-neon" />
             Token Utils
           </h1>
-          <ThemeToggle />
+          <ConnectWallet />
         </header>
         
         <main className="container mx-auto px-4 space-y-6 max-w-md">
@@ -61,8 +60,6 @@ const Index = () => {
               />
             </CardContent>
           </Card>
-          
-          <ConnectWallet />
           
           {tokenInfo && (
             <div className="space-y-6 animate-fade-in">
