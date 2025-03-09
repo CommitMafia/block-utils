@@ -45,8 +45,6 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    background-size: 50px 50px;
-    background-image: var(--grid-bg);
   }
   
   body::before {

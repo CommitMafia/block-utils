@@ -23,16 +23,16 @@ const ConnectWallet: React.FC = () => {
         <Button
           onClick={disconnect}
           variant="outline"
-          className="cyber-border font-mono flex items-center gap-2 cyber-glow"
+          className="border border-cyber-neon/70 bg-transparent text-cyber-neon font-mono text-xs"
         >
-          {formatAddress(address)} <LogOut className="h-4 w-4 ml-1" />
+          {formatAddress(address)} <LogOut className="h-3 w-3 ml-1" />
         </Button>
       ) : (
         <Button
           onClick={connect}
-          className="cyber-button flex items-center gap-2 cyber-glow"
+          className="border border-cyber-neon bg-transparent text-cyber-neon font-mono shadow-[0_0_10px_rgba(15,255,80,0.7)] hover:shadow-[0_0_20px_rgba(15,255,80,0.9)] transition-all"
         >
-          <Wallet className="h-4 w-4" /> Connect
+          <Wallet className="h-4 w-4 mr-1" /> ACCESS_WALLET
         </Button>
       )}
     </div>
