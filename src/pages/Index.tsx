@@ -162,9 +162,9 @@ const Index = () => {
         </div>
       </header>
       
-      <main className="container mx-auto px-4 py-8 flex-1 flex flex-col justify-center">
+      <div className="container mx-auto px-4 pt-4 pb-0">
         {activeFeature !== null && (
-          <div className="w-full max-w-4xl mx-auto mb-6">
+          <div className="w-full mb-6">
             <Button 
               variant="outline" 
               onClick={handleBackToDashboard} 
@@ -175,7 +175,9 @@ const Index = () => {
             </Button>
           </div>
         )}
-        
+      </div>
+      
+      <main className="container mx-auto px-4 py-4 flex-1 flex flex-col justify-center">
         {activeFeature === null ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {functionalityOptions.map((option) => (
