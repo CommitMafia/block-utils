@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -42,17 +42,30 @@ const fetchPopularChains = async (): Promise<ChainInfo[]> => {
 
 const GetChains: React.FC = () => {
   const [chainId, setChainId] = useState<string>('');
+  const [debouncedChainId, setDebouncedChainId] = useState<string>('');
   
-  // Query for a specific chain
+  // Set up debounce for chainId
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (chainId.trim()) {
+        setDebouncedChainId(chainId);
+      }
+    }, 300); // 300ms debounce delay
+    
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [chainId]);
+  
+  // Query for a specific chain - now using debouncedChainId
   const { 
     data: chainData, 
     isLoading: isLoadingChain,
     isError: isChainError,
-    refetch: refetchChain 
   } = useQuery({
-    queryKey: ['chain', chainId],
-    queryFn: () => fetchChainData(chainId),
-    enabled: false, // Don't run on component mount
+    queryKey: ['chain', debouncedChainId],
+    queryFn: () => fetchChainData(debouncedChainId),
+    enabled: debouncedChainId.length > 0, // Only run when we have a debounced chainId
   });
   
   // Query for popular chains
@@ -63,16 +76,6 @@ const GetChains: React.FC = () => {
     queryKey: ['popularChains'],
     queryFn: fetchPopularChains,
   });
-  
-  // Handle search submission
-  const handleSearch = () => {
-    if (!chainId.trim()) {
-      toast.error('Please enter a chain ID');
-      return;
-    }
-    
-    refetchChain();
-  };
   
   // Copy to clipboard function
   const copyToClipboard = (text: string, description: string) => {
@@ -200,21 +203,23 @@ const GetChains: React.FC = () => {
                 className="border-cyber-neon/30 bg-black text-cyber-neon focus-visible:ring-cyber-neon/30"
               />
             </div>
-            <Button 
-              onClick={handleSearch}
-              className="bg-cyber-neon text-black hover:bg-cyber-neon/90"
-              disabled={isLoadingChain}
-            >
-              <Search className="h-4 w-4 mr-2" />
-              Search
-            </Button>
+            <div className="hidden">
+              {/* Search button hidden since we're now searching automatically */}
+              <Button 
+                className="bg-cyber-neon text-black hover:bg-cyber-neon/90"
+                disabled={isLoadingChain}
+              >
+                <Search className="h-4 w-4 mr-2" />
+                Search
+              </Button>
+            </div>
           </div>
           
           {isLoadingChain && (
             <p className="text-center text-cyber-neon/70">Loading chain data...</p>
           )}
           
-          {isChainError && (
+          {isChainError && chainId.trim() !== '' && (
             <Card className="border-red-500/30 shadow-[0_0_10px_rgba(255,0,0,0.2)]">
               <CardContent className="p-4 text-center">
                 <p className="text-red-400">Chain not found. Please verify the chain ID and try again.</p>
