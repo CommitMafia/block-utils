@@ -17,7 +17,6 @@ import {
   RainbowKitProvider,
   darkTheme,
   cssStringFromTheme,
-  getDefaultWallets
 } from '@rainbow-me/rainbowkit';
 import { WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum, base, avalanche } from 'wagmi/chains';
@@ -58,12 +57,6 @@ const projectId = '16f35f6911d7a724931eb523d507f64d'; // Project ID for WalletCo
 
 // Define supported chains for wagmi
 const wagmiChains = [mainnet, polygon, optimism, arbitrum, avalanche, base];
-
-// Configure wallets - updated to match new API
-const { wallets } = getDefaultWallets({
-  appName: 'BlockUtils',
-  projectId: projectId,
-});
 
 // Create Query Client instance
 const queryClient = new QueryClient({
