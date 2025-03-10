@@ -1,4 +1,3 @@
-
 // Define blockchain network information
 export interface Chain {
   id: number;
@@ -56,4 +55,27 @@ export interface WalletState {
   chainId: number | null;
   connect: () => Promise<void>;
   disconnect: () => void;
+}
+
+// Chain information from ethereum-lists/chains repository
+export interface ChainInfo {
+  name: string;
+  chainId: string;
+  shortName: string;
+  networkId: string;
+  nativeCurrency: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+  rpc: string[];
+  faucets: string[];
+  explorers: {
+    name: string;
+    url: string;
+    standard: string;
+  }[];
+  infoURL: string;
+  icon?: string;
+  status?: string;
 }

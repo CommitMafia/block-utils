@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import EthConverterPage from "./pages/EthConverter";
 import HexConverterPage from "./pages/HexConverter";
 import EpochConverterPage from "./pages/EpochConverter";
+import GetChainsPage from "./pages/GetChains";
 import NotFound from "./pages/NotFound";
 
 import { WalletProvider } from "@/context/WalletContext";
@@ -104,6 +105,7 @@ const App = () => (
                   <Route path="/hex-converter" element={<HexConverterPage />} />
                   <Route path="/eth-converter" element={<EthConverterPage />} />
                   <Route path="/epoch-converter" element={<EpochConverterPage />} />
+                  <Route path="/get-chains" element={<GetChainsPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </WalletProvider>

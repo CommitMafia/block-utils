@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import FunctionalityBox from '@/components/FunctionalityBox';
-import { Package2, FileCode, Hash, Coins, Clock } from 'lucide-react';
+import { Package2, FileCode, Hash, Coins, Clock, Globe } from 'lucide-react';
 
 // Functionality options
 const functionalityOptions = [
@@ -40,6 +40,13 @@ const functionalityOptions = [
     description: 'Convert between Unix timestamps and human-readable dates',
     icon: Clock,
     path: '/epoch-converter'
+  },
+  {
+    id: 'get-chains',
+    title: 'Get Chains',
+    description: 'Retrieve blockchain network configurations and details',
+    icon: Globe,
+    path: '/get-chains'
   }
 ];
 
