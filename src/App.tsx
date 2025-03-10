@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -54,8 +55,8 @@ document.head.appendChild(styleElement);
 // Define the chains and WalletConnect projectId
 const projectId = '16f35f6911d7a724931eb523d507f64d'; // Project ID for WalletConnect
 
-// Define supported chains for wagmi
-const wagmiChains = [mainnet, polygon, optimism, arbitrum, avalanche, base];
+// Define supported chains for wagmi - fixed array type
+const wagmiChains = [mainnet, polygon, optimism, arbitrum, avalanche, base] as const;
 
 // Create Query Client instance
 const queryClient = new QueryClient({
