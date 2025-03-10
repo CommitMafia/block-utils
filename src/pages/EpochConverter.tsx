@@ -46,7 +46,7 @@ const EpochConverterPage: React.FC = () => {
       <footer className="w-full text-center py-6">
         <p className="text-cyber-neon/60 font-mono text-xs">System v1.33.7 // Secured Connection // 2025</p>
         <p className="text-cyber-neon/60 font-mono text-xs mt-1">
-          Made with ❤️ by <a 
+          Built with ❤️ by <a 
             href="https://x.com/itsarjn" 
             target="_blank" 
             rel="noopener noreferrer"
