@@ -6,7 +6,9 @@ import GetChains from '@/components/GetChains';
 const GetChainsPage: React.FC = () => {
   return (
     <MainLayout showBackButton={true}>
-      <GetChains />
+      <div className="w-full max-w-6xl mx-auto">
+        <GetChains />
+      </div>
     </MainLayout>
   );
 };
