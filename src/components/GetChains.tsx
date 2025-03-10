@@ -28,7 +28,7 @@ const fetchChainData = async (chainId: string): Promise<ChainInfo> => {
 // Function to fetch popular chains
 const fetchPopularChains = async (): Promise<ChainInfo[]> => {
   // Common chain IDs for popular networks
-  const popularChainIds = ['1', '56', '137', '42161', '10', '43114', '8453', '324'];
+  const popularChainIds = ['1', '56', '137', '42161', '10', '43114', '8453', '324', '1101', '59144'];
   
   const chainPromises = popularChainIds.map(id => 
     fetch(`https://raw.githubusercontent.com/ethereum-lists/chains/master/_data/chains/eip155-${id}.json`)
@@ -43,6 +43,7 @@ const fetchPopularChains = async (): Promise<ChainInfo[]> => {
 const GetChains: React.FC = () => {
   const [chainId, setChainId] = useState<string>('');
   const [debouncedChainId, setDebouncedChainId] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<string>('search');
   
   // Set up debounce for chainId
   useEffect(() => {
@@ -186,7 +187,12 @@ const GetChains: React.FC = () => {
   
   return (
     <div className="max-w-4xl mx-auto">
-      <Tabs defaultValue="search" className="w-full">
+      <Tabs 
+        defaultValue="search" 
+        className="w-full"
+        value={activeTab}
+        onValueChange={setActiveTab}
+      >
         <TabsList className="grid w-full grid-cols-2 mb-6 bg-black border border-cyber-neon/30">
           <TabsTrigger value="search" className="data-[state=active]:bg-cyber-neon/10 data-[state=active]:text-cyber-neon">Search Chain</TabsTrigger>
           <TabsTrigger value="popular" className="data-[state=active]:bg-cyber-neon/10 data-[state=active]:text-cyber-neon">Popular Chains</TabsTrigger>
@@ -227,7 +233,20 @@ const GetChains: React.FC = () => {
             </Card>
           )}
           
+          {/* Show search results if available */}
           {chainData && renderChainDetails(chainData)}
+          
+          {/* Show popular chains by default when no search is active */}
+          {!chainId && popularChains && popularChains.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-cyber-neon mb-4 text-center">Top 10 Popular Chains</h3>
+              <div className="space-y-6">
+                {popularChains.map((chain) => (
+                  <div key={chain.chainId}>{renderChainDetails(chain)}</div>
+                ))}
+              </div>
+            </div>
+          )}
         </TabsContent>
         
         <TabsContent value="popular">
