@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,9 +18,9 @@ import {
   cssStringFromTheme,
 } from '@rainbow-me/rainbowkit';
 import { WagmiConfig } from 'wagmi';
-import { mainnet, polygon, optimism, arbitrum, base, avalanche } from 'wagmi/chains';
 import { http } from 'viem';
 import { createConfig } from 'wagmi';
+import { mainnet, polygon, optimism, arbitrum, base, avalanche } from 'wagmi/chains';
 
 // Create a custom RainbowKit theme
 const customTheme = darkTheme({
