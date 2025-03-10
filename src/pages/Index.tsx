@@ -28,7 +28,7 @@ const getFeatureTitle = (featureId: string) => {
     case 'hex-converter': return 'Hex Converter';
     case 'eth-converter': return 'ETH Converter';
     case 'epoch-converter': return 'Epoch Converter';
-    case 'get-chains': return 'Get Chains';
+    case 'get-chains': return 'Discover Chains';
     default: return featureId;
   }
 };

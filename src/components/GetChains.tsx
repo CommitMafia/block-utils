@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +11,6 @@ import { Separator } from '@/components/ui/separator';
 import { ChainInfo } from '@/lib/types';
 import { Copy, ExternalLink, Search } from 'lucide-react';
 
-// Function to fetch chain data by chain ID
 const fetchChainData = async (chainId: string): Promise<ChainInfo> => {
   try {
     const response = await fetch(`https://raw.githubusercontent.com/ethereum-lists/chains/master/_data/chains/eip155-${chainId}.json`);
@@ -25,9 +23,7 @@ const fetchChainData = async (chainId: string): Promise<ChainInfo> => {
   }
 };
 
-// Function to fetch popular chains
 const fetchPopularChains = async (): Promise<ChainInfo[]> => {
-  // Common chain IDs for popular networks
   const popularChainIds = ['1', '56', '137', '42161', '10', '43114', '8453', '324', '1101', '59144'];
   
   const chainPromises = popularChainIds.map(id => 
@@ -40,25 +36,23 @@ const fetchPopularChains = async (): Promise<ChainInfo[]> => {
   return results.filter(Boolean) as ChainInfo[];
 };
 
-const GetChains: React.FC = () => {
+const DiscoverChains: React.FC = () => {
   const [chainId, setChainId] = useState<string>('');
   const [debouncedChainId, setDebouncedChainId] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>('search');
   
-  // Set up debounce for chainId
   useEffect(() => {
     const handler = setTimeout(() => {
       if (chainId.trim()) {
         setDebouncedChainId(chainId);
       }
-    }, 300); // 300ms debounce delay
+    }, 300);
     
     return () => {
       clearTimeout(handler);
     };
   }, [chainId]);
   
-  // Query for a specific chain - now using debouncedChainId
   const { 
     data: chainData, 
     isLoading: isLoadingChain,
@@ -66,10 +60,9 @@ const GetChains: React.FC = () => {
   } = useQuery({
     queryKey: ['chain', debouncedChainId],
     queryFn: () => fetchChainData(debouncedChainId),
-    enabled: debouncedChainId.length > 0, // Only run when we have a debounced chainId
+    enabled: debouncedChainId.length > 0,
   });
   
-  // Query for popular chains
   const { 
     data: popularChains, 
     isLoading: isLoadingPopular 
@@ -78,13 +71,11 @@ const GetChains: React.FC = () => {
     queryFn: fetchPopularChains,
   });
   
-  // Copy to clipboard function
   const copyToClipboard = (text: string, description: string) => {
     navigator.clipboard.writeText(text);
     toast.success(`${description} copied to clipboard`);
   };
   
-  // Render chain details
   const renderChainDetails = (chain: ChainInfo) => (
     <Card className="border-cyber-neon/30 shadow-[0_0_10px_rgba(15,255,80,0.2)] mb-4">
       <CardHeader>
@@ -210,7 +201,6 @@ const GetChains: React.FC = () => {
               />
             </div>
             <div className="hidden">
-              {/* Search button hidden since we're now searching automatically */}
               <Button 
                 className="bg-cyber-neon text-black hover:bg-cyber-neon/90"
                 disabled={isLoadingChain}
@@ -233,10 +223,8 @@ const GetChains: React.FC = () => {
             </Card>
           )}
           
-          {/* Show search results if available */}
           {chainData && renderChainDetails(chainData)}
           
-          {/* Show popular chains by default when no search is active */}
           {!chainId && popularChains && popularChains.length > 0 && (
             <div className="mt-4">
               <h3 className="text-cyber-neon mb-4 text-center">Top 10 Popular Chains</h3>
@@ -267,4 +255,4 @@ const GetChains: React.FC = () => {
   );
 };
 
-export default GetChains;
+export default DiscoverChains;

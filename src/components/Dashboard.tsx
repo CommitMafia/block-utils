@@ -43,7 +43,7 @@ const functionalityOptions = [
   },
   {
     id: 'get-chains',
-    title: 'Get Chains',
+    title: 'Discover Chains',
     description: 'Retrieve blockchain network configurations and details',
     icon: Globe,
     path: '/get-chains'
