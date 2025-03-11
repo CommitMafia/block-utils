@@ -38,7 +38,7 @@ const ConnectWallet: React.FC = () => {
                 userSelect: 'none',
               },
             })}
-            className="flex flex-col items-end space-y-2"
+            className="flex items-center justify-end"
           >
             {(() => {
               if (!connected) {

@@ -25,9 +25,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
   return (
     <div className="flex flex-col items-center min-h-screen relative overflow-x-hidden">
       <header className="flex justify-center items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full">
-        <div className="container mx-auto flex items-center">
-          <div className="w-[100px] flex-none"></div>
-          <div className="flex-1 flex flex-col items-center justify-center text-center">
+        <div className="container mx-auto flex items-center justify-between">
+          {/* Logo section - left side */}
+          <div className="w-20"></div>
+          
+          {/* Title section - center */}
+          <div className="flex flex-col items-center justify-center text-center">
             <h1 
               className="text-3xl font-mono text-cyber-neon cursor-pointer hover:text-cyber-neon/80 transition-colors" 
               onClick={() => navigate('/')}
@@ -36,7 +39,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
             </h1>
             <p className="text-cyber-neon/80 text-sm mt-1 font-mono">A toolkit for every web3 dev</p>
           </div>
-          <div className="w-[100px] flex-none flex justify-end">
+          
+          {/* Wallet button section - right side */}
+          <div className="w-44 flex justify-end">
             {showWalletButton && <ConnectWallet />}
           </div>
         </div>
