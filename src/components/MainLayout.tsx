@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import ConnectWallet from '@/components/ConnectWallet';
 import { ArrowLeft } from 'lucide-react';
@@ -13,6 +13,10 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = false }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Determine if we should show the wallet connect button based on the current route
+  const showWalletButton = ['/token-utilities', '/contract-execution', '/get-chains'].includes(location.pathname);
 
   const handleBackToDashboard = () => {
     navigate('/');
@@ -32,7 +36,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
           <p className="text-cyber-neon/80 text-sm mt-4 font-mono">A toolkit for every web3 dev</p>
         </div>
         <div className="min-w-[120px] flex justify-end">
-          <ConnectWallet />
+          {showWalletButton && <ConnectWallet />}
         </div>
       </header>
       
