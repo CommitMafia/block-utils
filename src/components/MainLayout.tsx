@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -60,7 +61,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
   }, [displayedText, isDeleting, fullText]);
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col min-h-screen overflow-hidden">
       <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 w-full z-10">
         <div className="flex-1 flex justify-start">
           {showWalletButton ? <div className="w-[120px] sm:w-[180px]"></div> : <div></div>}
@@ -84,7 +85,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
       </header>
       
       <ScrollArea className="flex-1 overflow-auto">
-        <div className="container mx-auto px-4 pt-4 pb-0">
+        <div className="container mx-auto px-4 pt-4 pb-0 min-h-[calc(100vh-13rem)]">
           {showBackButton && (
             <div className="w-full mb-6">
               <Button 
@@ -97,13 +98,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
               </Button>
             </div>
           )}
+          
+          <main className="container mx-auto px-0 py-4 flex-1 flex flex-col">
+            {children}
+          </main>
         </div>
         
-        <main className="container mx-auto px-4 py-4 flex-1 flex flex-col justify-center">
-          {children}
-        </main>
-        
-        <footer className="w-full text-center py-6">
+        <footer className="w-full text-center py-6 mt-auto border-t border-cyber-neon/10">
           <p className="text-cyber-neon/60 font-mono text-xs">System v1.33.7 // Secured Connection // 2025</p>
           <p className="text-cyber-neon/60 font-mono text-xs mt-1">
             Built with ❤️ by <a 
