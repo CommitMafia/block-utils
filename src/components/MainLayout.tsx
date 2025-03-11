@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -61,26 +60,24 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
 
   return (
     <div className="flex flex-col items-center min-h-screen relative overflow-x-hidden">
-      <header className="flex justify-center items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full relative">
-        {/* Wallet button positioned absolutely in the corner */}
+      <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full">
+        {/* Logo and title section - now aligned left for better mobile display */}
+        <div className="flex flex-1 flex-col items-start sm:items-center">
+          <h1 
+            className="text-2xl sm:text-3xl font-mono text-cyber-neon cursor-pointer hover:text-cyber-neon/80 transition-colors" 
+            onClick={() => navigate('/')}
+          >
+            {">_"} {displayedText}<span className="animate-pulse">⎸</span>
+          </h1>
+          <p className="text-cyber-neon/80 text-xs sm:text-sm mt-1 font-mono">A toolkit for every web3 dev</p>
+        </div>
+        
+        {/* Wallet button - now directly in the header */}
         {showWalletButton && (
-          <div className="absolute right-4 top-1/2 -translate-y-1/2">
+          <div className="flex-shrink-0">
             <ConnectWallet />
           </div>
         )}
-        
-        <div className="container mx-auto flex items-center justify-center">
-          {/* Title section - center */}
-          <div className="flex flex-col items-center justify-center text-center">
-            <h1 
-              className="text-3xl font-mono text-cyber-neon cursor-pointer hover:text-cyber-neon/80 transition-colors" 
-              onClick={() => navigate('/')}
-            >
-              {">_"} {displayedText}<span className="animate-pulse">⎸</span>
-            </h1>
-            <p className="text-cyber-neon/80 text-sm mt-1 font-mono">A toolkit for every web3 dev</p>
-          </div>
-        </div>
       </header>
       
       <div className="container mx-auto px-4 pt-4 pb-0">
