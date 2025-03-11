@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +10,8 @@ import { toast } from 'sonner';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { ChainInfo } from '@/lib/types';
-import { Copy, ExternalLink, Search } from 'lucide-react';
+import { Copy, ExternalLink, Search, Plus } from 'lucide-react';
+import { useWallet } from '@/context/WalletContext';
 
 const fetchChainData = async (chainId: string): Promise<ChainInfo> => {
   try {
@@ -40,6 +42,7 @@ const DiscoverChains: React.FC = () => {
   const [chainId, setChainId] = useState<string>('');
   const [debouncedChainId, setDebouncedChainId] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>('search');
+  const { isConnected } = useWallet();
   
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -74,6 +77,45 @@ const DiscoverChains: React.FC = () => {
   const copyToClipboard = (text: string, description: string) => {
     navigator.clipboard.writeText(text);
     toast.success(`${description} copied to clipboard`);
+  };
+  
+  const addChainToWallet = async (chain: ChainInfo) => {
+    if (!window.ethereum) {
+      toast.error("No wallet provider detected. Please install a wallet extension.");
+      return;
+    }
+    
+    try {
+      // Filter out RPC URLs with variables or specific providers like INFURA
+      const validRpcUrls = chain.rpc
+        .filter(url => !url.includes('${') && !url.includes('INFURA'))
+        .map(url => url.trim());
+      
+      if (validRpcUrls.length === 0) {
+        toast.error("No valid RPC URL found for this chain.");
+        return;
+      }
+      
+      // Prepare the chain data in the format expected by wallet providers
+      const chainData = {
+        chainId: `0x${parseInt(chain.chainId).toString(16)}`,
+        chainName: chain.name,
+        nativeCurrency: chain.nativeCurrency,
+        rpcUrls: [validRpcUrls[0]], // Use the first valid RPC
+        blockExplorerUrls: chain.explorers ? [chain.explorers[0].url] : undefined
+      };
+      
+      // Request wallet to add the new chain
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [chainData],
+      });
+      
+      toast.success(`${chain.name} added to wallet.`);
+    } catch (error) {
+      console.error("Error adding chain to wallet:", error);
+      toast.error(error instanceof Error ? error.message : "Failed to add chain to wallet");
+    }
   };
   
   const renderChainDetails = (chain: ChainInfo) => (
@@ -155,7 +197,7 @@ const DiscoverChains: React.FC = () => {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-center pt-2">
+      <CardFooter className="flex justify-center gap-2 pt-2">
         <Button 
           variant="outline" 
           className="text-cyber-neon border-cyber-neon/50 hover:bg-cyber-neon/10"
@@ -171,6 +213,15 @@ const DiscoverChains: React.FC = () => {
           }}
         >
           Copy Wallet Configuration
+        </Button>
+        
+        <Button 
+          variant="outline" 
+          className="text-cyber-neon border-cyber-neon/50 hover:bg-cyber-neon/10"
+          onClick={() => addChainToWallet(chain)}
+          disabled={!isConnected}
+        >
+          <Plus className="h-4 w-4 mr-1" /> Add to Wallet
         </Button>
       </CardFooter>
     </Card>

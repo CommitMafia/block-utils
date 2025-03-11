@@ -1,3 +1,4 @@
+
 // Define blockchain network information
 export interface Chain {
   id: number;
@@ -78,4 +79,14 @@ export interface ChainInfo {
   infoURL: string;
   icon?: string;
   status?: string;
+}
+
+// Extend the Window interface to include ethereum provider
+declare global {
+  interface Window {
+    ethereum?: {
+      isMetaMask?: boolean;
+      request: (request: { method: string; params?: any[] }) => Promise<any>;
+    };
+  }
 }
