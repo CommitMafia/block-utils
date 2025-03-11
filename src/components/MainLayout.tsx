@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -61,8 +62,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
   return (
     <div className="flex flex-col items-center min-h-screen relative overflow-x-hidden">
       <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full">
-        {/* Logo and title section - now aligned left for better mobile display */}
-        <div className="flex flex-1 flex-col items-start sm:items-center">
+        {/* Left spacer to balance the wallet button on the right */}
+        <div className="flex-1 flex justify-start">
+          {showWalletButton ? <div className="w-[120px] sm:w-[180px]"></div> : <div></div>}
+        </div>
+        
+        {/* Center logo and title section */}
+        <div className="flex flex-col items-center">
           <h1 
             className="text-2xl sm:text-3xl font-mono text-cyber-neon cursor-pointer hover:text-cyber-neon/80 transition-colors" 
             onClick={() => navigate('/')}
@@ -72,12 +78,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
           <p className="text-cyber-neon/80 text-xs sm:text-sm mt-1 font-mono">A toolkit for every web3 dev</p>
         </div>
         
-        {/* Wallet button - now directly in the header */}
-        {showWalletButton && (
-          <div className="flex-shrink-0">
+        {/* Right section for wallet button */}
+        <div className="flex-1 flex justify-end">
+          {showWalletButton && (
             <ConnectWallet />
-          </div>
-        )}
+          )}
+        </div>
       </header>
       
       <div className="container mx-auto px-4 pt-4 pb-0">
