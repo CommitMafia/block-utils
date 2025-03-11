@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import FunctionalityBox from '@/components/FunctionalityBox';
-import { Package2, FileCode, Hash, Coins, Clock, Globe } from 'lucide-react';
+import { Package2, FileCode, Hash, Coins, Clock, Globe, Key } from 'lucide-react';
 
 // Functionality options
 const functionalityOptions = [
@@ -47,6 +47,13 @@ const functionalityOptions = [
     description: 'Retrieve blockchain network configurations and details',
     icon: Globe,
     path: '/get-chains'
+  },
+  {
+    id: 'bip39-utility',
+    title: 'BIP39 Utility',
+    description: 'Generate and validate BIP39 mnemonic seed phrases',
+    icon: Key,
+    path: '/bip39-utility'
   }
 ];
 

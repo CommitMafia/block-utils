@@ -5,7 +5,7 @@ import MainLayout from '@/components/MainLayout';
 import Dashboard from '@/components/Dashboard';
 import TokenUtilities from '@/components/TokenUtilities';
 import FeaturePlaceholder from '@/components/FeaturePlaceholder';
-import { Package2, FileCode, Hash, Coins, Clock, Globe } from 'lucide-react';
+import { Package2, FileCode, Hash, Coins, Clock, Globe, Key } from 'lucide-react';
 
 // Function to get feature icon
 const getFeatureIcon = (featureId: string) => {
@@ -16,6 +16,7 @@ const getFeatureIcon = (featureId: string) => {
     case 'eth-converter': return Coins;
     case 'epoch-converter': return Clock;
     case 'get-chains': return Globe;
+    case 'bip39-utility': return Key;
     default: return Package2;
   }
 };
@@ -29,6 +30,7 @@ const getFeatureTitle = (featureId: string) => {
     case 'eth-converter': return 'ETH Converter';
     case 'epoch-converter': return 'Epoch Converter';
     case 'get-chains': return 'Discover Chains';
+    case 'bip39-utility': return 'BIP39 Utility';
     default: return featureId;
   }
 };
