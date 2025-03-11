@@ -24,15 +24,41 @@ const EpochConverter: React.FC = () => {
   const [currentEpoch, setCurrentEpoch] = useState<number>(0);
   const [currentDateTime, setCurrentDateTime] = useState<string>('');
 
+  // Get the user's timezone name and ensure it updates if browser data changes
   useEffect(() => {
-    try {
-      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      setLocalTimezoneName(timezone || 'Local');
-    } catch (error) {
-      setLocalTimezoneName('Local');
-    }
+    const detectTimeZone = () => {
+      try {
+        // Force re-evaluation of timezone
+        const date = new Date();
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        
+        // Verify timezone is valid by trying to format with it
+        try {
+          formatInTimeZone(date, timezone, 'z');
+          setLocalTimezoneName(timezone || 'Local');
+          console.log('Current timezone detected:', timezone);
+        } catch (e) {
+          console.warn('Invalid timezone detected:', timezone);
+          setLocalTimezoneName('Local');
+        }
+      } catch (error) {
+        console.error('Error detecting timezone:', error);
+        setLocalTimezoneName('Local');
+      }
+    };
+
+    // Detect immediately on mount
+    detectTimeZone();
+
+    // Also check when visibility changes (user might switch VPN)
+    document.addEventListener('visibilitychange', detectTimeZone);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', detectTimeZone);
+    };
   }, []);
 
+  // Update current time display
   useEffect(() => {
     const updateCurrentTime = () => {
       const now = new Date();
@@ -106,9 +132,16 @@ const EpochConverter: React.FC = () => {
       const gmtFormattedDate = formatInTimeZone(date, 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
       setGmtDateTime(gmtFormattedDate);
       
-      // Format the local time using the user's timezone
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const localFormattedDate = formatInTimeZone(date, userTimezone, 'yyyy-MM-dd HH:mm:ss zzz');
+      // Get the current timezone directly from the browser each time we format
+      // This ensures we always use the most up-to-date timezone information
+      const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      console.log('Using timezone for formatting:', currentTimezone);
+      
+      const localFormattedDate = formatInTimeZone(
+        date, 
+        currentTimezone || 'UTC', 
+        'yyyy-MM-dd HH:mm:ss zzz'
+      );
       setLocalDateTime(localFormattedDate);
     } catch (error) {
       setErrorMessage('Invalid epoch timestamp');
@@ -145,9 +178,15 @@ const EpochConverter: React.FC = () => {
       const gmtFormattedDate = formatInTimeZone(dateObj, 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
       setGmtDateTime(gmtFormattedDate);
       
-      // Format the local time using the user's timezone
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const localFormattedDate = formatInTimeZone(dateObj, userTimezone, 'yyyy-MM-dd HH:mm:ss zzz');
+      // Get the current timezone directly from the browser each time we format
+      // This ensures we always use the most up-to-date timezone information
+      const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      
+      const localFormattedDate = formatInTimeZone(
+        dateObj, 
+        currentTimezone || 'UTC', 
+        'yyyy-MM-dd HH:mm:ss zzz'
+      );
       setLocalDateTime(localFormattedDate);
     } catch (error) {
       setErrorMessage('Invalid date or time');
