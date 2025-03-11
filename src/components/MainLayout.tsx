@@ -29,7 +29,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
           >
             {">_"} BlockUtils<span className="animate-pulse">⎸</span>
           </h1>
-          <p className="text-cyber-neon/80 text-sm mt-1 font-mono">A toolkit for every web3 dev</p>
+          <p className="text-cyber-neon/80 text-sm mt-2 font-mono">A toolkit for every web3 dev</p>
         </div>
         <div className="min-w-[120px] flex justify-end">
           <ConnectWallet />
