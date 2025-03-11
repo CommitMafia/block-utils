@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import ConnectWallet from '@/components/ConnectWallet';
 import { ArrowLeft } from 'lucide-react';
 import { Toaster } from '@/components/ui/sonner';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -60,14 +60,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
   }, [displayedText, isDeleting, fullText]);
 
   return (
-    <div className="flex flex-col items-center min-h-screen relative overflow-x-hidden">
-      <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full">
-        {/* Left spacer to balance the wallet button on the right */}
+    <div className="flex flex-col h-screen overflow-hidden">
+      <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 w-full z-10">
         <div className="flex-1 flex justify-start">
           {showWalletButton ? <div className="w-[120px] sm:w-[180px]"></div> : <div></div>}
         </div>
         
-        {/* Center logo and title section */}
         <div className="flex flex-col items-center">
           <h1 
             className="text-2xl sm:text-3xl font-mono text-cyber-neon cursor-pointer hover:text-cyber-neon/80 transition-colors" 
@@ -78,7 +76,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
           <p className="text-cyber-neon/80 text-xs sm:text-sm mt-1 font-mono">A toolkit for every web3 dev</p>
         </div>
         
-        {/* Right section for wallet button */}
         <div className="flex-1 flex justify-end">
           {showWalletButton && (
             <ConnectWallet />
@@ -86,38 +83,40 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
         </div>
       </header>
       
-      <div className="container mx-auto px-4 pt-4 pb-0">
-        {showBackButton && (
-          <div className="w-full mb-6">
-            <Button 
-              variant="outline" 
-              onClick={handleBackToDashboard} 
-              className="border-cyber-neon/50 text-cyber-neon hover:bg-cyber-neon/10"
+      <ScrollArea className="flex-1 overflow-auto">
+        <div className="container mx-auto px-4 pt-4 pb-0">
+          {showBackButton && (
+            <div className="w-full mb-6">
+              <Button 
+                variant="outline" 
+                onClick={handleBackToDashboard} 
+                className="border-cyber-neon/50 text-cyber-neon hover:bg-cyber-neon/10"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Dashboard
+              </Button>
+            </div>
+          )}
+        </div>
+        
+        <main className="container mx-auto px-4 py-4 flex-1 flex flex-col justify-center">
+          {children}
+        </main>
+        
+        <footer className="w-full text-center py-6">
+          <p className="text-cyber-neon/60 font-mono text-xs">System v1.33.7 // Secured Connection // 2025</p>
+          <p className="text-cyber-neon/60 font-mono text-xs mt-1">
+            Built with ❤️ by <a 
+              href="https://x.com/itsarjn" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-cyber-neon transition-colors underline"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Button>
-          </div>
-        )}
-      </div>
-      
-      <main className="container mx-auto px-4 py-4 flex-1 flex flex-col justify-center">
-        {children}
-      </main>
-      
-      <footer className="w-full text-center py-6">
-        <p className="text-cyber-neon/60 font-mono text-xs">System v1.33.7 // Secured Connection // 2025</p>
-        <p className="text-cyber-neon/60 font-mono text-xs mt-1">
-          Built with ❤️ by <a 
-            href="https://x.com/itsarjn" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="hover:text-cyber-neon transition-colors underline"
-          >
-            itsarjn
-          </a>
-        </p>
-      </footer>
+              itsarjn
+            </a>
+          </p>
+        </footer>
+      </ScrollArea>
       <Toaster />
     </div>
   );
