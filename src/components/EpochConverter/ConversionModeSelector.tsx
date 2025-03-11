@@ -20,7 +20,7 @@ const ConversionModeSelector: React.FC<ConversionModeSelectorProps> = ({
   handleReset 
 }) => {
   const handleSwapMode = () => {
-    setMode(prev => prev === 'epoch-to-date' ? 'date-to-epoch' : 'epoch-to-date');
+    setMode(mode === 'epoch-to-date' ? 'date-to-epoch' : 'epoch-to-date');
     handleReset();
     toast.success('Conversion mode swapped');
   };
