@@ -81,12 +81,9 @@ export interface ChainInfo {
   status?: string;
 }
 
-// Extend the Window interface to include ethereum provider
+// Note: Use 'declare global' instead of 'global' to avoid TypeScript error
 declare global {
   interface Window {
-    ethereum?: {
-      isMetaMask?: boolean;
-      request: (request: { method: string; params?: any[] }) => Promise<any>;
-    };
+    ethereum?: any; // Using 'any' type to avoid conflicts
   }
 }
