@@ -26,14 +26,14 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
     <div className="flex flex-col items-center min-h-screen relative overflow-x-hidden">
       <header className="flex justify-between items-center py-4 px-6 bg-black/80 backdrop-blur-sm border-b border-cyber-neon/30 sticky top-0 z-10 w-full">
         <div className="w-10"></div>
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center justify-center text-center">
+        <div className="flex flex-col items-center justify-center text-center">
           <h1 
             className="text-3xl font-mono text-cyber-neon cursor-pointer hover:text-cyber-neon/80 transition-colors" 
             onClick={() => navigate('/')}
           >
             {">_"} BlockUtils<span className="animate-pulse">⎸</span>
           </h1>
-          <p className="text-cyber-neon/80 text-sm mt-4 font-mono">A toolkit for every web3 dev</p>
+          <p className="text-cyber-neon/80 text-sm mt-1 font-mono">A toolkit for every web3 dev</p>
         </div>
         <div className="min-w-[120px] flex justify-end">
           {showWalletButton && <ConnectWallet />}
