@@ -45,43 +45,33 @@ const EpochConverter: React.FC = () => {
         <p className="text-cyber-neon/70 text-xs mb-4 font-mono">Current Epoch: {currentEpoch}</p>
         
         <div className="space-y-4">
+          <EpochConverterActions
+            mode={mode}
+            handleReset={handleReset}
+            handleUseCurrentTime={handleUseCurrentTime}
+          />
+
           {mode === 'epoch-to-date' ? (
-            <>
-              <EpochConverterActions
-                mode={mode}
-                handleReset={handleReset}
-                handleUseCurrentTime={handleUseCurrentTime}
-              />
-              
-              <EpochToDateConverter 
-                epochValue={epochValue}
-                handleEpochChange={handleEpochChange}
-                errorMessage={errorMessage}
-                gmtDateTime={gmtDateTime}
-                localDateTime={localDateTime}
-                localTimezoneName={localTimezoneName}
-              />
-            </>
+            <EpochToDateConverter 
+              epochValue={epochValue}
+              handleEpochChange={handleEpochChange}
+              errorMessage={errorMessage}
+              gmtDateTime={gmtDateTime}
+              localDateTime={localDateTime}
+              localTimezoneName={localTimezoneName}
+            />
           ) : (
-            <>
-              <EpochConverterActions
-                mode={mode}
-                handleReset={handleReset}
-                handleUseCurrentTime={handleUseCurrentTime}
-              />
-              
-              <DateToEpochConverter 
-                dateValue={dateValue}
-                timeValue={timeValue}
-                epochValue={epochValue}
-                handleDateChange={handleDateChange}
-                handleTimeChange={handleTimeChange}
-                errorMessage={errorMessage}
-                gmtDateTime={gmtDateTime}
-                localDateTime={localDateTime}
-                localTimezoneName={localTimezoneName}
-              />
-            </>
+            <DateToEpochConverter 
+              dateValue={dateValue}
+              timeValue={timeValue}
+              epochValue={epochValue}
+              handleDateChange={handleDateChange}
+              handleTimeChange={handleTimeChange}
+              errorMessage={errorMessage}
+              gmtDateTime={gmtDateTime}
+              localDateTime={localDateTime}
+              localTimezoneName={localTimezoneName}
+            />
           )}
           
           <TimeResults
