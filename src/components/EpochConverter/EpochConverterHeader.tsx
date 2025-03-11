@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Clock, X } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 interface EpochConverterHeaderProps {
   handleReset: () => void;

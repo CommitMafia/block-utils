@@ -12,14 +12,14 @@ interface EpochConverterActionsProps {
   handleUseCurrentTime: () => void;
 }
 
-const EpochConverterActions: React.FC<EpochConverterActionsProps> = ({
+const EpochConverterActionsProps: React.FC<EpochConverterActionsProps> = ({
   mode,
   handleReset,
   handleUseCurrentTime
 }) => {
   return (
-    <>
-      <div className="flex space-x-2 mb-4">
+    <div className="w-full">
+      <div className="flex mb-4">
         <Button 
           variant="outline" 
           size="sm" 
@@ -41,8 +41,8 @@ const EpochConverterActions: React.FC<EpochConverterActionsProps> = ({
           Reset
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 
-export default EpochConverterActions;
+export default EpochConverterActionsProps;

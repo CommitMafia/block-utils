@@ -5,7 +5,6 @@ import CurrentTimeDisplay from './CurrentTimeDisplay';
 import ConversionModeSelector from './ConversionModeSelector';
 import EpochToDateConverter from './EpochToDateConverter';
 import DateToEpochConverter from './DateToEpochConverter';
-import TimeDisplayResults from './TimeDisplayResults';
 import EpochConverterHeader from './EpochConverterHeader';
 import EpochConverterActions from './EpochConverterActions';
 import { useEpochConverter } from './useEpochConverter';
@@ -46,14 +45,14 @@ const EpochConverter: React.FC = () => {
         <p className="text-cyber-neon/70 text-xs mb-4 font-mono">Current Epoch: {currentEpoch}</p>
         
         <div className="space-y-4">
-          <EpochConverterActions
-            mode={mode}
-            handleReset={handleReset}
-            handleUseCurrentTime={handleUseCurrentTime}
-          />
-
           {mode === 'epoch-to-date' ? (
             <>
+              <EpochConverterActions
+                mode={mode}
+                handleReset={handleReset}
+                handleUseCurrentTime={handleUseCurrentTime}
+              />
+              
               <EpochToDateConverter 
                 epochValue={epochValue}
                 handleEpochChange={handleEpochChange}
@@ -65,6 +64,12 @@ const EpochConverter: React.FC = () => {
             </>
           ) : (
             <>
+              <EpochConverterActions
+                mode={mode}
+                handleReset={handleReset}
+                handleUseCurrentTime={handleUseCurrentTime}
+              />
+              
               <DateToEpochConverter 
                 dateValue={dateValue}
                 timeValue={timeValue}
@@ -78,6 +83,16 @@ const EpochConverter: React.FC = () => {
               />
             </>
           )}
+          
+          <TimeResults
+            errorMessage={errorMessage}
+            gmtDateTime={gmtDateTime}
+            localDateTime={localDateTime}
+            localTimezoneName={localTimezoneName}
+            dateValue={dateValue}
+            epochValue={epochValue}
+            mode={mode}
+          />
         </div>
       </CardContent>
     </Card>
