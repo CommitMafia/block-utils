@@ -38,7 +38,7 @@ const ConnectWallet: React.FC = () => {
                 userSelect: 'none',
               },
             })}
-            className="flex flex-col items-center space-y-2"
+            className="flex flex-col items-end space-y-2"
           >
             {(() => {
               if (!connected) {
@@ -53,7 +53,7 @@ const ConnectWallet: React.FC = () => {
               }
 
               return (
-                <div className="flex flex-col items-center space-y-2">
+                <div className="flex flex-col items-end space-y-2">
                   <button
                     onClick={openChainModal}
                     className="border-2 border-cyber-neon/70 bg-black text-cyber-neon font-mono text-xs px-3 py-1 rounded"
