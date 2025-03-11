@@ -102,10 +102,13 @@ const EpochConverter: React.FC = () => {
       setDateValue(format(date, 'yyyy-MM-dd'));
       setTimeValue(format(date, 'hh:mm:ss a'));
       
+      // Format the GMT time
       const gmtFormattedDate = formatInTimeZone(date, 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
       setGmtDateTime(gmtFormattedDate);
       
-      const localFormattedDate = formatInTimeZone(date, Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
+      // Format the local time using the user's timezone
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const localFormattedDate = formatInTimeZone(date, userTimezone, 'yyyy-MM-dd HH:mm:ss zzz');
       setLocalDateTime(localFormattedDate);
     } catch (error) {
       setErrorMessage('Invalid epoch timestamp');
@@ -138,10 +141,13 @@ const EpochConverter: React.FC = () => {
       const epochTimestamp = Math.floor(dateObj.getTime() / 1000);
       setEpochValue(epochTimestamp.toString());
       
+      // Format the GMT time
       const gmtFormattedDate = formatInTimeZone(dateObj, 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
       setGmtDateTime(gmtFormattedDate);
       
-      const localFormattedDate = formatInTimeZone(dateObj, Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC', 'yyyy-MM-dd HH:mm:ss zzz');
+      // Format the local time using the user's timezone
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const localFormattedDate = formatInTimeZone(dateObj, userTimezone, 'yyyy-MM-dd HH:mm:ss zzz');
       setLocalDateTime(localFormattedDate);
     } catch (error) {
       setErrorMessage('Invalid date or time');
