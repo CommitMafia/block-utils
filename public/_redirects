@@ -1,2 +1,6 @@
 
+# This file is for Netlify deployments only
+# For Vercel, see vercel.json in the root directory
+
 /*    /index.html   200
+
