@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import ConnectWallet from '@/components/ConnectWallet';
@@ -14,6 +14,9 @@ interface MainLayoutProps {
 const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [displayedText, setDisplayedText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const fullText = 'Block_Utils';
   
   // Determine if we should show the wallet connect button based on the current route
   const showWalletButton = ['/token-utilities', '/contract-execution', '/get-chains'].includes(location.pathname);
@@ -21,6 +24,40 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
   const handleBackToDashboard = () => {
     navigate('/');
   };
+
+  // Typing animation effect
+  useEffect(() => {
+    const typingSpeed = 150; // milliseconds per character
+    const deletingSpeed = 100; // faster when deleting
+    const pauseBeforeDeleting = 2000; // pause before starting to delete
+    const pauseBeforeRetyping = 500; // pause before retyping
+
+    let timeout: NodeJS.Timeout;
+
+    if (!isDeleting && displayedText !== fullText) {
+      // Still typing
+      timeout = setTimeout(() => {
+        setDisplayedText(fullText.substring(0, displayedText.length + 1));
+      }, typingSpeed);
+    } else if (!isDeleting && displayedText === fullText) {
+      // Finished typing, pause before deleting
+      timeout = setTimeout(() => {
+        setIsDeleting(true);
+      }, pauseBeforeDeleting);
+    } else if (isDeleting && displayedText !== '') {
+      // Deleting
+      timeout = setTimeout(() => {
+        setDisplayedText(fullText.substring(0, displayedText.length - 1));
+      }, deletingSpeed);
+    } else if (isDeleting && displayedText === '') {
+      // Finished deleting, pause before retyping
+      timeout = setTimeout(() => {
+        setIsDeleting(false);
+      }, pauseBeforeRetyping);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [displayedText, isDeleting, fullText]);
 
   return (
     <div className="flex flex-col items-center min-h-screen relative overflow-x-hidden">
@@ -39,7 +76,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
               className="text-3xl font-mono text-cyber-neon cursor-pointer hover:text-cyber-neon/80 transition-colors" 
               onClick={() => navigate('/')}
             >
-              {">_"} BlockUtils<span className="animate-pulse">⎸</span>
+              {">_"} {displayedText}<span className="animate-pulse">⎸</span>
             </h1>
             <p className="text-cyber-neon/80 text-sm mt-1 font-mono">A toolkit for every web3 dev</p>
           </div>
