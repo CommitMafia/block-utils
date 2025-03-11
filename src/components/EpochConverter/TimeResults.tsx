@@ -1,5 +1,6 @@
 
 import React from 'react';
+import TimeDisplayResults from './TimeDisplayResults';
 
 interface TimeResultsProps {
   errorMessage: string;
