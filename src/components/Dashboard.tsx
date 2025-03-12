@@ -11,14 +11,16 @@ const functionalityOptions = [
     title: 'Token Utilities',
     description: 'Analyze token contracts and interact with functions',
     icon: Package2,
-    path: '/token-utilities'
+    path: '/token-utilities',
+    comingSoon: true
   },
   {
     id: 'contract-execution',
     title: 'Contract Execution',
     description: 'Execute contract functions directly',
     icon: FileCode,
-    path: '/contract-execution'
+    path: '/contract-execution',
+    comingSoon: true
   },
   {
     id: 'hex-converter',
