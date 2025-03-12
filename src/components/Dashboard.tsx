@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import FunctionalityBox from '@/components/FunctionalityBox';
-import { Package2, FileCode, Hash, Coins, Clock, Globe, Key } from 'lucide-react';
+import { Package2, FileCode, Hash, Coins, Clock, Globe, Key, Rocket } from 'lucide-react';
 
 // Functionality options
 const functionalityOptions = [
@@ -54,6 +54,14 @@ const functionalityOptions = [
     description: 'Generate and validate BIP39 mnemonic seed phrases',
     icon: Key,
     path: '/bip39-utility'
+  },
+  {
+    id: 'simulate-transaction',
+    title: 'Simulate Transaction',
+    description: 'Preview transaction outcomes before execution',
+    icon: Rocket,
+    path: '/simulate-transaction',
+    comingSoon: true
   }
 ];
 
@@ -74,6 +82,7 @@ const Dashboard: React.FC = () => {
           description={option.description}
           icon={<option.icon className="h-8 w-8" />}
           onClick={() => handleFeatureSelect(option.path)}
+          comingSoon={option.comingSoon}
         />
       ))}
     </div>
