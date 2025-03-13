@@ -60,7 +60,6 @@ export function useAddressDerivation(): AddressDerivationReturn {
       if (!seed || seed.length === 0) return [];
       
       // Create HDKey instance with seed
-      // Fix: Using HDKey.fromMasterSeed without passing custom hmac function
       const hdkey = HDKey.fromMasterSeed(seed);
       
       // Get base path and index
