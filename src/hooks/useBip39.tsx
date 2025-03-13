@@ -253,8 +253,12 @@ export function useBip39(): Bip39HookReturn {
       // Get seed from mnemonic
       const seed = bip39.mnemonicToSeedSync(mnemonic, passphrase);
       
-      // Create HDKey instance
-      const rootKey = HDKey.fromMasterSeed(seed);
+      // Create HDKey instance with custom HMAC function
+      const hdkey = HDKey.fromMasterSeed(seed, {
+        // Fix: Remove the 'versions' property since it doesn't exist in the type
+        digest: sha512,
+        hmac: customHmac
+      });
       
       // Get base path and index
       const basePath = derivationPath.split('/').slice(0, -1).join('/');
@@ -265,7 +269,7 @@ export function useBip39(): Bip39HookReturn {
       
       for (let i = 0; i < 5; i++) {
         const currentPath = `${basePath}/${pathIndex + i}`;
-        const childKey = rootKey.derive(currentPath);
+        const childKey = hdkey.derive(currentPath);
         
         if (!childKey.privateKey) continue;
         
