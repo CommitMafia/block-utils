@@ -59,9 +59,9 @@ export function useAddressDerivation(): AddressDerivationReturn {
     try {
       if (!seed || seed.length === 0) return [];
       
-      // Create HDKey instance with custom HMAC function 
-      // Fix: HDKey doesn't accept hmac in Versions type, need to pass it as a function
-      const hdkey = HDKey.fromMasterSeed(seed, (key, data) => customHmac(key, data));
+      // Create HDKey instance with seed
+      // Fix: Using HDKey.fromMasterSeed without passing custom hmac function
+      const hdkey = HDKey.fromMasterSeed(seed);
       
       // Get base path and index
       const basePath = derivationPath.split('/').slice(0, -1).join('/');
