@@ -1,9 +1,8 @@
-
 import { sha256 } from '@noble/hashes/sha256';
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import { keccak_256 } from '@noble/hashes/sha3';
 import { ripemd160 } from '@noble/hashes/ripemd160';
-import * as secp from '@noble/secp256k1';
+import { Point } from '@noble/secp256k1';
 
 // Bitcoin address generation helpers
 export const hash160 = (buffer: Uint8Array): Uint8Array => {
@@ -56,7 +55,7 @@ export const uncompressPublicKey = (publicKey: Uint8Array): Uint8Array => {
   if (publicKey.length === 33) {
     try {
       // Use the secp256k1 library to uncompress
-      const point = secp.Point.fromHex(publicKey);
+      const point = Point.fromHex(publicKey);
       const uncompressedHex = point.toHex(false); // false means uncompressed format
       
       // Convert hex to bytes
