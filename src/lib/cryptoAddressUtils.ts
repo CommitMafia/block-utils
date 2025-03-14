@@ -41,11 +41,29 @@ export const base58Encode = (data: Uint8Array): string => {
 // Generate Ethereum address from public key
 export const getEthereumAddressFromPublicKey = (publicKey: Uint8Array): string => {
   try {
-    // For Ethereum, we need the uncompressed public key without the prefix
-    // If it's a 65-byte key, remove the first byte (0x04) which indicates it's uncompressed
-    const pubKeyWithoutPrefix = publicKey.length === 65 ? publicKey.slice(1) : publicKey;
+    // Ensure we have the full uncompressed public key
+    let pubKeyWithoutPrefix: Uint8Array;
     
-    // Apply Keccak-256 hash to public key
+    // If public key is in compressed format (33 bytes), we need to uncompress it first
+    // This is a simplified check - in a real-world scenario, you'd properly uncompress the key
+    if (publicKey.length === 33) {
+      console.error('Ethereum addresses require uncompressed public keys');
+      return 'Invalid-ETH-Address-Format';
+    } 
+    // If it's the standard uncompressed key (65 bytes), remove the prefix byte (0x04)
+    else if (publicKey.length === 65) {
+      pubKeyWithoutPrefix = publicKey.slice(1);
+    } 
+    // If it's already without prefix (64 bytes)
+    else if (publicKey.length === 64) {
+      pubKeyWithoutPrefix = publicKey;
+    } 
+    else {
+      console.error(`Unexpected public key length: ${publicKey.length}`);
+      return 'Invalid-ETH-Address-Key-Length';
+    }
+    
+    // Apply Keccak-256 hash to the public key
     const hash = keccak_256(pubKeyWithoutPrefix);
     
     // Take the last 20 bytes of the hash
@@ -123,6 +141,7 @@ export const getLitecoinAddressFromPublicKey = (publicKey: Uint8Array, isTestnet
     addressBytes.set(versionedHash);
     addressBytes.set(checksum, 21);
     
+    // Base58 encode
     return base58Encode(addressBytes);
   } catch (error) {
     console.error('Error generating Litecoin address:', error);
@@ -146,6 +165,7 @@ export const getDogecoinAddressFromPublicKey = (publicKey: Uint8Array, isTestnet
     addressBytes.set(versionedHash);
     addressBytes.set(checksum, 21);
     
+    // Base58 encode
     return base58Encode(addressBytes);
   } catch (error) {
     console.error('Error generating Dogecoin address:', error);
