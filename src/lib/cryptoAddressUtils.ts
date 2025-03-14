@@ -40,14 +40,17 @@ export const base58Encode = (data: Uint8Array): string => {
 
 // Generate Ethereum address from public key
 export const getEthereumAddressFromPublicKey = (publicKey: Uint8Array): string => {
-  // Remove the first byte (0x04 which indicates uncompressed key)
+  // Make sure we're using the uncompressed key without the prefix byte (0x04)
   const publicKeyNoPrefix = publicKey.length === 65 ? publicKey.slice(1) : publicKey;
   
   // Keccak-256 hash of public key
-  const addressBytes = keccak_256(publicKeyNoPrefix);
+  const hash = keccak_256(publicKeyNoPrefix);
   
   // Take last 20 bytes and format as Ethereum address
-  return '0x' + bytesToHex(addressBytes.slice(-20));
+  const address = bytesToHex(hash.slice(-20));
+  
+  // Add 0x prefix and ensure correct case (checksummed address would be better, but not necessary for basic functionality)
+  return '0x' + address.toLowerCase();
 };
 
 // Convert public key to compressed format for Bitcoin-like networks
