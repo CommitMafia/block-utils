@@ -6,6 +6,11 @@ export * from './ethereumUtils';
 export * from './bitcoinUtils';
 export * from './altcoinUtils';
 
+// Import specific functions needed for generateNetworkAddress
+import { getEthereumAddressFromPublicKey } from './ethereumUtils';
+import { getBitcoinAddressFromPublicKey } from './bitcoinUtils';
+import { getLitecoinAddressFromPublicKey, getDogecoinAddressFromPublicKey } from './altcoinUtils';
+
 // Generate address based on network type and public key
 export const generateNetworkAddress = (
   publicKey: Uint8Array, 
