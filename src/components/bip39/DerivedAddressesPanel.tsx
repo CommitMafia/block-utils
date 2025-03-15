@@ -8,6 +8,7 @@ import { Download, Copy } from 'lucide-react';
 import { toast } from "sonner";
 import { DerivedAddress } from '@/hooks/useAddressDerivation';
 import InfoDialog from './InfoDialog';
+import { privateKeyToWIF } from '@/lib/crypto/bitcoinUtils';
 
 interface DerivedAddressesPanelProps {
   derivationPath: string;
@@ -33,14 +34,23 @@ const DerivedAddressesPanel: React.FC<DerivedAddressesPanelProps> = ({
     toast.success("Address copied to clipboard");
   };
 
-  const handleCopyPrivateKey = (privateKey: string) => {
-    navigator.clipboard.writeText(privateKey);
-    toast.success("Private key copied to clipboard");
+  const handleCopyPrivateKey = (privateKey: string, isBitcoin = false) => {
+    // For Bitcoin, convert to WIF format before copying
+    const textToCopy = isBitcoin ? privateKeyToWIF(privateKey) : privateKey;
+    navigator.clipboard.writeText(textToCopy);
+    toast.success(`${isBitcoin ? "WIF private key" : "Private key"} copied to clipboard`);
   };
 
   const handleCopyPublicKey = (publicKey: string) => {
     navigator.clipboard.writeText(publicKey);
     toast.success("Public key copied to clipboard");
+  };
+
+  const formatPrivateKey = (privateKey: string, network: string): string => {
+    if (network === 'bitcoin') {
+      return privateKeyToWIF(privateKey);
+    }
+    return privateKey;
   };
 
   return (
@@ -92,7 +102,7 @@ const DerivedAddressesPanel: React.FC<DerivedAddressesPanelProps> = ({
             <div>Path</div>
             <div>Address</div>
             <div>Public Key</div>
-            <div>Private Key</div>
+            <div>Private Key {network === 'bitcoin' && '(WIF)'}</div>
           </div>
           <div className="overflow-y-auto max-h-64">
             {derivedAddresses.length > 0 ? (
@@ -125,12 +135,14 @@ const DerivedAddressesPanel: React.FC<DerivedAddressesPanelProps> = ({
                     </Button>
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="text-cyber-neon/70 truncate">{item.privateKey}</span>
+                    <span className="text-cyber-neon/70 truncate">
+                      {network === 'bitcoin' ? formatPrivateKey(item.privateKey, network) : item.privateKey}
+                    </span>
                     <Button 
                       variant="ghost" 
                       size="icon" 
                       className="h-5 w-5 text-cyber-neon/70 shrink-0"
-                      onClick={() => handleCopyPrivateKey(item.privateKey)}
+                      onClick={() => handleCopyPrivateKey(item.privateKey, network === 'bitcoin')}
                     >
                       <Copy className="h-3 w-3" />
                     </Button>
