@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { HDKey } from '@scure/bip32';
 import { bytesToHex } from '@noble/hashes/utils';
 import { customHmac } from '@/lib/bip39Utils';
-import { generateNetworkAddress } from '@/lib/cryptoAddressUtils';
+import { generateNetworkAddress } from '@/lib/crypto';
 import { sha512 } from '@noble/hashes/sha512';
 
 export interface DerivedAddress {
