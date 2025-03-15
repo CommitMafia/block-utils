@@ -1,4 +1,3 @@
-
 import { sha256 } from '@noble/hashes/sha256';
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import { keccak_256 } from '@noble/hashes/sha3';
@@ -73,44 +72,35 @@ export const uncompressPublicKey = (publicKey: Uint8Array): Uint8Array => {
 // Generate Ethereum address from public key
 export const getEthereumAddressFromPublicKey = (publicKey: Uint8Array): string => {
   try {
-    // For Ethereum, we need the uncompressed public key without the prefix
-    let pubKeyForHashing: Uint8Array;
-    
-    // First ensure we have an uncompressed key
-    let uncompressedKey: Uint8Array;
-    
-    try {
-      if (publicKey.length === 33) {
-        // If compressed, uncompress it
-        uncompressedKey = uncompressPublicKey(publicKey);
-      } else if (publicKey.length === 65) {
-        // Already uncompressed
-        uncompressedKey = publicKey;
-      } else if (publicKey.length === 64) {
-        // Already uncompressed without prefix
-        const tempKey = new Uint8Array(65);
-        tempKey[0] = 0x04;
-        tempKey.set(publicKey, 1);
-        uncompressedKey = tempKey;
-      } else {
-        throw new Error(`Unexpected public key length: ${publicKey.length}`);
-      }
-      
-      // Remove the prefix byte (0x04) for Ethereum address calculation
-      pubKeyForHashing = uncompressedKey.length === 65 ? uncompressedKey.slice(1) : uncompressedKey;
-      
-      // Apply Keccak-256 hash to the public key
-      const hash = keccak_256(pubKeyForHashing);
-      
-      // Take the last 20 bytes of the hash
-      const addressBytes = hash.slice(-20);
-      
-      // Format as hex with 0x prefix
-      return '0x' + bytesToHex(addressBytes);
-    } catch (error) {
-      console.error('Error processing public key:', error);
+    // Ensure we have a valid public key (either compressed or uncompressed)
+    if (publicKey.length !== 33 && publicKey.length !== 65 && publicKey.length !== 64) {
+      console.error(`Invalid public key length: ${publicKey.length}`);
       return 'Invalid-ETH-Address';
     }
+    
+    // Get proper public key bytes for Ethereum (uncompressed without 0x04 prefix)
+    let pubKeyBytes: Uint8Array;
+    
+    if (publicKey.length === 33) {
+      // Compressed key - uncompress it first
+      const uncompressedKey = uncompressPublicKey(publicKey);
+      pubKeyBytes = uncompressedKey.slice(1); // Remove the prefix byte (0x04)
+    } else if (publicKey.length === 65) {
+      // Uncompressed key with prefix - remove the prefix
+      pubKeyBytes = publicKey.slice(1);
+    } else {
+      // Already in the right format (64 bytes, uncompressed without prefix)
+      pubKeyBytes = publicKey;
+    }
+    
+    // Apply Keccak-256 hash to the public key
+    const hash = keccak_256(pubKeyBytes);
+    
+    // Take the last 20 bytes of the hash to form the Ethereum address
+    const addressBytes = hash.slice(-20);
+    
+    // Format as hex with 0x prefix and ensure proper checksum
+    return '0x' + bytesToHex(addressBytes);
   } catch (error) {
     console.error('Error generating Ethereum address:', error);
     return 'Invalid-ETH-Address';
