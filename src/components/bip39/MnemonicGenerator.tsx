@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,23 @@ const MnemonicGenerator: React.FC<MnemonicGeneratorProps> = ({
   isValidMnemonic,
   generateRandomMnemonic
 }) => {
+  // Update word count when mnemonic changes
+  useEffect(() => {
+    if (mnemonic) {
+      const words = mnemonic.trim().split(/\s+/);
+      const count = words.length;
+      
+      // Check if the count is one of the supported word counts
+      if ([12, 15, 18, 21, 24].includes(count) && count !== wordCount) {
+        setWordCount(count);
+      }
+    }
+  }, [mnemonic, wordCount, setWordCount]);
+
+  const handleMnemonicChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMnemonic(e.target.value);
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -69,7 +86,7 @@ const MnemonicGenerator: React.FC<MnemonicGeneratorProps> = ({
             id="mnemonic"
             className={`cyber-input h-20 terminal-text ${!isValidMnemonic && mnemonic ? 'border-red-500' : ''}`}
             value={mnemonic}
-            onChange={(e) => setMnemonic(e.target.value)}
+            onChange={handleMnemonicChange}
             placeholder="Enter mnemonic seed phrase"
           />
           {!isValidMnemonic && mnemonic && (
