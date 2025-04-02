@@ -1,0 +1,70 @@
+
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark background -->
+  <rect width="1200" height="630" fill="#1A1F2C" />
+  
+  <!-- Grid background effect -->
+  <g stroke="#0ff55020" stroke-width="1">
+    <path d="M0,90 H1200 M0,180 H1200 M0,270 H1200 M0,360 H1200 M0,450 H1200 M0,540 H1200" />
+    <path d="M90,0 V630 M180,0 V630 M270,0 V630 M360,0 V630 M450,0 V630 M540,0 V630 M630,0 V630 M720,0 V630 M810,0 V630 M900,0 V630 M990,0 V630 M1080,0 V630" />
+  </g>
+  
+  <!-- Main geometric block/cube design -->
+  <g transform="translate(600, 315) scale(1.2)">
+    <!-- Front cube face -->
+    <polygon points="0,0 -100,-50 0,-100 100,-50" fill="#0ff550" fill-opacity="0.9" stroke="#0ff550" stroke-width="2" />
+    
+    <!-- Top cube face -->
+    <polygon points="0,-100 -100,-50 -100,-150 0,-200" fill="#9b87f5" fill-opacity="0.8" stroke="#9b87f5" stroke-width="2" />
+    
+    <!-- Side cube face -->
+    <polygon points="0,-100 0,-200 100,-150 100,-50" fill="#0ff550" fill-opacity="0.7" stroke="#0ff550" stroke-width="2" />
+    
+    <!-- Connecting blocks -->
+    <polygon points="100,-50 200,-100 200,0 100,50" fill="#9b87f5" fill-opacity="0.8" stroke="#9b87f5" stroke-width="2" />
+    <polygon points="0,0 100,50 100,150 0,100" fill="#0ff550" fill-opacity="0.9" stroke="#0ff550" stroke-width="2" />
+    <polygon points="0,0 -100,50 -100,150 0,100" fill="#9b87f5" fill-opacity="0.7" stroke="#9b87f5" stroke-width="2" />
+    
+    <!-- Connection lines representing blockchain -->
+    <line x1="0" y1="-100" x2="100" y2="-150" stroke="#0ff550" stroke-width="3" />
+    <line x1="0" y1="-100" x2="-100" y2="-150" stroke="#9b87f5" stroke-width="3" />
+    <line x1="0" y1="0" x2="0" y2="-100" stroke="#0ff550" stroke-width="3" />
+    <line x1="0" y1="0" x2="100" y2="50" stroke="#9b87f5" stroke-width="3" />
+    <line x1="0" y1="0" x2="-100" y2="50" stroke="#0ff550" stroke-width="3" />
+    
+    <!-- Glowing effects -->
+    <circle cx="0" cy="-100" r="10" fill="#0ff550" filter="url(#glow-green)" />
+    <circle cx="0" cy="0" r="10" fill="#0ff550" filter="url(#glow-green)" />
+    <circle cx="100" cy="-50" r="10" fill="#9b87f5" filter="url(#glow-purple)" />
+    <circle cx="-100" cy="-50" r="10" fill="#9b87f5" filter="url(#glow-purple)" />
+    <circle cx="0" cy="100" r="10" fill="#0ff550" filter="url(#glow-green)" />
+  </g>
+  
+  <!-- Logo text -->
+  <g transform="translate(600, 480)">
+    <text x="0" y="0" font-family="monospace, 'Courier New'" font-size="60" font-weight="bold" text-anchor="middle" fill="#0ff550">Block_Utils</text>
+    <text x="0" y="40" font-family="monospace, 'Courier New'" font-size="24" text-anchor="middle" fill="#9b87f5">WEB3 DEVELOPER TOOLKIT</text>
+  </g>
+  
+  <!-- Filters for glowing effects -->
+  <defs>
+    <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feFlood flood-color="#0ff550" flood-opacity="0.7" result="color" />
+      <feComposite in="color" in2="blur" operator="in" result="glow" />
+      <feMerge>
+        <feMergeNode in="glow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="glow-purple" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feFlood flood-color="#9b87f5" flood-opacity="0.7" result="color" />
+      <feComposite in="color" in2="blur" operator="in" result="glow" />
+      <feMerge>
+        <feMergeNode in="glow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
