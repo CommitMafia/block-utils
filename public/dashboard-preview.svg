@@ -9,8 +9,8 @@
     <path d="M90,0 V630 M180,0 V630 M270,0 V630 M360,0 V630 M450,0 V630 M540,0 V630 M630,0 V630 M720,0 V630 M810,0 V630 M900,0 V630 M990,0 V630 M1080,0 V630" />
   </g>
   
-  <!-- Main geometric block/cube design -->
-  <g transform="translate(600, 315) scale(1.2)">
+  <!-- Main geometric block/cube design - moved up slightly -->
+  <g transform="translate(600, 280) scale(1.2)">
     <!-- Front cube face -->
     <polygon points="0,0 -100,-50 0,-100 100,-50" fill="#0ff550" fill-opacity="0.9" stroke="#0ff550" stroke-width="2" />
     
@@ -40,10 +40,10 @@
     <circle cx="0" cy="100" r="10" fill="#0ff550" filter="url(#glow-green)" />
   </g>
   
-  <!-- Logo text -->
-  <g transform="translate(600, 480)">
+  <!-- Logo text - positioned lower with more space between text elements -->
+  <g transform="translate(600, 520)">
     <text x="0" y="0" font-family="monospace, 'Courier New'" font-size="60" font-weight="bold" text-anchor="middle" fill="#0ff550">Block_Utils</text>
-    <text x="0" y="40" font-family="monospace, 'Courier New'" font-size="24" text-anchor="middle" fill="#9b87f5">WEB3 DEVELOPER TOOLKIT</text>
+    <text x="0" y="50" font-family="monospace, 'Courier New'" font-size="24" text-anchor="middle" fill="#9b87f5">WEB3 DEVELOPER TOOLKIT</text>
   </g>
   
   <!-- Filters for glowing effects -->
