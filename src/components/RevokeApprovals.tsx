@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Loader2, ExternalLink, XCircle } from 'lucide-react';
 import { useWallet } from '@/context/WalletContext';
 import { useToast } from '@/hooks/use-toast';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 interface Approval {
   tokenAddress: string;
@@ -39,9 +39,9 @@ const RevokeApprovals: React.FC = () => {
     setLoading(true);
     try {
       // In a real implementation, this would call an API to get the approvals
-      // For this demo, we'll use mock data
-      // This would be replaced with actual API calls to something like revoke.cash API
+      // For this demo, we'll use mock data based on the connected wallet address
       setTimeout(() => {
+        // Generate some mock data based on the connected wallet address
         const mockApprovals: Approval[] = [
           {
             tokenAddress: '0x1234567890123456789012345678901234567890',
@@ -60,6 +60,20 @@ const RevokeApprovals: React.FC = () => {
             allowance: '500 DEMO'
           }
         ];
+        
+        // Let's add a custom one based on the wallet address
+        if (address) {
+          const lastFourChars = address.slice(-4);
+          mockApprovals.push({
+            tokenAddress: `0x7777${lastFourChars}7777${lastFourChars}7777${lastFourChars}7777${lastFourChars}`,
+            tokenName: `Wallet Token ${lastFourChars}`,
+            tokenSymbol: `WT${lastFourChars}`,
+            spenderAddress: `0x8888${lastFourChars}8888${lastFourChars}8888${lastFourChars}8888${lastFourChars}`,
+            spenderName: `DEX ${lastFourChars}`,
+            allowance: `${parseInt(lastFourChars, 16)} WT${lastFourChars}`
+          });
+        }
+        
         setApprovals(mockApprovals);
         setLoading(false);
       }, 1500);
@@ -130,18 +144,21 @@ const RevokeApprovals: React.FC = () => {
           {!isConnected ? (
             <div className="text-center py-12">
               <p className="text-cyber-neon/80 mb-4">Connect your wallet to view and manage your token approvals</p>
-              <p className="text-sm text-cyber-neon/60">
+              <div className="flex justify-center mt-6">
+                <ConnectButton />
+              </div>
+              <p className="text-sm text-cyber-neon/60 mt-4">
                 This utility helps you identify and revoke potentially risky token approvals
               </p>
             </div>
           ) : loading ? (
             <div className="flex justify-center items-center py-12">
               <Loader2 className="h-8 w-8 text-cyber-neon animate-spin" />
-              <span className="ml-2 text-cyber-neon font-mono">Scanning for approvals...</span>
+              <span className="ml-2 text-cyber-neon font-mono">Scanning for approvals from {truncateAddress(address)}...</span>
             </div>
           ) : approvals.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-cyber-neon/80 mb-2">No token approvals found</p>
+              <p className="text-cyber-neon/80 mb-2">No token approvals found for {truncateAddress(address)}</p>
               <p className="text-sm text-cyber-neon/60">
                 You haven't approved any tokens for spending by dApps
               </p>
@@ -161,7 +178,7 @@ const RevokeApprovals: React.FC = () => {
                 </p>
                 <div className="flex justify-between items-center">
                   <p className="text-cyber-neon font-mono text-sm">
-                    Found {approvals.length} active approval{approvals.length !== 1 ? 's' : ''}
+                    Found {approvals.length} active approval{approvals.length !== 1 ? 's' : ''} for {truncateAddress(address)}
                   </p>
                   <Button 
                     onClick={fetchApprovals} 
@@ -236,7 +253,8 @@ const RevokeApprovals: React.FC = () => {
               </div>
               
               <div className="mt-6 text-xs text-cyber-neon/60 border-t border-cyber-neon/10 pt-4">
-                <p>Powered by <a href="https://revoke.cash" target="_blank" rel="noopener noreferrer" className="text-cyber-neon underline">Revoke.cash</a> functionality</p>
+                <p>Connected to: <span className="text-cyber-neon">{address}</span> on <span className="text-cyber-neon">Chain ID {chainId}</span></p>
+                <p className="mt-2">Powered by <a href="https://revoke.cash" target="_blank" rel="noopener noreferrer" className="text-cyber-neon underline">Revoke.cash</a> functionality</p>
                 <p className="mt-1">Always verify token approvals before revoking them. Revoking certain approvals may affect your DeFi positions.</p>
               </div>
             </>
