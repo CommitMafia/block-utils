@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import FunctionalityBox from '@/components/FunctionalityBox';
-import { Package2, FileCode, Hash, Coins, Clock, Globe, Key, Rocket } from 'lucide-react';
+import { Package2, FileCode, Hash, Coins, Clock, Globe, Key, Rocket, XCircle } from 'lucide-react';
 
 // Functionality options
 const functionalityOptions = [
@@ -56,6 +56,13 @@ const functionalityOptions = [
     description: 'Generate and validate BIP39 mnemonic seed phrases',
     icon: Key,
     path: '/bip39-utility'
+  },
+  {
+    id: 'revoke-approvals',
+    title: 'Revoke Approvals',
+    description: 'View and revoke token approvals you\'ve granted',
+    icon: XCircle,
+    path: '/revoke-approvals'
   },
   {
     id: 'simulate-transaction',

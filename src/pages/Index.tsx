@@ -4,8 +4,9 @@ import { useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import Dashboard from '@/components/Dashboard';
 import TokenUtilities from '@/components/TokenUtilities';
+import RevokeApprovals from '@/components/RevokeApprovals';
 import FeaturePlaceholder from '@/components/FeaturePlaceholder';
-import { Package2, FileCode, Hash, Coins, Clock, Globe, Key } from 'lucide-react';
+import { Package2, FileCode, Hash, Coins, Clock, Globe, Key, XCircle } from 'lucide-react';
 
 // Function to get feature icon
 const getFeatureIcon = (featureId: string) => {
@@ -17,6 +18,7 @@ const getFeatureIcon = (featureId: string) => {
     case 'epoch-converter': return Clock;
     case 'get-chains': return Globe;
     case 'bip39-utility': return Key;
+    case 'revoke-approvals': return XCircle;
     default: return Package2;
   }
 };
@@ -31,6 +33,7 @@ const getFeatureTitle = (featureId: string) => {
     case 'epoch-converter': return 'Epoch Converter';
     case 'get-chains': return 'Discover Chains';
     case 'bip39-utility': return 'BIP39 Utility';
+    case 'revoke-approvals': return 'Revoke Approvals';
     default: return featureId;
   }
 };
@@ -53,6 +56,8 @@ const Index = () => {
       return <Dashboard />;
     } else if (activeFeature === 'token-utilities') {
       return <TokenUtilities />;
+    } else if (activeFeature === 'revoke-approvals') {
+      return <RevokeApprovals />;
     } else {
       // Show placeholder for other features
       const title = getFeatureTitle(activeFeature);

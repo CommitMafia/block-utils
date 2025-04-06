@@ -10,6 +10,7 @@ import HexConverterPage from "./pages/HexConverter";
 import EpochConverterPage from "./pages/EpochConverter";
 import DiscoverChainsPage from "./pages/GetChains";
 import Bip39UtilityPage from "./pages/Bip39Utility";
+import RevokeApprovalsPage from "./pages/RevokeApprovals";
 import NotFound from "./pages/NotFound";
 
 import { WalletProvider } from "@/context/WalletContext";
@@ -101,6 +102,7 @@ const App = () => (
                   <Route path="/epoch-converter" element={<EpochConverterPage />} />
                   <Route path="/get-chains" element={<DiscoverChainsPage />} />
                   <Route path="/bip39-utility" element={<Bip39UtilityPage />} />
+                  <Route path="/revoke-approvals" element={<RevokeApprovalsPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </WalletProvider>
