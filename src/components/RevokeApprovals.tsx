@@ -8,12 +8,13 @@ import { useWallet } from '@/context/WalletContext';
 import { useToast } from '@/hooks/use-toast';
 import { getChainById } from '@/lib/api';
 import { createPublicClient, http, parseAbi, formatEther, zeroAddress } from 'viem';
+import { Chain as ViemChain } from 'viem';
 
 interface Approval {
-  tokenAddress: string;
+  tokenAddress: `0x${string}`;
   tokenName: string;
   tokenSymbol: string;
-  spenderAddress: string;
+  spenderAddress: `0x${string}`;
   spenderName: string;
   allowance: string;
 }
@@ -75,12 +76,17 @@ const RevokeApprovals: React.FC = () => {
         chain: {
           id: chain.id,
           name: chain.name,
+          nativeCurrency: {
+            name: chain.symbol,
+            symbol: chain.symbol,
+            decimals: 18
+          },
           rpcUrls: {
             default: {
               http: [chain.rpcUrl],
             },
           },
-        },
+        } as ViemChain,
         transport: http(),
       });
 
@@ -93,21 +99,24 @@ const RevokeApprovals: React.FC = () => {
       
       for (const token of tokensToCheck) {
         try {
+          // Ensure the token address is formatted correctly
+          const formattedTokenAddress = ensureHexString(token);
+          
           // Get token name and symbol
           const tokenName = await publicClient.readContract({
-            address: token,
+            address: formattedTokenAddress,
             abi: ERC20_ABI,
             functionName: 'name',
           }) as string;
           
           const tokenSymbol = await publicClient.readContract({
-            address: token,
+            address: formattedTokenAddress,
             abi: ERC20_ABI,
             functionName: 'symbol',
           }) as string;
           
           const decimals = await publicClient.readContract({
-            address: token,
+            address: formattedTokenAddress,
             abi: ERC20_ABI,
             functionName: 'decimals',
           }) as number;
@@ -116,11 +125,14 @@ const RevokeApprovals: React.FC = () => {
           const dexes = KNOWN_DEXES[chainId] || {};
           
           for (const [dexAddress, dexName] of Object.entries(dexes)) {
+            // Ensure the dex address is formatted correctly
+            const formattedDexAddress = ensureHexString(dexAddress);
+            
             const allowanceRaw = await publicClient.readContract({
-              address: token,
+              address: formattedTokenAddress,
               abi: ERC20_ABI,
               functionName: 'allowance',
-              args: [address, dexAddress],
+              args: [ensureHexString(address), formattedDexAddress],
             }) as bigint;
             
             // Only add if there's an actual approval
@@ -132,10 +144,10 @@ const RevokeApprovals: React.FC = () => {
                   : `${formatTokenAmount(allowanceRaw, decimals)} ${tokenSymbol}`;
               
               fetchedApprovals.push({
-                tokenAddress: token,
+                tokenAddress: formattedTokenAddress,
                 tokenName,
                 tokenSymbol,
-                spenderAddress: dexAddress,
+                spenderAddress: formattedDexAddress,
                 spenderName: dexName,
                 allowance,
               });
@@ -159,7 +171,15 @@ const RevokeApprovals: React.FC = () => {
     }
   };
 
-  const handleRevoke = async (tokenAddress: string, spenderAddress: string) => {
+  // Helper function to ensure addresses are properly formatted as hex strings
+  const ensureHexString = (address: string): `0x${string}` => {
+    if (!address.startsWith('0x')) {
+      return `0x${address}` as `0x${string}`;
+    }
+    return address as `0x${string}`;
+  };
+
+  const handleRevoke = async (tokenAddress: `0x${string}`, spenderAddress: `0x${string}`) => {
     if (!address || !chainId) return;
     const approvalId = `${tokenAddress}-${spenderAddress}`;
     setRevoking(approvalId);
@@ -382,3 +402,4 @@ const RevokeApprovals: React.FC = () => {
 };
 
 export default RevokeApprovals;
+
