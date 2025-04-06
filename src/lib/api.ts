@@ -1,16 +1,16 @@
 
 import { Chain, TokenInfo, ABIFunction } from './types';
 
-// List of supported chains
+// List of supported chains with Infura integration
 export const supportedChains: Chain[] = [
   {
     id: 1,
     name: 'Ethereum',
     symbol: 'ETH',
-    rpcUrl: 'https://mainnet.infura.io/v3/',
+    rpcUrl: `https://mainnet.infura.io/v3/85f692308196455a95710c3838d321f7`,
     blockExplorerUrl: 'https://etherscan.io',
     apiUrl: 'https://api.etherscan.io/api',
-    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Updated with your provided key
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2'
   },
   {
     id: 56,
@@ -19,7 +19,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://bsc-dataseed.binance.org/',
     blockExplorerUrl: 'https://bscscan.com',
     apiUrl: 'https://api.bscscan.com/api',
-    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Using the same key for BSC
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2'
   },
   {
     id: 137,
@@ -28,7 +28,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://polygon-rpc.com/',
     blockExplorerUrl: 'https://polygonscan.com',
     apiUrl: 'https://api.polygonscan.com/api',
-    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Using the same key for Polygon
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2'
   },
   {
     id: 42161,
@@ -37,7 +37,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://arb1.arbitrum.io/rpc',
     blockExplorerUrl: 'https://arbiscan.io',
     apiUrl: 'https://api.arbiscan.io/api',
-    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Using the same key for Arbitrum
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2'
   },
   {
     id: 10,
@@ -46,7 +46,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://mainnet.optimism.io',
     blockExplorerUrl: 'https://optimistic.etherscan.io',
     apiUrl: 'https://api-optimistic.etherscan.io/api',
-    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Using the same key for Optimism
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2'
   },
   {
     id: 43114,
@@ -55,7 +55,7 @@ export const supportedChains: Chain[] = [
     rpcUrl: 'https://api.avax.network/ext/bc/C/rpc',
     blockExplorerUrl: 'https://snowtrace.io',
     apiUrl: 'https://api.snowtrace.io/api',
-    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2' // Using the same key for Avalanche
+    apiKey: 'ZJKW77GW3IKB2SE4C1DZ93WZAM51ZJ5HY2'
   }
 ];
 
