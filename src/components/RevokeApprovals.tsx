@@ -402,4 +402,3 @@ const RevokeApprovals: React.FC = () => {
 };
 
 export default RevokeApprovals;
-
