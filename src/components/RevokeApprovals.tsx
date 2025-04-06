@@ -5,6 +5,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Loader2, ExternalLink, XCircle, Wallet } from 'lucide-react';
 import { useWallet } from '@/context/WalletContext';
 import { useToast } from '@/hooks/use-toast';
+
 interface Approval {
   tokenAddress: string;
   tokenName: string;
@@ -13,6 +14,7 @@ interface Approval {
   spenderName: string;
   allowance: string;
 }
+
 const RevokeApprovals: React.FC = () => {
   const {
     isConnected,
@@ -26,6 +28,7 @@ const RevokeApprovals: React.FC = () => {
   const {
     toast
   } = useToast();
+
   useEffect(() => {
     if (isConnected && address && chainId) {
       fetchApprovals();
@@ -33,6 +36,7 @@ const RevokeApprovals: React.FC = () => {
       setApprovals([]);
     }
   }, [isConnected, address, chainId]);
+
   const fetchApprovals = async () => {
     if (!address || !chainId) return;
     setLoading(true);
@@ -77,6 +81,7 @@ const RevokeApprovals: React.FC = () => {
       setLoading(false);
     }
   };
+
   const handleRevoke = async (tokenAddress: string, spenderAddress: string) => {
     if (!address || !chainId) return;
     const approvalId = `${tokenAddress}-${spenderAddress}`;
@@ -103,9 +108,11 @@ const RevokeApprovals: React.FC = () => {
       setRevoking(null);
     }
   };
+
   const truncateAddress = (addr: string) => {
     return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
   };
+
   return <div className="max-w-4xl mx-auto w-full">
       <Card className="cyber-card overflow-hidden border-cyber-neon/50 shadow-[0_0_10px_rgba(15,255,80,0.3)] mb-8">
         <div className="border-b border-cyber-neon/20 p-4 flex items-center justify-between">
@@ -121,11 +128,8 @@ const RevokeApprovals: React.FC = () => {
                 <Wallet className="h-12 w-12 text-cyber-neon/60 mb-4" />
               </div>
               
-              <Button onClick={connect} className="bg-green-800 text-cyber-neon hover:bg-green-700 font-mono">
-                Connect Wallet
-              </Button>
-              <p className="text-sm text-cyber-neon/60 mt-4">
-                This utility helps you identify and revoke potentially risky token approvals
+              <p className="text-cyber-neon/80 mb-4">
+                Connect your wallet to view and manage token approvals
               </p>
             </div> : loading ? <div className="flex justify-center items-center py-12">
               <Loader2 className="h-8 w-8 text-cyber-neon animate-spin" />
@@ -211,4 +215,5 @@ const RevokeApprovals: React.FC = () => {
       </Card>
     </div>;
 };
+
 export default RevokeApprovals;
