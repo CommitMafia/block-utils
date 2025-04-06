@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, showBackButton = fals
   const fullText = 'Block_Utils';
   
   // Determine if we should show the wallet connect button based on the current route
-  const showWalletButton = ['/token-utilities', '/contract-execution', '/get-chains'].includes(location.pathname);
+  const showWalletButton = ['/token-utilities', '/contract-execution', '/get-chains', '/revoke-approvals'].includes(location.pathname);
 
   const handleBackToDashboard = () => {
     navigate('/');

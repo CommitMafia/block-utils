@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,7 +17,7 @@ interface Approval {
 }
 
 const RevokeApprovals: React.FC = () => {
-  const { isConnected, address, chainId } = useWallet();
+  const { isConnected, address, chainId, connect } = useWallet();
   const [approvals, setApprovals] = useState<Approval[]>([]);
   const [loading, setLoading] = useState(false);
   const [revoking, setRevoking] = useState<string | null>(null);
@@ -138,7 +139,9 @@ const RevokeApprovals: React.FC = () => {
                 <Wallet className="h-12 w-12 text-cyber-neon/60 mb-4" />
               </div>
               <p className="text-cyber-neon/80 mb-4">Connect your wallet to view and manage token approvals</p>
-              <Button>Connect Wallet</Button>
+              <Button onClick={connect} className="bg-green-800 text-cyber-neon hover:bg-green-700 font-mono">
+                Connect Wallet
+              </Button>
               <p className="text-sm text-cyber-neon/60 mt-4">
                 This utility helps you identify and revoke potentially risky token approvals
               </p>
