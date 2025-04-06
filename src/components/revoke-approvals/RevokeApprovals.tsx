@@ -6,7 +6,6 @@ import { useWallet } from '@/context/WalletContext';
 import { getChainById } from '@/lib/api';
 import { useApprovals } from './hooks/useApprovals';
 import ApprovalsTable from './ApprovalsTable';
-import { truncateAddress } from './utils';
 
 const RevokeApprovals: React.FC = () => {
   const { isConnected, address, chainId, connect } = useWallet();
@@ -38,7 +37,7 @@ const RevokeApprovals: React.FC = () => {
           {isConnected && !loading && approvals.length > 0 && (
             <div className="mt-6 text-xs text-cyber-neon/60 border-t border-cyber-neon/10 pt-4">
               <p>Connected to: <span className="text-cyber-neon">{address}</span> on <span className="text-cyber-neon">{getChainById(chainId!)?.name || `Chain ID ${chainId}`}</span></p>
-              <p className="mt-2">Powered by <a href="https://revoke.cash" target="_blank" rel="noopener noreferrer" className="text-cyber-neon underline">Revoke.cash</a> functionality</p>
+              <p className="mt-2">Powered by <a href="https://revoke.cash" target="_blank" rel="noopener noreferrer" className="text-cyber-neon underline">Revoke.cash</a> API</p>
               <p className="mt-1">Always verify token approvals before revoking them. Revoking certain approvals may affect your DeFi positions.</p>
             </div>
           )}

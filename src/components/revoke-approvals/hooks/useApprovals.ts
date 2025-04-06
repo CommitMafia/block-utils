@@ -16,6 +16,27 @@ export const useApprovals = (address: string | null, chainId: number | null) => 
     if (!address || !chainId) return;
     setLoading(true);
     try {
+      // Fetch approvals from Revoke.cash API
+      const fetchedApprovals = await fetchRevokeCashApprovals(address, chainId);
+      setApprovals(fetchedApprovals);
+    } catch (error) {
+      console.error('Error fetching approvals:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to fetch token approvals',
+        variant: 'destructive'
+      });
+      // Fallback to the original method if the API fails
+      await fetchApprovalsLegacy();
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Fallback method to fetch approvals in case the API fails
+  const fetchApprovalsLegacy = async () => {
+    if (!address || !chainId) return;
+    try {
       // Create a public client for the current chain
       const formattedChain = formatChainForViem(chainId);
       const publicClient = createPublicClient({
@@ -91,14 +112,12 @@ export const useApprovals = (address: string | null, chainId: number | null) => 
       
       setApprovals(fetchedApprovals);
     } catch (error) {
-      console.error('Error fetching approvals:', error);
+      console.error('Error fetching approvals (legacy):', error);
       toast({
         title: 'Error',
         description: 'Failed to fetch token approvals',
         variant: 'destructive'
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -158,7 +177,7 @@ export const useApprovals = (address: string | null, chainId: number | null) => 
   };
 
   useEffect(() => {
-    if (isConnected && address && chainId) {
+    if (address && chainId) {
       fetchApprovals();
     } else {
       setApprovals([]);
@@ -173,3 +192,35 @@ export const useApprovals = (address: string | null, chainId: number | null) => 
     handleRevoke
   };
 };
+
+// Function to fetch approvals from Revoke.cash API
+async function fetchRevokeCashApprovals(address: string, chainId: number): Promise<Approval[]> {
+  try {
+    const response = await fetch(`https://api.revoke.cash/v2/approvals/${chainId}/${address}`);
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Transform the API response to match our Approval interface
+    return data.map((item: any) => {
+      const unlimitedAllowance = BigInt(item.allowance) >= 2n ** 250n;
+      
+      return {
+        tokenAddress: ensureHexString(item.token.address),
+        tokenName: item.token.name || 'Unknown Token',
+        tokenSymbol: item.token.symbol || '???',
+        spenderAddress: ensureHexString(item.spender.address),
+        spenderName: item.spender.name || 'Unknown Spender',
+        allowance: unlimitedAllowance 
+          ? 'Unlimited' 
+          : `${item.allowance_formatted} ${item.token.symbol}`,
+      };
+    });
+  } catch (error) {
+    console.error('Error fetching from Revoke.cash API:', error);
+    throw error;
+  }
+}
