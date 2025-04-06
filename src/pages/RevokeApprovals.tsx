@@ -6,7 +6,9 @@ import RevokeApprovals from '@/components/RevokeApprovals';
 const RevokeApprovalsPage: React.FC = () => {
   return (
     <MainLayout showBackButton={true}>
-      <RevokeApprovals />
+      <div className="w-full max-w-6xl mx-auto">
+        <RevokeApprovals />
+      </div>
     </MainLayout>
   );
 };
