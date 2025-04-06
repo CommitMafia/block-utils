@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Loader2, ExternalLink, XCircle } from 'lucide-react';
+import { Loader2, ExternalLink, XCircle, Wallet } from 'lucide-react';
 import { useWallet } from '@/context/WalletContext';
 import { useToast } from '@/hooks/use-toast';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
@@ -24,7 +23,6 @@ const RevokeApprovals: React.FC = () => {
   const [revoking, setRevoking] = useState<string | null>(null);
   const { toast } = useToast();
 
-  // Fetch approvals when wallet or chain changes
   useEffect(() => {
     if (isConnected && address && chainId) {
       fetchApprovals();
@@ -38,10 +36,7 @@ const RevokeApprovals: React.FC = () => {
     
     setLoading(true);
     try {
-      // In a real implementation, this would call an API to get the approvals
-      // For this demo, we'll use mock data based on the connected wallet address
       setTimeout(() => {
-        // Generate some mock data based on the connected wallet address
         const mockApprovals: Approval[] = [
           {
             tokenAddress: '0x1234567890123456789012345678901234567890',
@@ -61,11 +56,10 @@ const RevokeApprovals: React.FC = () => {
           }
         ];
         
-        // Let's add a custom one based on the wallet address
         if (address) {
           const lastFourChars = address.slice(-4);
           mockApprovals.push({
-            tokenAddress: `0x7777${lastFourChars}7777${lastFourChars}7777${lastFourChars}7777${lastFourChars}`,
+            tokenAddress: `0x7777${lastFourChars}7777${lastFourChars}7777${lastFourChars}7777${lastFourChars}7777`,
             tokenName: `Wallet Token ${lastFourChars}`,
             tokenSymbol: `WT${lastFourChars}`,
             spenderAddress: `0x8888${lastFourChars}8888${lastFourChars}8888${lastFourChars}8888${lastFourChars}`,
@@ -95,17 +89,13 @@ const RevokeApprovals: React.FC = () => {
     setRevoking(approvalId);
     
     try {
-      // In a real implementation, this would call a contract to revoke the approval
-      // For this demo, we'll simulate the process
       toast({
         title: 'Revoking approval...',
         description: 'Please confirm the transaction in your wallet',
       });
       
-      // Simulate a delay for the transaction
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Remove the approval from the list after successful revocation
       setApprovals(prevApprovals => 
         prevApprovals.filter(approval => 
           !(approval.tokenAddress === tokenAddress && approval.spenderAddress === spenderAddress)
@@ -128,8 +118,8 @@ const RevokeApprovals: React.FC = () => {
     }
   };
 
-  const truncateAddress = (address: string) => {
-    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+  const truncateAddress = (addr: string) => {
+    return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
   };
 
   return (
@@ -143,8 +133,11 @@ const RevokeApprovals: React.FC = () => {
         <CardContent className="p-6">
           {!isConnected ? (
             <div className="text-center py-12">
-              <p className="text-cyber-neon/80 mb-4">Connect your wallet to view and manage your token approvals</p>
-              <div className="flex justify-center mt-6">
+              <div className="flex justify-center mb-4">
+                <Wallet className="h-12 w-12 text-cyber-neon/60 mb-4" />
+              </div>
+              <p className="text-cyber-neon/80 mb-4">Connect your wallet to view and manage token approvals</p>
+              <div className="flex justify-center">
                 <ConnectButton />
               </div>
               <p className="text-sm text-cyber-neon/60 mt-4">
@@ -154,7 +147,9 @@ const RevokeApprovals: React.FC = () => {
           ) : loading ? (
             <div className="flex justify-center items-center py-12">
               <Loader2 className="h-8 w-8 text-cyber-neon animate-spin" />
-              <span className="ml-2 text-cyber-neon font-mono">Scanning for approvals from {truncateAddress(address)}...</span>
+              <span className="ml-2 text-cyber-neon font-mono">
+                Scanning for approvals from {truncateAddress(address!)}...
+              </span>
             </div>
           ) : approvals.length === 0 ? (
             <div className="text-center py-12">
