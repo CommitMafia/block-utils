@@ -5,7 +5,6 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Loader2, ExternalLink, XCircle, Wallet } from 'lucide-react';
 import { useWallet } from '@/context/WalletContext';
 import { useToast } from '@/hooks/use-toast';
-import ConnectWallet from '@/components/ConnectWallet';
 
 interface Approval {
   tokenAddress: string;
@@ -62,7 +61,7 @@ const RevokeApprovals: React.FC = () => {
             tokenAddress: `0x7777${lastFourChars}7777${lastFourChars}7777${lastFourChars}7777${lastFourChars}7777`,
             tokenName: `Wallet Token ${lastFourChars}`,
             tokenSymbol: `WT${lastFourChars}`,
-            spenderAddress: `0x8888${lastFourChars}8888${lastFourChars}8888${lastFourChars}8888${lastFourChars}`,
+            spenderAddress: `0x8888${lastFourChars}8888${lastFourChars}8888${lastFourChars}8888${lastFourChars}8888`,
             spenderName: `DEX ${lastFourChars}`,
             allowance: `${parseInt(lastFourChars, 16)} WT${lastFourChars}`
           });
@@ -130,7 +129,6 @@ const RevokeApprovals: React.FC = () => {
             <XCircle className="h-4 w-4 text-cyber-neon mr-2" />
             <span className="text-cyber-neon font-mono text-sm">REVOKE_APPROVALS</span>
           </div>
-          <ConnectWallet />
         </div>
         
         <CardContent className="p-6">
@@ -140,9 +138,7 @@ const RevokeApprovals: React.FC = () => {
                 <Wallet className="h-12 w-12 text-cyber-neon/60 mb-4" />
               </div>
               <p className="text-cyber-neon/80 mb-4">Connect your wallet to view and manage token approvals</p>
-              <div className="flex justify-center">
-                <ConnectWallet />
-              </div>
+              <Button>Connect Wallet</Button>
               <p className="text-sm text-cyber-neon/60 mt-4">
                 This utility helps you identify and revoke potentially risky token approvals
               </p>
